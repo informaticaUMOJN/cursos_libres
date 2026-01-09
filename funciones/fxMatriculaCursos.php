@@ -40,20 +40,4 @@ function fxDevuelveMatriculaCurso($mbLlenaGrid, $msCodigo = "")
     }
     return $mDatos;
 }
-
-function fxGuardarDetMatricula($msMatricula, $msModulo)
-{
-    $m_cnx_MySQL = fxAbrirConexion();
-    $msConsulta = "INSERT INTO UMO211A (MATCURSO_REL, MODULO_REL) VALUES (?, ?)";
-    $mDatos = $m_cnx_MySQL->prepare($msConsulta);
-    $mDatos->execute([$msMatricula, $msModulo]);
-}
-
-function fxBorrarDetMatricula($msCodigo)
-{
-    $m_cnx_MySQL = fxAbrirConexion();
-    $msConsulta = "DELETE FROM UMO211A WHERE MATCURSO_REL = ?";
-    $mDatos = $m_cnx_MySQL->prepare($msConsulta);
-    $mDatos->execute([$msCodigo]);
-}
 ?>

@@ -114,16 +114,16 @@ header('Pragma: no-cache');
                                     <li> 
                                         <a class="dropdown-item" href="gridCursosLibres.php">Cursos</a>
                                     </li>
-                                  <!--   <li> 
-                                        <a class="dropdown-item"  href="gridModulos.php">Modulos</a>
+                                    <li> 
+                                        <a class="dropdown-item"  href="gridDocentes.php">Docentes</a>
                                     </li>
                                     <li> 
-                                        <a class="dropdown-item" href="gridDepartamentos.php">Departamentos</a>
+                                        <a class="dropdown-item" href="gridColegios.php">Colegio</a>
                                     </li>
                                     <li> 
-                                        <a class="dropdown-item" href="gridMunicipios.php">Municipio</a>
+                                        <a class="dropdown-item" href="gridUniversidad.php">Universidades</a>
                                     </li>
--->
+
                                     <li>
                                         <a  class="dropdown-item" href="gridAlumnos.php">Estudiantes</a></a>
                                     </li>
@@ -140,11 +140,11 @@ header('Pragma: no-cache');
                                      <li> 
                                         <a class="dropdown-item"  href="gridMatriculaCursosL.php">Matrícula</a>
                                     </li>
-
+ <!-- 
                                     <li>
                                         <a  class="dropdown-item" href="gridPlanCurso.php">Plan de estudios</a>
                                     </li>
-                                      
+                         -->             
                                 </ul>
                             </li> 
 
@@ -167,6 +167,16 @@ header('Pragma: no-cache');
                                     <li> 
                                         <a class="dropdown-item" href="gridAsistenciaCL.php">Asistencias</a>
                                     </li>
+                                </ul>
+                            </li>
+
+                             <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Herramientas</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="gridUsuarios.php">Usuarios</a></li>
+                          <!--          <li><a class="dropdown-item" href="gridGrupos.php">Grupos</a></li>-->
+                                    <li><a class="dropdown-item" href="gridCambiaClave.php">Cambiar clave de usuario</a></li>
+                                    <!--li><a class="dropdown-item" href="gridDiasClase.php">Días de clase</a></li-->
                                 </ul>
                             </li>
                            

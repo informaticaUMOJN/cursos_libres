@@ -1070,10 +1070,13 @@
 			$.messager.alert('UMOJN','Falta la Cédula.','warning');
 			return false;
 		}
-		if (existeCedula == true)
+
+		 mCedula = document.getElementById('txtCedula').value;
+
+		if(mCedula.indexOf("-") > -1)
 		{
 			document.getElementById('txtCedula').focus();
-			$.messager.alert('UMOJN','La Cédula ya fue registrada con el estudiante ' + codEstudiante,'warning');
+			$.messager.alert('UMOJN','Escriba la Cédula sin guiones.','warning');
 			return false;
 		}
 

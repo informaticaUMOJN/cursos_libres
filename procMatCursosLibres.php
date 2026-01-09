@@ -14,7 +14,6 @@ error_reporting(E_ALL);
 	require_once ("funciones/fxUsuarios.php");
 	require_once ("funciones/fxMatriculaCursos.php");
 	require_once ("funciones/fxAlumnos.php");
-	require_once ("funciones/fxModulos.php");
 
 	$m_cnx_MySQL = fxAbrirConexion();
 	$Registro = fxVerificaUsuario();
@@ -79,23 +78,9 @@ error_reporting(E_ALL);
 				else
 				{
 					fxModificarMatricula($msCodigo, $msAlumno, $msCursos, $msPlanEstudio, $mdFecha, $msRecibo, $mnBeca, $mbDiploma,  $mbCedula, $mbActaNacimiento, $mnEstado);
-					fxBorrarDetMatricula($msCodigo);
 					$msBitacora = $msCodigo . "; " . $msAlumno . "; " . $msCursos . "; " . $msPlanEstudio . "; " . $mdFecha . "; " . $msRecibo . "; " . $mnBeca . "; " . $mbDiploma . "; " . $mbCedula . "; " . $mbActaNacimiento . "; " . $mnEstado;
 					fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO210A", $msCodigo, "", "Modificar", $msBitacora);
 				}
-
-				if (isset($_POST["gridAsignatura"]))
-{
-    $gridAsignatura = json_decode($_POST["gridAsignatura"], true);
-    if (is_array($gridAsignatura))
-    {
-        foreach($gridAsignatura as $mRegistro)
-        {
-            $msModulo = $mRegistro['asignatura'];
-            fxGuardarDetMatricula($msCodigo, $msModulo);
-        }
-    }
-}
 
 				?><meta http-equiv="Refresh" content="0;url=gridMatriculaCursosL.php"/><?php
 			}
@@ -156,22 +141,20 @@ error_reporting(E_ALL);
 
 			<div class = "row">
                 <div class="col-xs-12 offset-sm-none col-md-10 offset-md-1">
-				<form id="procMatCursosLibres" name="procMatCursosLibres" action="procMatCursosLibres.php" method="post" onsubmit="return prepararEnvio()">
-	
-				<div class = "form-group row">
+					<form id="procMatCursosLibres" name="procMatCursosLibres" action="procMatCursosLibres.php" method="post" onsubmit="return prepararEnvio()">
+						<div class = "form-group row">
 							<label for="txtCodMatricula" class="col-sm-12 col-md-3 col-form-label">Código de la Matrícula</label>
 							<div class="col-sm-12 col-md-3">
 								<?php echo('<input type="text" class="form-control" id="txtCodMatricula" name="txtCodMatricula" value="' . $msCodigo . '" readonly />'); ?>
 							</div>
 						</div>
 						
-					<div class="form-group row">
+						<div class="form-group row">
 							<label for="cboAlumno" class="col-sm-12 col-md-3 col-form-label">Estudiante</label>
 							<div class="col-sm-12 col-md-7">
 								<?php
 								if ($msAlumno == "") {
 									echo('<select class="form-control" id="cboAlumno" name="cboAlumno">');
-									echo('<option value="">-- Seleccione un estudiante --</option>');
 								} else {
 									echo('<select class="form-control" id="cboAlumno" name="cboAlumno" disabled>');
 								}
@@ -203,7 +186,7 @@ error_reporting(E_ALL);
 							<label for="cboCurso" class="col-sm-12 col-md-3 col-form-label">Curso Libre</label>
 							<div class="col-sm-12 col-md-7">
 								<?php
-									echo('<select class="form-control" id="cboCurso" name="cboCurso" onchange="llenaCombos(this.value)" >');
+									echo('<select class="form-control" id="cboCurso" name="cboCurso" >');
 
 									$msConsulta = "SELECT CURSOS_REL, NOMBRE_190 FROM UMO190A ORDER BY NOMBRE_190";
 									$mDatos = $m_cnx_MySQL->prepare($msConsulta);
@@ -242,36 +225,6 @@ error_reporting(E_ALL);
 							</div>
 						</div>
 						
-						<div class="form-group row">
-							<label for="cboPlanEstudio" class="col-sm-12 col-md-3 col-form-label">Plan de estudio</label>
-							<div class="col-sm-12 col-md-3">
-								<select class="form-control" id="cboPlanEstudio" name="cboPlanEstudio">
-									<?php
-										$msConsulta = "select PLANCURSO_REL, PERIODO_220 from UMO220A where ACTIVO_220 = 1 order by PLANCURSO_REL";
-										$mDatos = $m_cnx_MySQL->prepare($msConsulta);
-										$mDatos->execute();
-										while ($mFila = $mDatos->fetch())
-										{
-											$msValor = rtrim($mFila["PLANCURSO_REL"]);
-											$msTexto = "Período " . trim($mFila["PERIODO_220"]);
-											if ($msPlanEstudio == "")
-											{
-												echo("<option value='" . $msValor . "'>" . $msTexto . "</option>");
-												$msPlanEstudio = $msValor;
-											}
-											else
-											{
-												if ($msPlanEstudio == $msValor)
-													echo("<option value='" . $msValor . "' selected>" . $msTexto . "</option>");
-												else
-													echo("<option value='" . $msValor . "'>" . $msTexto . "</option>");
-											}
-										}
-									?>
-								</select>
-							</div>
-						</div>
-						
 						<div class = "form-group row">
 							<label for="txtRecibo" class="col-sm-12 col-md-3 col-form-label">Recibo</label>
 							<div class="col-sm-12 col-md-3">
@@ -280,7 +233,7 @@ error_reporting(E_ALL);
 								?>
 							</div>
 						</div>
-						
+								
 						<div class = "form-group row">
 							<label for="cboBeca" class="col-sm-12 col-md-3 form-label">Beca</label>
 							<div class="col-sm-12 col-md-3">
@@ -310,7 +263,7 @@ error_reporting(E_ALL);
 							</div>
 						</div>
 
-								<div class = "form-group row">
+						<div class = "form-group row">
 							<label class="col-sm-12 col-md-3 form-label">Documentos entregados</label>
 							<div class="col-sm-12 col-md-8">
 								<?php
@@ -356,49 +309,6 @@ error_reporting(E_ALL);
 							</div>
 						</div>
 
-						<div class = "form-group row">
-							<label for="dgASG" class="col-sm-12 col-md-3 form-label">Modulo para inscripción</label>
-							<div class="col-sm-auto col-md-7">
-								<select class="form-control" id="cboModulo" name="cboModulo">
-									<?php
-										$mDatos = fxDevuelveModuloCurso($msCursos);
-										while ($mFila = $mDatos->fetch())
-										{
-											$Valor = rtrim($mFila["MODULO_REL"]);
-											$Texto = rtrim($mFila["NOMBRE_280"]);
-											echo("<option value='" . $Valor . "'>" . $Texto . "</option>");
-										}
-									?>
-								</select>
-								<div id="dvASG">
-									<table id="dgASG" class="easyui-datagrid table" data-options="iconCls:'icon-edit', toolbar:'#tbASG', singleSelect:true, method:'get', onClickCell: onClickCell">
-										<thead>
-											<tr>
-												<th data-options="field:'nombre',width:'100%',align:'left'"></th>
-												<th data-options="field:'asignatura',hidden:'true'"></th>
-											</tr>
-										</thead>
-										<?php
-											$mDatos = fxDevuelveModuloMatricula($msCodigo);
-											while ($mFila = $mDatos->fetch())
-											{
-												echo ("<tr>");
-												echo ("<td>" . $mFila["NOMBRE_280"] . "</td>");
-												echo ("<td>" . $mFila["MODULO_REL"] . "</td>");
-												echo ("</tr>");
-											}
-										?>
-									</table>
-								</div>
-							</div>
-						</div>
-						
-						<div id="tbASG" style="height:auto">
-							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()">Agregar</a>
-							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">Borrar</a>
-							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="acceptit()">Aceptar</a>
-							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">Deshacer</a>
-						</div>
 						<div class = "row">
 							<div class="col-auto offset-sm-none col-md-12 offset-md-3">
 								<input type="submit" id="Guardar" name="Guardar" value="Guardar" class="btn btn-primary" />
@@ -431,12 +341,6 @@ error_reporting(E_ALL);
 		llenaCurso (estudiante);
 	}
 
-	function llenaCombos(curso)
-	{
-		llenaPlanEstudio(curso);
-		llenaModulo(curso);
-	}
-
 	function llenaCurso (estudiante)
 	{
 		var datos = new FormData();
@@ -450,41 +354,6 @@ error_reporting(E_ALL);
 			processData: false,
 			success: function(response){
 				document.getElementById('cboCurso').value = response;
-				llenaCombos(response);
-			}
-		})
-	}
-
-	function llenaPlanEstudio (curso)
-	{
-		var datos = new FormData();
-		datos.append('cursoPe', curso);
-
-		$.ajax({
-			url: 'funciones/fxDatosMatCurso.php',
-			type: 'post',
-			data: datos,
-			contentType: false,
-			processData: false,
-			success: function(response){
-				document.getElementById('cboPlanEstudio').innerHTML = response;
-			}
-		})
-	}
-
-	function llenaModulo (curso)
-	{
-		var datos = new FormData();
-		datos.append('cursoAsg', curso);
-
-		$.ajax({
-			url: 'funciones/fxDatosMatCurso.php',
-			type: 'post',
-			data: datos,
-			contentType: false,
-			processData: false,
-			success: function(response){
-				document.getElementById('cboModulo').innerHTML = response;
 			}
 		})
 	}
@@ -496,116 +365,5 @@ error_reporting(E_ALL);
 		
 		llenaPlanEstudio(curso);  
 		llenaModulo(curso);    
-		
-		$('#dgASG').datagrid({striped: true});
-		$('.datagrid-wrap').width('100%');
-		$('.datagrid-view').height('200px');
 	}
-
-	var editIndex = undefined;
-	var lastIndex;
-	
-	$('#dgASG').datagrid({
-		onClickRow:function(rowIndex){
-			if (lastIndex != rowIndex){
-				$(this).datagrid('endEdit', lastIndex);
-				$(this).datagrid('beginEdit', rowIndex);
-			}
-			lastIndex = rowIndex;
-		}
-	});
-	
-	function endEditing(){
-		if (editIndex == undefined){return true}
-		if ($('#dgASG').datagrid('validateRow', editIndex)){
-			$('#dgASG').datagrid('endEdit', editIndex);
-			editIndex = undefined;
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	function onClickCell(index, field){
-		if (editIndex != index){
-			if (endEditing()){
-				$('#dgASG').datagrid('selectRow', index)
-						.datagrid('beginEdit', index);
-				editIndex = index;
-			} else {
-				setTimeout(function(){
-					$('#dgASG').datagrid('selectRow', editIndex);
-				},0);
-			}
-		}
-	}
-
-	function append(){
-		if (endEditing()){
-			var i;
-			var codigo;
-			var existeAsignatura = false;
-			var datos = $('#dgASG').datagrid('getData');
-			var registros = $('#dgASG').datagrid('getRows').length;
-			
-			if (registros > 0)
-            {
-    			for (i=0; i<registros; i++)
-    			{
-    				if (datos.rows[i].asignatura == $('#cboModulo option:selected').val())
-					existeAsignatura = true;
-    			}
-			}
-			
-			if (existeAsignatura == true)
-			{
-				$.messager.alert('UMOJN',$('#cboModulo option:selected').text() + ' ya fue incluido.','warning');
-				$('#cboModulo').focus()
-			}
-			else
-			{
-				$('#dgASG').datagrid('appendRow',{asignatura:$('#cboModulo option:selected').val(), nombre:$('#cboModulo option:selected').text()});
-				editIndex = $('#dgASG').datagrid('getRows').length;
-				$('#dgASG').datagrid('selectRow', editIndex).datagrid('beginEdit', editIndex);
-			}
-		}
-	}
-		
-	function removeit(){
-		if (editIndex == undefined){return}
-		$('#dgASG').datagrid('cancelEdit', editIndex)
-				.datagrid('deleteRow', editIndex);
-		editIndex = undefined;
-	}
-	
-	function acceptit(){
-		if (endEditing()){
-			$('#dgASG').datagrid('acceptChanges');
-		}
-	}
-	
-	function reject(){
-		$('#dgASG').datagrid('rejectChanges');
-		editIndex = undefined;
-	}
-
-	function prepararEnvio() {
-    if (!verificarFormulario()) return false;
-
-    $('#dgASG').datagrid('acceptChanges');
-    var datosTabla = $('#dgASG').datagrid('getData').rows;
-    var jsonTabla = JSON.stringify(datosTabla);
-    if (document.getElementById('gridAsignaturaHidden')) {
-        document.getElementById('gridAsignaturaHidden').value = jsonTabla;
-    } else {
-        var input = document.createElement("input");
-        input.type = "hidden";
-        input.name = "gridAsignatura";
-        input.id = "gridAsignaturaHidden";
-        input.value = jsonTabla;
-        document.getElementById("procMatCursosLibres").appendChild(input);
-    }
-
-    return true; 
-}
 </script>
