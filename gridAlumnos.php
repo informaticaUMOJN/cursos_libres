@@ -76,7 +76,7 @@ error_reporting(E_ALL);
 						<table id="grid" class="table table-condensed table-hover table-striped" data-selection="true" data-multi-select="false" data-row-select="true" data-keep-selection="true">
 							<thead>
 								<tr>
-									<th data-column-id="ALUMNO_REL" data-order="desc" data-identifier="true">Estudiante</th>
+									<th data-column-id="ALUMNO_REL" data-identifier="true">Estudiante</th>
 									<th data-column-id="NOMBRES_200" data-header-align="left" data-width="53%">Nombre completo</th>
 									<th data-column-id="APELLIDOS_200" data-align="left" data-header-align="left" data-width="15%">Celular</th>
 										</tr>

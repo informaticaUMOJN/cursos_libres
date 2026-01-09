@@ -363,13 +363,6 @@
 										<?php echo('<input type="text" class="form-control" id="txtCedula" name="txtCedula" maxlength="20" value="' . $msCedula . '" />'); ?>
 										</div>
 									</div>
-									
-									<div class = "form-group row">
-										<label for="txtDeficiencia" class="col-sm-12 col-md-3 form-label">Deficiencia</label>
-										<div class="col-sm-12 col-md-4">
-										<?php echo('<input type="text" class="form-control" id="txtDeficiencia" name="txtDeficiencia" maxlength="20" value="' . $msDeficiencia . '" />'); ?>
-										</div>
-									</div>
 
 									<div class = "form-group row">
 										<label for="optSexo" class="col-sm-12 col-md-3 form-label">Sexo</label>
@@ -392,7 +385,7 @@
 
 									<div class="form-group row">
 										<label for="cboEstadoCivil" class="col-sm-12 col-md-3 col-form-label">Estado civil</label>
-										<div class="col-sm-12 col-md-4">
+										<div class="col-sm-12 col-md-3">
 											<select class="form-control" id="cboEstadoCivil" name="cboEstadoCivil">
 												<?php
 													if ($mnEstadoCivil == 0)
@@ -421,7 +414,7 @@
 									
 									<div class = "form-group row">
 										<label for="txnHijos" class="col-sm-12 col-md-3 form-label">Hijos</label>
-										<div class="col-sm-12 col-md-3">
+										<div class="col-sm-12 col-md-2">
 										<?php echo('<input type="number" class="form-control" id="txnHijos" name="txnHijos" value="' . $mnHijos . '" />'); ?>
 										</div>
 									</div>
@@ -432,22 +425,34 @@
 											<div class = "radio">
 											<?php
 												if ($mbDiscapacidad == 1)
-													echo('<input type="radio" id="optDiscapacidad1" name="optDiscapacidad" value="1" checked="checked" /> Si &emsp;');
+													echo('<input type="radio" id="optDiscapacidad1" name="optDiscapacidad" value="1" checked="checked" onchange="fxOptDiscapacidad()" /> Si &emsp;');
 												else
-													echo('<input type="radio" id="optDiscapacidad1" name="optDiscapacidad" value="1" /> Si &emsp;');
+													echo('<input type="radio" id="optDiscapacidad1" name="optDiscapacidad" value="1" onchange="fxOptDiscapacidad()" /> Si &emsp;');
 
 												if ($mbDiscapacidad == 0)
-													echo('<input type="radio" id="optDiscapacidad2" name="optDiscapacidad" value="0" checked="checked" /> No');
+													echo('<input type="radio" id="optDiscapacidad2" name="optDiscapacidad" value="0" checked="checked" onchange="fxOptDiscapacidad()" /> No');
 												else
-													echo('<input type="radio" id="optDiscapacidad2" name="optDiscapacidad" value="0" /> No');
+													echo('<input type="radio" id="optDiscapacidad2" name="optDiscapacidad" value="0" onchange="fxOptDiscapacidad()" /> No');
 											?>
 											</div>
 										</div>
 									</div>
 
+									<div class = "form-group row">
+										<label for="txtDeficiencia" class="col-sm-12 col-md-3 form-label">Deficiencia</label>
+										<div class="col-sm-12 col-md-4">
+										<?php
+											if ($mbDiscapacidad == 0)
+												echo('<input type="text" class="form-control" id="txtDeficiencia" name="txtDeficiencia" maxlength="90" value="' . $msDeficiencia . '" disabled />');
+											else 
+												echo('<input type="text" class="form-control" id="txtDeficiencia" name="txtDeficiencia" maxlength="90" value="' . $msDeficiencia . '" />');
+										?>
+										</div>
+									</div>
+
 									<div class="form-group row">
 										<label for="cboNivelEstudio" class="col-sm-12 col-md-3 col-form-label">Nivel de estudios</label>
-										<div class="col-sm-12 col-md-4">
+										<div class="col-sm-12 col-md-3">
 											<select class="form-control" id="cboNivelEstudio" name="cboNivelEstudio">
 												<?php
 
@@ -519,7 +524,7 @@
 									</div>
 
 
-										<div class="form-group row">
+									<div class="form-group row">
 										<label for="cboUniversidad" class="col-sm-12 col-md-3 col-form-label">Universidad de procedencia</label>
 										<div class="col-sm-12 col-md-7">
 											<select class="form-control" id="cboUniversidad" name="cboUniversidad">
@@ -1123,7 +1128,16 @@
 		}
 	}
 	
-	function fxOptLaboral() {
+function fxOptDiscapacidad()
+{
+	var discapacidad = document.getElementById('optDiscapacidad1').checked;
+	if (discapacidad)
+		document.getElementById('txtDeficiencia').disabled = false;
+	else
+		document.getElementById('txtDeficiencia').disabled = true;
+}
+
+function fxOptLaboral() {
     var empleado = document.getElementById('optLaboral1').checked; // true si es empleado
 
     let optSector = document.getElementById('optSector');
@@ -1192,31 +1206,29 @@ function restaurarOpciones(select, tipo) {
     }
 }
 
+function calcularEdad()
+{
+	var today_date = new Date();
+	var today_year = today_date.getFullYear();
+	var today_month = today_date.getMonth();
+	var today_day = today_date.getDate();
+	var birth_date = document.getElementById("dtpFechaNac").value;
+	var birth_year = parseInt(birth_date.substr(0,4));
+	var birth_month = parseInt(birth_date.substr(5,2));
+	var birth_day = parseInt(birth_date.substr(7,2));
 
+	var age = today_year - birth_year;
 
-	function calcularEdad()
-	{
-	  var today_date = new Date();
-	  var today_year = today_date.getFullYear();
-	  var today_month = today_date.getMonth();
-	  var today_day = today_date.getDate();
-	  var birth_date = document.getElementById("dtpFechaNac").value;
-	  var birth_year = parseInt(birth_date.substr(0,4));
-	  var birth_month = parseInt(birth_date.substr(5,2));
-	  var birth_day = parseInt(birth_date.substr(7,2));
-
-	  var age = today_year - birth_year;
-	
-	  if (today_month < (birth_month - 1)) {
-		age--;
-	  }
-	  if (((birth_month - 1) == today_month) && (today_day < birth_day)) {
-		age--;
-	  }
-	  document.getElementById("txtEdad").value = age + " años";
+	if (today_month < (birth_month - 1)) {
+	age--;
 	}
+	if (((birth_month - 1) == today_month) && (today_day < birth_day)) {
+	age--;
+	}
+	document.getElementById("txtEdad").value = age + " años";
+}
 
-	function llenaMunicipios (departamento)
+function llenaMunicipios (departamento)
 {
     var datos = new FormData();
     datos.append('departamento', departamento);
@@ -1261,14 +1273,13 @@ function borrarImagen(objeto) {
     });
 }
 
-	window.onload=function()
-	{
-		if (document.getElementById("dtpFechaNac").value != "")
-			calcularEdad();
-	}
+window.onload=function()
+{
+	if (document.getElementById("dtpFechaNac").value != "")
+		calcularEdad();
+}
 
-	$('#cmdSubir').click(function () {
-
+$('#cmdSubir').click(function () {
     if ($('#txtAlumno').val() == '') {
         $.messager.alert('UMOJN','Debe guardar el alumno primero','warning');
         return;
