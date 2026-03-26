@@ -28,7 +28,7 @@ error_reporting(E_ALL);
 		$mbSupervisor = fxVerificaSupervisor();
 		$mbPermisoUsuario = fxPermisoUsuario("procAsistencia", $mbAgregar, $mbModificar, $mbBorrar, $mbAnular);
 		if ($mbAdministrador == 0 and $mbPermisoUsuario == 0 and $mbSupervisor == 0)
-		{ ?>
+		{ ?> 
         <div class="container text-center">
         	<div id="DivContenido">
 				<img src="imagenes/errordeacceso.png"/>
@@ -86,7 +86,6 @@ error_reporting(E_ALL);
 								<tr>
 									<th data-column-id="ASISTENCIA_REL" data-identifier="true" data-width="15%" data-align="left">Asistencia</th>
 									<th data-column-id="NOMBRE_100" data-width="20%" data-align="left">Docente</th>
-									<th data-column-id="NOMBRE_060" data-width="20%" data-align="left">Modulo</th>
 									<th data-column-id="NOMBRE_190" data-width="15%" data-align="left">Curso</th>
 									<th data-column-id="FECHA_320" data-width="15%" data-align="left">Fecha</th>
 									<th data-column-id="TURNO_320" data-width="15%" data-align="left">Turno</th>
@@ -104,7 +103,6 @@ error_reporting(E_ALL);
 									echo ("<tr>");
 									echo ("<td>" . $mFila["ASISTENCIACL_REL"] . "</td>");
 									echo ("<td>" . $mFila["NOMBRE_100"] . "</td>");
-									echo ("<td>" . $mFila["NOMBRE_280"] . "</td>");
 									echo ("<td>" . $mFila["NOMBRE_190"] . "</td>");
 									$fecha = date_create_from_format('Y-m-d', $mFila["FECHA_320"]);
 									echo ("<td>" . date_format($fecha, 'd-m-Y') . "</td>");

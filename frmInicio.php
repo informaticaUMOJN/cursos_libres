@@ -21,26 +21,35 @@
             </div>
             
         	<div class = "row">
-                <div class="col-sm-2 col-md-3">
-                	<div class="divBotonInicio">
-    				<a href="gridCursosLibres.php"><img src="imagenes/btnCurso.png" style="border-radius:10%" width="100%" /></a>
-                    </div>
-            	</div>
-                <div class="col-sm-2 col-md-3">
-                	<div class="divBotonInicio">
-    				<a href="gridAsistenciaCL.php"><img src="imagenes/btnAsistencia.png" style="border-radius:10%" width="100%" /></a>
-                    </div>
-             	</div>
-                <div class="col-sm-2 col-md-3">
-                	<div class="divBotonInicio">
-    				<a href="gridMatriculaCursosL.php"><img src="imagenes/btnMatricula.png" style="border-radius:10%" width="100%" /></a>
-                    </div>
-             	</div>
-                <div class="col-sm-2 col-md-3">
-                	<div class="divBotonInicio">
-    				<a href="gridModulos.php"><img src="imagenes/btnModulo.png" style="border-radius:10%" width="100%" /></a>
-                    </div>
-             	</div>
+				  
+               <div class="row justify-content-center text-center">
+
+				<div class="col-sm-4 col-md-3">
+					<div class="divBotonInicio">
+						<a href="gridCursosLibres.php">
+							<img src="imagenes/btnCurso.png" style="border-radius:10%" class="img-fluid" />
+						</a>
+					</div>
+				</div>
+
+				<div class="col-sm-4 col-md-3">
+					<div class="divBotonInicio">
+						<a href="gridAsistenciaCL.php">
+							<img src="imagenes/btnAsistencia.png" style="border-radius:10%" class="img-fluid" />
+						</a>
+					</div>
+				</div>
+
+				<div class="col-sm-4 col-md-3">
+					<div class="divBotonInicio">
+						<a href="gridMatriculaCursosL.php">
+							<img src="imagenes/btnMatricula.png" style="border-radius:10%" class="img-fluid" />
+						</a>
+					</div>
+				</div>
+
+			</div>
+                
             </div>
     	</div>
     </div>

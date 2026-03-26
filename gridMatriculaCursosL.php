@@ -97,14 +97,26 @@ error_reporting(E_ALL);
 									echo ("<td>" . $mFila["NOMBRE_190"] . "</td>");
 									$fecha = date_create_from_format('Y-m-d', $mFila["FECHA_210"]);
 									echo ("<td>" . date_format($fecha, 'd-m-Y') . "</td>");
-									if ($mFila["ESTADO_210"]==0)
-										echo ("<td>Activo</td>");
-									else{
-										if ($mFila["ESTADO_210"]==1)
-											echo ("<td>Inactivo</td>");
-										else
-											echo ("<td>Pre-matrícula</td>");
-									}
+									echo "<td>";
+										switch($mFila["ESTADO_210"]) {
+											case 0:
+												echo "Pre-matriculado";
+												break;
+											case 1:
+												echo "Activo";
+												break;
+											case 2:
+												echo "Retirado";
+												break;
+											case 3:
+												echo "Certificado";
+												break;
+											default:
+												echo "Desconocido";
+												break;
+										}
+										echo "</td>";
+
 									echo ("</tr>");
 								}
 							}
