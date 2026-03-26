@@ -53,7 +53,7 @@ error_reporting(E_ALL);
 						else
 							echo('<label id="modificarDis" data-toggle="tooltip" data-placement="top" title="Editar"><img src="imagenes/btnLateralEditarDis.png" height="80%" style="cursor:default" /></label>');
 						
-						//echo('<label id="matricular" data-toggle="tooltip" data-placement="top" title="Matricular"><img src="imagenes/btnLateralMatricular.png" height="80%" style="cursor:pointer" /></label>');
+						echo('<label id="matricular" data-toggle="tooltip" data-placement="top" title="Matricular"><img src="imagenes/btnLateralMatricular.png" height="80%" style="cursor:pointer" /></label>');
 					?>
 				</div>
 
@@ -70,13 +70,13 @@ error_reporting(E_ALL);
 							else
 								echo('<button id="edit" type="button" class="btn btn-primary" disabled>Editar</button>');
 							
-						//	echo('<button id="matricula" type="button" class="btn btn-primary">Matricular</button>');
+							echo('<button id="matricula" type="button" class="btn btn-primary">Matricular</button>');
 						?>
 						
 						<table id="grid" class="table table-condensed table-hover table-striped" data-selection="true" data-multi-select="false" data-row-select="true" data-keep-selection="true">
 							<thead>
 								<tr>
-									<th data-column-id="ALUMNO_REL" data-identifier="true">Estudiante</th>
+									<th data-column-id="ALUMNO_REL" data-order="desc" data-identifier="true">Estudiante</th>
 									<th data-column-id="NOMBRES_200" data-header-align="left" data-width="53%">Nombre completo</th>
 									<th data-column-id="APELLIDOS_200" data-align="left" data-header-align="left" data-width="15%">Celular</th>
 										</tr>
@@ -157,22 +157,14 @@ error_reporting(E_ALL);
 			}
 		});
 
-	/*	$("#matricula").on("click", function() {
-			if ($.trim($("#grid").bootgrid("getSelectedRows")) != "")
-			{
-				var msEstudiante = $.trim($("#grid").bootgrid("getSelectedRows"));
-				$.redirect("procMatricula.php", {mAccion: 1, mEstudiante: msEstudiante}, "POST");
-			}
-		});
-
-		$("#matricular").on("click", function() {
-			if ($.trim($("#grid").bootgrid("getSelectedRows")) != "")
-			{
-				var msEstudiante = $.trim($("#grid").bootgrid("getSelectedRows"));
-				$.redirect("procMatricula.php", {mAccion: 1, mEstudiante: msEstudiante}, "POST");
-			}
-		});
-	*/
+		$("#matricula").on("click", function() {
+			 var selectedRows = $("#grid").bootgrid("getSelectedRows");
+			 if (selectedRows.length > 0)
+				{
+					var msEstudiante = selectedRows[0];
+					$.redirect("procMatCursosLibres.php", {mAccion: 1, mAlumno: msEstudiante}, "POST");
+				}
+			});
 	});
 </script>
 </body>

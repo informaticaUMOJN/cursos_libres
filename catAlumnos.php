@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 	session_start();
 	if (!isset($_SESSION["gnVerifica"]) or $_SESSION["gnVerifica"] != 1)
 	{
@@ -51,6 +54,11 @@
 				$msCedula        = $_POST["txtCedula"];
 				$msDeficiencia   = $_POST["txtDeficiencia"];
 				$msSexo          = $_POST["optSexo"];
+				$mnPeso          = $_POST["txnPeso"];
+				$msSangre        = $_POST["cboTipoSangre"];
+				$mnAltura        = $_POST["txnAltura"];
+
+
 				$mnEstadoCivil   = $_POST["cboEstadoCivil"];
 				$mnHijos         = $_POST["txnHijos"];
 				$mbDiscapacidad  = $_POST["optDiscapacidad"];
@@ -71,6 +79,17 @@
 				$mnSector        = $_POST["optSector"];
 				$mnIngresoMensual= $_POST["txnSalario"];
 				$msEntidad       = $_POST["optEntidad"];
+
+				$msNombrePadre   = $_POST["txtNombrePadre"] ?? "";
+				$mbTrabajaPadre  = $_POST["optTrabajaPadre"] ?? 0;
+				$msTrabajoPadre  = $_POST["txtTrabajoPadre"] ?? "";
+
+				$msNombreMadre   = $_POST["txtNombreMadre"] ?? "";
+				$mbTrabajaMadre  = $_POST["optTrabajaMadre"] ?? 0;
+				$msTrabajoMadre  = $_POST["txtTrabajoMadre"] ?? "";
+
+
+
 				$msNombreRef     = $_POST["txtNombreRef"];
 				$msCedulaRef     = $_POST["txtCedulaRef"];
 				$msCelularRef    = $_POST["txtCelularRef"];
@@ -78,27 +97,21 @@
 
 				try {
 					if ($msCodigo == "") {
-						$msCodigo = fxGuardarAlumnos(
-							$msFechaIns, $msUniversidad, $msNombres, $msApellidos, $msFechaNac, $msNacionalidad, $msMunicipio,
-							$msCedula, $msDeficiencia, $msSexo, $mnEstadoCivil, $mnHijos, $mbDiscapacidad, $mnNivelEstudio,
-							$msColegio, $msCurso, $msTelefono, $msCelular, $msEmail, $mbOtroIdioma,$msIdioma, $msDominioIdioma, $msDireccion,
-							$mnMedio, $mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual, $msEntidad,
-							$msNombreRef, $msCedulaRef, $msCelularRef, $msDireccionRef
-						);
-						$msBitacora = $msCodigo . "; " . $msFechaIns . "; " . $msUniversidad . "; " . $msNombres . "; " . $msApellidos . "; " . $msFechaNac . "; " . $msNacionalidad . "; " . $msMunicipio . "; " . $msCedula . "; " . $msDeficiencia . "; " . $msSexo . "; " . $mnEstadoCivil . "; " . $mnHijos . "; " . $mbDiscapacidad . "; " . $mnNivelEstudio . "; " . $msColegio . "; " . $msCurso . "; " . $msTelefono . "; " . $msCelular . "; " . $msEmail . "; ".$mbOtroIdioma.";" . $msIdioma . "; " . $msDominioIdioma . "; " . $msDireccion . "; " . $mnMedio . "; " . $mbLaboral . "; " . $msOcupacion . "; " . $mnSector . "; " . $mnIngresoMensual . "; " . $msEntidad . "; " . $msNombreRef . "; " . $msCedulaRef . "; " . $msCelularRef . "; " . $msDireccionRef;
+						$msCodigo = fxGuardarAlumnos($msFechaIns, $msUniversidad, $msNombres, $msApellidos, $msFechaNac, $msNacionalidad, $msMunicipio, $msCedula,
+						$msDeficiencia, $msSexo,$mnPeso,$msSangre ,$mnAltura, $mnEstadoCivil, $mnHijos, $mbDiscapacidad, $mnNivelEstudio, $msColegio, $msCurso, $msTelefono, $msCelular,
+						$msEmail, $mbOtroIdioma, $msIdioma, $msDominioIdioma, $msDireccion, $mnMedio, $mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual,
+						$msEntidad, $msNombrePadre,$mbTrabajaPadre,$msTrabajoPadre,$msNombreMadre ,$mbTrabajaMadre,$msTrabajoMadre ,$msNombreRef, $msCedulaRef, $msCelularRef, $msDireccionRef);
+
+						$msBitacora = $msCodigo . "; " . $msFechaIns . "; " . $msUniversidad . "; " . $msNombres . "; " . $msApellidos . "; " . $msFechaNac . "; " . $msNacionalidad . "; " . $msMunicipio . "; " . $msCedula . "; " . $msDeficiencia . "; " . $msSexo . "; " .$mnPeso.";".$msSangre.";".$mnAltura.";". $mnEstadoCivil . "; " . $mnHijos . "; " . $mbDiscapacidad . "; " . $mnNivelEstudio . "; " . $msColegio . "; " . $msCurso . "; " . $msTelefono . "; " . $msCelular . "; " . $msEmail . "; ".$mbOtroIdioma.";" . $msIdioma . "; " . $msDominioIdioma . "; " . $msDireccion . "; " . $mnMedio . "; " . $mbLaboral . "; " . $msOcupacion . "; " . $mnSector . "; " . $mnIngresoMensual . "; " . $msEntidad . "; ". $msNombrePadre.";". $mbTrabajaPadre.";".$msTrabajoPadre.";". $msNombreMadre.";".$mbTrabajaMadre.";".$msTrabajoMadre.";" . $msNombreRef . "; " . $msCedulaRef . "; " . $msCelularRef . "; " . $msDireccionRef;
 
 						fxAgregarBitacora($_SESSION["gsUsuario"], "UMO200A", $msCodigo, "", "Agregar", $msBitacora);
 						echo json_encode(["status"=>"ok","msg"=>"Alumno agregado","codigo"=>$msCodigo]);
 					} else {
-						fxModificarAlumnos(
-							$msCodigo, $msFechaIns, $msUniversidad, $msNombres, $msApellidos, $msFechaNac, $msNacionalidad, $msMunicipio,
-							$msCedula, $msDeficiencia, $msSexo, $mnEstadoCivil, $mnHijos, $mbDiscapacidad, $mnNivelEstudio,
-							$msColegio, $msCurso, $msTelefono, $msCelular, $msEmail, $mbOtroIdioma,$msIdioma, $msDominioIdioma, $msDireccion,
-							$mnMedio, $mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual, $msEntidad,
-							$msNombreRef, $msCedulaRef, $msCelularRef, $msDireccionRef
-						);
+						fxModificarAlumnos($msCodigo, $msFechaIns, $msUniversidad, $msNombres, $msApellidos, $msFechaNac,  $msNacionalidad, $msMunicipio, $msCedula,$msDeficiencia,$msSexo,$mnPeso,$msSangre ,$mnAltura,
+						$mnEstadoCivil, $mnHijos,$mbDiscapacidad, $mnNivelEstudio, $msColegio, $msCurso, $msTelefono, $msCelular, $msEmail, $mbOtroIdioma ,$msIdioma, $msDominioIdioma, $msDireccion, $mnMedio,
+						$mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual, $msEntidad,$msNombrePadre,$mbTrabajaPadre,$msTrabajoPadre,$msNombreMadre ,$mbTrabajaMadre,$msTrabajoMadre ,	$msNombreRef, $msCedulaRef, $msCelularRef,$msDireccionRef);
 
-						$msBitacora = $msCodigo . "; " . $msFechaIns . "; " . $msUniversidad . "; " . $msNombres . "; " . $msApellidos . "; " . $msFechaNac . "; " . $msNacionalidad . "; " . $msMunicipio . "; " . $msCedula . "; " . $msDeficiencia . "; " . $msSexo . "; " . $mnEstadoCivil . "; " . $mnHijos . "; " . $mbDiscapacidad . "; " . $mnNivelEstudio . "; " . $msColegio . "; " . $msCurso . "; " . $msTelefono . "; " . $msCelular . "; " . $msEmail . "; ".$mbOtroIdioma.";" . $msIdioma . "; " . $msDominioIdioma . "; " . $msDireccion . "; " . $mnMedio . "; " . $mbLaboral . "; " . $msOcupacion . "; " . $mnSector . "; " . $mnIngresoMensual . "; " . $msEntidad . "; " . $msNombreRef . "; " . $msCedulaRef . "; " . $msCelularRef . "; " . $msDireccionRef;
+						$msBitacora = $msCodigo . "; " . $msFechaIns . "; " . $msUniversidad . "; " . $msNombres . "; " . $msApellidos . "; " . $msFechaNac . "; " . $msNacionalidad . "; " . $msMunicipio . "; " . $msCedula . "; " . $msDeficiencia . "; " . $msSexo . "; " .$mnPeso.";".$msSangre.";".$mnAltura.";". $mnEstadoCivil . "; " . $mnHijos . "; " . $mbDiscapacidad . "; " . $mnNivelEstudio . "; " . $msColegio . "; " . $msCurso . "; " . $msTelefono . "; " . $msCelular . "; " . $msEmail . "; ".$mbOtroIdioma.";" . $msIdioma . "; " . $msDominioIdioma . "; " . $msDireccion . "; " . $mnMedio . "; " . $mbLaboral . "; " . $msOcupacion . "; " . $mnSector . "; " . $mnIngresoMensual . "; " . $msEntidad . "; ". $msNombrePadre.";". $mbTrabajaPadre.";".$msTrabajoPadre.";". $msNombreMadre.";".$mbTrabajaMadre.";".$msTrabajoMadre.";" . $msNombreRef . "; " . $msCedulaRef . "; " . $msCelularRef . "; " . $msDireccionRef;
 
 						echo json_encode(["status"=>"ok","msg"=>"Alumno actualizado","codigo"=>$msCodigo]);
 						fxAgregarBitacora($_SESSION["gsUsuario"], "UMO200A", $msCodigo, "", "Modificar", $msBitacora);
@@ -122,7 +135,7 @@
 					$mFila = $objRecordSet->fetch();
 					$msFechaIns      = $mFila["FECHAINS_200"];
 					$msUniversidad   = $mFila["UNIVERSIDAD_REL"];
-					$msNombres       = htmlentities($mFila["NOMBRES_200"]);
+					$msNombres = htmlentities($mFila["NOMBRES_200"] ?? "");
 					$msApellidos     = htmlentities($mFila["APELLIDOS_200"]);
 					$msFechaNac      = $mFila["FECHANAC_200"];
 					$msNacionalidad  = $mFila["NACIONALIDAD_200"];
@@ -132,6 +145,11 @@
 					$msSexo          = $mFila["SEXO_200"];
 					$mnEstadoCivil   = $mFila["ESTADOCIVIL_200"];
 					$mnHijos         = $mFila["HIJOS_200"];
+					$mnPeso          = $mFila["PESO_200"];
+					$msSangre        = $mFila["SANGRE_200"];
+					$mnAltura        = $mFila["ALTURA_200"];
+
+
 					$mbDiscapacidad  = $mFila["DISCAPACIDAD_200"];
 					$mnNivelEstudio  = $mFila["NIVELESTUDIOS_200"];
 					$msColegio       = $mFila["COLEGIO_REL"];
@@ -149,6 +167,20 @@
 					$mnSector        = $mFila["SECTOR_200"];
 					$mnIngresoMensual= $mFila["INGRESOMENSUAL_200"];
 					$msEntidad       = $mFila["ENTIDADLAB_200"];
+
+					//$msNombrePadre   = $mFila["NPADRE_200"]; 
+					$msNombrePadre = htmlentities($mFila["NPADRE_200"] ?? "");
+					$mbTrabajaPadre  = $mFila["PTRABAJA_200"];
+					//$mbTrabajaPadre = htmlentities($mFila["PTRABAJA_200"] ?? "");
+					//$msTrabajoPadre  = $mFila["PTRABAJO_200"];
+					$msTrabajoPadre = htmlentities($mFila["PTRABAJO_200"] ?? "");
+
+					$msNombreMadre = htmlentities($mFila["NMADRE_200"] ?? "");
+				//	$mbTrabajaMadre = htmlentities($mFila["MTRABAJA_200"] ?? "");
+					$mbTrabajaMadre  = $mFila["MTRABAJA_200"];
+				//	$msTrabajoMadre  = $mFila["MTRABAJO_200"];
+					$msTrabajoMadre = htmlentities($mFila["MTRABAJO_200"] ?? "");
+
 					$msNombreRef     = $mFila["NOMBREREF_200"];
 					$msCedulaRef     = $mFila["CEDULAREFERENTE_200"];
 					$msCelularRef    = $mFila["CELULARREFERENTE_200"];
@@ -168,6 +200,10 @@
 					$msSexo          = "M";
 					$mnEstadoCivil   = 0;
 					$mnHijos         = 0;
+					$mnPeso          ="";
+					$msSangre        ="";
+					$mnAltura        ="";
+
 					$mbDiscapacidad  = 0;
 					$mnNivelEstudio  = 0;
 					$msColegio       = "";
@@ -185,6 +221,15 @@
 					$mnSector        = "";
 					$mnIngresoMensual= 0;
 					$msEntidad       = "";
+
+					$msNombrePadre   = "";
+					$mbTrabajaPadre  = 1;
+					$msTrabajoPadre  = "";
+
+					$msNombreMadre   = "";
+					$mbTrabajaMadre  = 1;
+					$msTrabajoMadre  = "";
+
 					$msNombreRef     = "";
 					$msCedulaRef     = "";
 					$msCelularRef    = "";
@@ -195,7 +240,7 @@
     	<div id="DivContenido">
 			<div class = "row">
                 <div class="col-xs-12 col-md-12">
-					<form name="catAlumnos" id="catAlumnos" enctype="multipart/form-data">
+					<form name="catAlumnos" id="catAlumnos" method="post" enctype="multipart/form-data">
 						<div class = "row">
 							<div class="col-auto col-md-11">
 								<input type="submit" id="Guardar" name="Guardar" value="Guardar" class="btn btn-primary"/>
@@ -382,6 +427,76 @@
 											</div>
 										</div>
 									</div>
+
+									<div class = "form-group row">
+										<label for="txnPeso" class="col-sm-12 col-md-3 form-label">Peso</label>
+										<div class="col-sm-12 col-md-4">
+										<?php echo('<input type="text" class="form-control" id="txnPeso" name="txnPeso" maxlength="20" value="' . $mnPeso . '" />'); ?>
+										</div>
+									</div>
+
+									<div class="form-group row">
+    <label for="cboTipoSangre" class="col-sm-12 col-md-3 form-label">Tipo de sangre</label>
+    <div class="col-sm-12 col-md-4">
+        <select class="form-control" id="cboTipoSangre" name="cboTipoSangre">
+            <?php
+                if ($msSangre == "O-")
+                    echo("<option value='O-' selected>O-</option>");
+                else
+                    echo("<option value='O-'>O-</option>");
+
+                if ($msSangre == "O+")
+                    echo("<option value='O+' selected>O+</option>");
+                else
+                    echo("<option value='O+'>O+</option>");
+
+                if ($msSangre == "A-")
+                    echo("<option value='A-' selected>A-</option>");
+                else
+                    echo("<option value='A-'>A-</option>");
+
+                if ($msSangre == "A+")
+                    echo("<option value='A+' selected>A+</option>");
+                else
+                    echo("<option value='A+'>A+</option>");
+
+                if ($msSangre == "B-")
+                    echo("<option value='B-' selected>B-</option>");
+                else
+                    echo("<option value='B-'>B-</option>");
+
+                if ($msSangre == "B+")
+                    echo("<option value='B+' selected>B+</option>");
+                else
+                    echo("<option value='B+'>B+</option>");
+
+                if ($msSangre == "AB-")
+                    echo("<option value='AB-' selected>AB-</option>");
+                else
+                    echo("<option value='AB-'>AB-</option>");
+
+                if ($msSangre == "AB+")
+                    echo("<option value='AB+' selected>AB+</option>");
+                else
+                    echo("<option value='AB+'>AB+</option>");
+
+                if ($msSangre == "N/A")
+                    echo("<option value='N/A' selected>N/A</option>");
+                else
+                    echo("<option value='N/A'>N/A</option>");
+            ?>
+        </select>
+    </div>
+</div>
+
+
+									<div class = "form-group row">
+										<label for="txnAltura" class="col-sm-12 col-md-3 form-label">Altura</label>
+										<div class="col-sm-12 col-md-4">
+										<?php echo('<input type="text" class="form-control" id="txnAltura" name="txnAltura" maxlength="20" value="' . $mnAltura . '" />'); ?>
+										</div>
+									</div>
+									
 
 									<div class="form-group row">
 										<label for="cboEstadoCivil" class="col-sm-12 col-md-3 col-form-label">Estado civil</label>
@@ -890,7 +1005,61 @@
 									</div>
 								</div>
 							</div><!--Fin del DIV de Tab LABORAL-->
-							
+
+							<!--Inicio del DIV de Tab FAMILIAR-->
+							<div title="Estructura familiar" style="padding-left: 20px; padding-top: 10px">
+								<!-- Madre -->
+								<div class="form-group row">
+									<label for="txtNombreMadre" class="col-sm-12 col-md-3 form-label">Nombre de la madre</label>
+									<div class="col-sm-12 col-md-6">
+										<input type="text" class="form-control" id="txtNombreMadre" name="txtNombreMadre" value="<?= htmlentities($msNombreMadre) ?>" />
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label for="optTrabajaMadre" class="col-sm-12 col-md-3 form-label">¿Trabaja la madre?</label>
+									<div class="col-sm-12 col-md-3">
+										<div class="radio">
+											<input type="radio" id="optTrabajaMadre1" name="optTrabajaMadre" value="1" onchange="fxOptTrabajaMadre()" <?= $mbTrabajaMadre == 1 ? 'checked' : '' ?> /> Sí &emsp;
+											<input type="radio" id="optTrabajaMadre2" name="optTrabajaMadre" value="0" onchange="fxOptTrabajaMadre()" <?= $mbTrabajaMadre == 0 ? 'checked' : '' ?> /> No
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label for="txtTrabajoMadre" class="col-sm-12 col-md-3 form-label">Trabajo de la madre</label>
+									<div class="col-sm-12 col-md-6">
+										<input type="text" class="form-control" id="txtTrabajoMadre" name="txtTrabajoMadre" value="<?= htmlentities($msTrabajoMadre) ?>" />
+									</div>
+								</div>
+
+								<!-- Padre -->
+								<div class="form-group row">
+									<label for="txtNombrePadre" class="col-sm-12 col-md-3 form-label">Nombre del padre</label>
+									<div class="col-sm-12 col-md-6">
+										<input type="text" class="form-control" id="txtNombrePadre" name="txtNombrePadre" value="<?= htmlentities($msNombrePadre) ?>" />
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label for="optTrabajaPadre" class="col-sm-12 col-md-3 form-label">¿Trabaja el padre?</label>
+									<div class="col-sm-12 col-md-3">
+										<div class="radio">
+											<input type="radio" id="optTrabajaPadre1" name="optTrabajaPadre" value="1" onchange="fxOptTrabajaPadre()" <?= $mbTrabajaPadre == 1 ? 'checked' : '' ?> /> Sí &emsp;
+											<input type="radio" id="optTrabajaPadre2" name="optTrabajaPadre" value="0" onchange="fxOptTrabajaPadre()" <?= $mbTrabajaPadre == 0 ? 'checked' : '' ?> /> No
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label for="txtTrabajoPadre" class="col-sm-12 col-md-3 form-label">Trabajo del padre</label>
+									<div class="col-sm-12 col-md-6">
+										<input type="text" class="form-control" id="txtTrabajoPadre" name="txtTrabajoPadre" value="<?= htmlentities($msTrabajoPadre) ?>" />
+									</div>
+								</div>
+							</div>
+							<!--Fin del DIV de Tab FAMILIAR-->
+
 							<div title="Referentes" style="padding-left: 20px; padding-top: 10px">
 								<!--Inicio del DIV de Tab SOPORTE-->
 								<div class="col-xs-auto col-md-12">
@@ -952,6 +1121,8 @@
 														<option value="11">Datos generales del título</option>
 														<option value="12">Publicación en la gaceta</option>
 														<option value="13">Título universitario</option>
+														<option value="14">Firma digital</option>
+														<option value="15">Hoja de matricula externa</option>
 													</select>
 												</td>
 												<td></td>
@@ -1041,6 +1212,28 @@
 	var parametros;
 	var datosJson;
 
+	// Función para habilitar/deshabilitar trabajo madre
+function fxOptTrabajaMadre() {
+    const trabaja = document.getElementById('optTrabajaMadre1').checked;
+    document.getElementById('txtTrabajoMadre').readOnly = !trabaja;
+}
+
+// Función para habilitar/deshabilitar trabajo padre
+function fxOptTrabajaPadre() {
+    const trabaja = document.getElementById('optTrabajaPadre1').checked;
+    document.getElementById('txtTrabajoPadre').readOnly = !trabaja;
+}
+
+// Ejecutar al cargar la página para reflejar el estado actual
+window.onload = function() {
+    fxOptTrabajaMadre();
+    fxOptTrabajaPadre();
+
+    // Calcular edad si ya hay fecha de nacimiento
+    if (document.getElementById("dtpFechaNac").value != "")
+        calcularEdad();
+};
+
 	function verificarFormulario()
 	{
 
@@ -1057,13 +1250,13 @@
 			return false;
 		}
 
-		if (document.getElementById('txtNacionalidad').value=="")
+		/*if (document.getElementById('txtNacionalidad').value=="")
 		{
 			document.getElementById('txtNacionalidad').focus();
 			$.messager.alert('UMOJN','Falta la nacionalidad.','warning');
 			return false;
 		}
-		
+		*/
 		if (document.getElementById('txtCedula').value=="")
 		{
 			document.getElementById('txtCedula').focus();
@@ -1078,33 +1271,6 @@
 			document.getElementById('txtCedula').focus();
 			$.messager.alert('UMOJN','Escriba la Cédula sin guiones.','warning');
 			return false;
-		}
-
-		if (document.getElementById('optOtroIdioma1').checked)
-		{
-			if (document.getElementById('txtIdioma').value=="")
-			{
-				document.getElementById('txtIdioma').focus();
-				$.messager.alert('UMOJN','Falta el idioma.','warning');
-				return false;
-			}
-
-			if (document.getElementById('txtDominioIdioma').value=="")
-			{
-				document.getElementById('txtDominioIdioma').focus();
-				$.messager.alert('UMOJN','Falta el nivel del idioma.','warning');
-				return false;
-			}
-		}
-
-		if (document.getElementById('optLaboral1').checked)
-		{
-			if (document.getElementById('txtOcupacion').value=="")
-			{
-				document.getElementById('txtOcupacion').focus();
-				$.messager.alert('UMOJN','Falta la ocupación.','warning');
-				return false;
-			}
 		}
 
 		return true;
@@ -1276,6 +1442,7 @@ function borrarImagen(objeto) {
     });
 }
 
+
 window.onload=function()
 {
 	if (document.getElementById("dtpFechaNac").value != "")
@@ -1337,6 +1504,11 @@ $('form').submit(function(e){
             txtCedula: document.getElementById("txtCedula").value,
             txtDeficiencia: document.getElementById("txtDeficiencia").value,
             optSexo: document.getElementById("optSexo1").checked ? "M" : "F",
+			txnPeso: document.getElementById("txnPeso").value,
+			cboTipoSangre: document.getElementById("cboTipoSangre").value,
+			txnAltura: document.getElementById("txnAltura").value,
+
+
             cboEstadoCivil: document.getElementById("cboEstadoCivil").value,
             txnHijos: document.getElementById("txnHijos").value,
             optDiscapacidad: document.getElementById("optDiscapacidad1").checked ? "1" : "0",
@@ -1355,11 +1527,22 @@ $('form').submit(function(e){
             txnSalario: document.getElementById("txnSalario").value,
             optSector: document.getElementById("optSector").value,
             optEntidad: document.getElementById("optEntidad").value,
+
+			txtNombrePadre: document.getElementById("txtNombrePadre").value,
+			optTrabajaPadre: document.getElementById("optTrabajaPadre1").checked ? 1 : 0,
+			txtTrabajoPadre: document.getElementById("txtTrabajoPadre").value,
+
+			txtNombreMadre: document.getElementById("txtNombreMadre").value,
+			optTrabajaMadre: document.getElementById("optTrabajaMadre1").checked ? 1 : 0,
+			txtTrabajoMadre: document.getElementById("txtTrabajoMadre").value,
+
             txtNombreRef: document.getElementById("txtNombreRef").value,
             txtCedulaRef: document.getElementById("txtCedulaRef").value,
             txtCelularRef: document.getElementById("txtCelularRef").value,
 			txtDireccionRef: document.getElementById("txtDireccionRef").value,
-			  txtNacionalidad: document.getElementById("txtNacionalidad").value,
+			txtNacionalidad: document.getElementById("txtNacionalidad").value,
+
+			  
         };
 $.ajax({
     url: 'catAlumnos.php',

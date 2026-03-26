@@ -38,13 +38,15 @@
 		<?php }
 		else
 		{
-			if (isset($_POST["txtCursos"]))
+			if (isset($_POST["Guardar"]))
 			{
 				$msCodigo = $_POST["txtCursos"];
+				$mnTipoC = $_POST["cboTipoCurso"];
 				$msNombre = $_POST["txtNombre"];
 				$mnTurno = $_POST["optTurno"];
 				$mnHoraInicio = $_POST["txtHrsInicio"];
 				$mnHoraFin = isset($_POST["txtHrsFin"]) ? $_POST["txtHrsFin"] : "";
+				$mnTotalHoras = isset($_POST["txtTHrs"]) ? $_POST["txtTHrs"] : "";
 				$mnFechaInicio = $_POST["dtpFechaInicio"];
 				$mnFechaFin = $_POST ["dtpFechaFin"];
 				$msDocente = $_POST ["cboDocente"];
@@ -57,28 +59,30 @@
 				 $valorMora = 0;
 				 $mensualidad = 0;
 				{
-					if ($msCodigo == "")
+					if ($msCodigo == "") 
 					{
-						$msCodigo = fxGuardarCursosLibres($msNombre, $mnTurno, $mnHoraInicio,$mnHoraFin, $mnFechaInicio, $mnFechaFin, $msDocente, $mnDia, $mnModalidad, $mnEstado );
-						$msBitacora = $msCodigo . "; " . $msNombre.  ";". $mnTurno . ";". $mnHoraInicio. ";".$mnHoraFin.";". $mnFechaInicio.";". $mnFechaFin.";". $msDocente. ";" . $mnDia. ";" .$mnModalidad. ";" . $mnEstado;
+						$msCodigo = fxGuardarCursosLibres($mnTipoC, $msNombre, $mnTurno, $mnHoraInicio,$mnHoraFin,$mnTotalHoras, $mnFechaInicio, $mnFechaFin, $msDocente, $mnDia, $mnModalidad, $mnEstado );
+						$msBitacora = $msCodigo . "; ".$mnTipoC.";" . $msNombre.  ";". $mnTurno . ";". $mnHoraInicio. ";".$mnHoraFin.";".$mnTotalHoras.";". $mnFechaInicio.";". $mnFechaFin.";". $msDocente. ";" . $mnDia. ";" .$mnModalidad. ";" . $mnEstado;
 						fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO190A", $msCodigo, "", "Agregar", $msBitacora);
 					
 						$valorCertificado = isset($_POST["valorCertificado"]) ? floatval($_POST["valorCertificado"]) : 0;
-					//	$valorMora = isset($_POST["valorMora"]) ? floatval($_POST["valorMora"]) : 0;
 						$matricula = isset($_POST["valorCurso"]) ? floatval($_POST["valorCurso"]) : 0;
 						$mensualidad = isset($_POST["mensualidad"]) ? floatval($_POST["mensualidad"]) : 0;
+
+						$mnMoneda = isset($_POST["optMoneda"]) ? intval($_POST["optMoneda"]) : 0;
+						$mnEstado = isset($_POST["optEstado"]) ? intval($_POST["optEstado"]) : 1;
 						fxGenerarCobrosCurso($msCodigo, $valorCertificado, $matricula, $mensualidad, 1, $mnModalidad, $mnFechaInicio, $mnMoneda, $mnEstado);
 
 
 					}
 					else
 					{
-						fxModificarCursosLibres($msCodigo, $msNombre, $mnTurno, $mnHoraInicio,$mnHoraFin, $mnFechaInicio, $mnFechaFin, $msDocente, $mnDia, $mnModalidad, $mnEstado );
-						$msBitacora = $msCodigo . "; " . $msNombre.  ";". $mnTurno . ";". $mnHoraInicio. ";".$mnHoraFin.";". $mnFechaInicio.";". $mnFechaFin.";". $msDocente. ";" . $mnDia. ";" .$mnModalidad. ";". $mnEstado;
+						fxModificarCursosLibres($msCodigo,$mnTipoC, $msNombre, $mnTurno, $mnHoraInicio,$mnHoraFin, $mnTotalHoras,$mnFechaInicio, $mnFechaFin, $msDocente, $mnDia, $mnModalidad, $mnEstado );
+						$msBitacora = $msCodigo . "; " .$mnTipoC.";". $msNombre.  ";". $mnTurno . ";". $mnHoraInicio. ";".$mnHoraFin.";". $mnTotalHoras.";".$mnFechaInicio.";". $mnFechaFin.";". $msDocente. ";" . $mnDia. ";" .$mnModalidad. ";". $mnEstado;
+						
 						$valorCertificado = isset($_POST["valorCertificado"]) ? floatval($_POST["valorCertificado"]) : 0;
-					//	$valorMora = isset($_POST["valorMora"]) ? floatval($_POST["valorMora"]) : 0;
-						$matricula = isset($_POST["valorCurso"]) ? floatval($_POST["valorCurso"]) : 0;
-						$mensualidad = isset($_POST["mensualidad"]) ? floatval($_POST["mensualidad"]) : 0;
+						$matricula        = isset($_POST["valorCurso"]) ? floatval($_POST["valorCurso"]) : 0;
+						$mensualidad      = isset($_POST["mensualidad"]) ? floatval($_POST["mensualidad"]) : 0;
 						
 						fxModificarCobrosCurso($msCodigo, $valorCertificado, /*$valorMora,*/ $matricula, $mensualidad, $turno = 1, $mnModalidad, $mnFechaInicio);
 						fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO190A", $msCodigo, "", "Modificar", $msBitacora);
@@ -97,10 +101,12 @@
 				{
 					$mDatos = fxDevuelveCursosLibres(0, $msCodigo);
 					$mFila = $mDatos->fetch();
+					$mnTipoC = $mFila["TIPOC_190"];
 					$msNombre = $mFila["NOMBRE_190"];
 					$mnTurno = $mFila["TURNO_190"];
 					$mnHoraInicio = $mFila["HRSINICIO_190"];
 					$mnHoraFin = $mFila["HRSFIN_190"];
+					$mnTotalHoras=$mFila["HRSTOTAL_190"];
 					$mnFechaInicio = $mFila["FECHAINICIO_190"];
 					$mnFechaFin = $mFila["FECHAFIN_190"];
 					$msDocente = $mFila["DOCENTE_REL"];
@@ -117,10 +123,12 @@
 				}
 				else
 				{
+					$mnTipoC ="";
 					$msNombre = "";
 					$mnTurno = 1;
 					$mnHoraInicio = date("H:i");
 					$mnHoraFin    = date("H:i");
+					$mnTotalHoras = "";
 					$mnFechaInicio = date("Y-m-d");
 					$mnFechaFin    = date("Y-m-d");
 					$msDocente ="";
@@ -153,6 +161,47 @@
 							?>
 							</div>
 						</div>
+
+							<div class = "form-group row">
+							<label for="cboTipoCurso" class="col-sm-12 col-md-2 form-label">Tipo de curso</label>
+							<div class="col-sm-12 col-md-7">
+								<select class="form-control" id="cboTipoCurso" name="cboTipoCurso">
+									<?php
+
+										if ($mnTipoC == 0)
+											echo("<option value='0' selected >Cursos</option>");
+										else
+											echo("<option value='0' >Cursos</option>");
+
+										if ($mnTipoC == 1)
+											echo("<option value='1' selected >Conferencias</option>");
+										else
+											echo("<option value='1' >Conferencias</option>");
+
+										if ($mnTipoC == 2)
+											echo("<option value='2' selected >Taller</option>");
+										else
+											echo("<option value='2' >Taller</option>");
+
+										if ($mnTipoC == 3)
+											echo("<option value='3' selected >Diplomado</option>");
+										else
+											echo("<option value='3' >Diplomado</option>");
+
+										if ($mnTipoC == 4)
+											echo("<option value='4' selected >Seminario</option>");
+										else
+											echo("<option value='4' >Seminario</option>");
+
+										if ($mnTipoC == 5)
+											echo("<option value='5' selected >Curso de posgrado</option>");
+										else
+											echo("<option value='5' >Curso de posgrado</option>");
+									?>
+								</select>
+							</div>
+						</div>
+						
 						
 						<div class = "form-group row">
 							<label for="txtNombre" class="col-sm-12 col-md-2 col-form-label">Nombre</label>
@@ -222,6 +271,13 @@
 							<label for="txtHrsFin" class="col-sm-12 col-md-2 col-form-label">Hora Final</label>
 							<div class="col-sm-12 col-md-3">
 								<input type="time" class="form-control" id="txtHrsFin" name="txtHrsFin" value="<?php echo $mnHoraFin; ?>" step="60" />
+							</div>
+						</div>
+
+						<div class = "form-group row">
+							<label for="txtTHrs" class="col-sm-12 col-md-2 col-form-label">Total de horas</label>
+							<div class="col-sm-12 col-md-3">
+								<input type="number" class="form-control" id="txtTHrs" name="txtTHrs" value="<?php echo $mnTotalHoras; ?>" />
 							</div>
 						</div>
 

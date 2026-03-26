@@ -47,10 +47,11 @@ error_reporting(E_ALL);
 			{
 				$msCodigo = $_POST["txtCodMatricula"];
 				$msAlumno = $_POST["cboAlumno"];
-				$msPlanEstudio = $_POST["cboPlanEstudio"];
 				$mdFecha = $_POST["dtpFecha"];
 				$msRecibo = $_POST["txtRecibo"];
-				$mnBeca = $_POST["cboBeca"];
+				$mbBeca = isset($_POST["cboBeca"]) ? $_POST["cboBeca"] : 0;
+				$msMotivo = isset($_POST["txtMotivo"]) ? $_POST["txtMotivo"] : null;
+
 				$mnEstado = $_POST["cboEstado"];
 				$msCursos = isset($_POST["cboCurso"]) ? $_POST["cboCurso"] : "";
 				$mbDiploma = isset($_POST["chkDiploma"]) ? 1 : 0;
@@ -65,8 +66,8 @@ error_reporting(E_ALL);
 					
 					if ($mDatos->rowCount() == 0)
 					{
-						$msCodigo = fxGuardarMatriculaCursos($msAlumno, $msCursos, $msPlanEstudio, $mdFecha, $msRecibo, $mnBeca, $mbDiploma, $mbCedula, $mbActaNacimiento, $mnEstado);
-						$msBitacora = $msCodigo . "; " . $msAlumno . "; " . $msCursos . "; " . $msPlanEstudio . "; " . $mdFecha . "; " . $msRecibo . "; " . $mnBeca . "; " . $mbDiploma . "; "  . $mbCedula . "; " . $mbActaNacimiento . "; " . $mnEstado;
+						$msCodigo = fxGuardarMatriculaCursos($msAlumno,$msCursos,$mdFecha,$msRecibo,$mbBeca,$msMotivo,$mbDiploma,$mbCedula,$mbActaNacimiento,$mnEstado);
+						$msBitacora = $msCodigo . "; " . $msAlumno . "; " . $msCursos . "; " . $mbBeca . "; ".$msMotivo.";" . $mdFecha . "; " . $msRecibo . "; "  . $mbDiploma . "; "  . $mbCedula . "; " . $mbActaNacimiento . "; " . $mnEstado;
 						fxAgregarBitacora($_SESSION["gsUsuario"], "UMO210A", $msCodigo, "", "Agregar", $msBitacora);
 
 					}
@@ -77,10 +78,13 @@ error_reporting(E_ALL);
 				}
 				else
 				{
-					fxModificarMatricula($msCodigo, $msAlumno, $msCursos, $msPlanEstudio, $mdFecha, $msRecibo, $mnBeca, $mbDiploma,  $mbCedula, $mbActaNacimiento, $mnEstado);
-					$msBitacora = $msCodigo . "; " . $msAlumno . "; " . $msCursos . "; " . $msPlanEstudio . "; " . $mdFecha . "; " . $msRecibo . "; " . $mnBeca . "; " . $mbDiploma . "; " . $mbCedula . "; " . $mbActaNacimiento . "; " . $mnEstado;
+					fxModificarMatricula($msCodigo, $msAlumno, $msCursos, $mdFecha, $msRecibo, $mbBeca,$msMotivo, $mbDiploma,  $mbCedula, $mbActaNacimiento, $mnEstado);
+					fxBorrarDetMatricula($msCodigo);
+					$msBitacora = $msCodigo . "; " . $msAlumno . "; " . $msCursos . "; " . $mbBeca . "; ".$msMotivo.";" . $mdFecha . "; " . $msRecibo . "; "  . $mbDiploma . "; " . $mbCedula . "; " . $mbActaNacimiento . "; " . $mnEstado;
 					fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO210A", $msCodigo, "", "Modificar", $msBitacora);
 				}
+
+				
 
 				?><meta http-equiv="Refresh" content="0;url=gridMatriculaCursosL.php"/><?php
 			}
@@ -105,10 +109,10 @@ error_reporting(E_ALL);
 				{
 					$msAlumno = $mFila["ALUMNO_REL"];
 					$msCursos = $mFila["CURSOS_REL"];
-					$msPlanEstudio = $mFila["PLANCURSO_REL"];
 					$mdFecha = $mFila["FECHA_210"];
 					$msRecibo = $mFila["RECIBO_210"];
-					$mnBeca = $mFila["BECA_210"];
+					$mbBeca = $mFila["BECA_210"];
+					$msMotivo =$mFila["MOTIVOBECA_210"];
 					$mbDiploma = $mFila["DIPLOMA_210"];
 					$mbCedula = $mFila["CEDULA_210"];
 					$mbActaNacimiento = $mFila["ACTANACIMIENTO_210"];
@@ -121,7 +125,8 @@ error_reporting(E_ALL);
 					else
 						$msAlumno = "";
 						$msCursos = "";
-						$msPlanEstudio = "";
+						$mbBeca = 0;
+						$msMotivo = "";
 						$mdFecha = "";
 						$msRecibo = "";
 						$mnEstado = 0;
@@ -141,20 +146,22 @@ error_reporting(E_ALL);
 
 			<div class = "row">
                 <div class="col-xs-12 offset-sm-none col-md-10 offset-md-1">
-					<form id="procMatCursosLibres" name="procMatCursosLibres" action="procMatCursosLibres.php" method="post" onsubmit="return prepararEnvio()">
-						<div class = "form-group row">
+				<form id="procMatCursosLibres" name="procMatCursosLibres" action="procMatCursosLibres.php" method="post" onsubmit="return prepararEnvio()">
+	
+				<div class = "form-group row">
 							<label for="txtCodMatricula" class="col-sm-12 col-md-3 col-form-label">Código de la Matrícula</label>
 							<div class="col-sm-12 col-md-3">
 								<?php echo('<input type="text" class="form-control" id="txtCodMatricula" name="txtCodMatricula" value="' . $msCodigo . '" readonly />'); ?>
 							</div>
 						</div>
 						
-						<div class="form-group row">
+					<div class="form-group row">
 							<label for="cboAlumno" class="col-sm-12 col-md-3 col-form-label">Estudiante</label>
 							<div class="col-sm-12 col-md-7">
 								<?php
 								if ($msAlumno == "") {
 									echo('<select class="form-control" id="cboAlumno" name="cboAlumno">');
+								
 								} else {
 									echo('<select class="form-control" id="cboAlumno" name="cboAlumno" disabled>');
 								}
@@ -186,7 +193,7 @@ error_reporting(E_ALL);
 							<label for="cboCurso" class="col-sm-12 col-md-3 col-form-label">Curso Libre</label>
 							<div class="col-sm-12 col-md-7">
 								<?php
-									echo('<select class="form-control" id="cboCurso" name="cboCurso" >');
+									echo('<select class="form-control" id="cboCurso" name="cboCurso" onchange="llenaCombos(this.value)" >');
 
 									$msConsulta = "SELECT CURSOS_REL, NOMBRE_190 FROM UMO190A ORDER BY NOMBRE_190";
 									$mDatos = $m_cnx_MySQL->prepare($msConsulta);
@@ -225,6 +232,8 @@ error_reporting(E_ALL);
 							</div>
 						</div>
 						
+						
+						
 						<div class = "form-group row">
 							<label for="txtRecibo" class="col-sm-12 col-md-3 col-form-label">Recibo</label>
 							<div class="col-sm-12 col-md-3">
@@ -233,37 +242,34 @@ error_reporting(E_ALL);
 								?>
 							</div>
 						</div>
+						
+						<div class = "form-group row">
+									<label for="cboBeca" class="col-sm-12 col-md-3 form-label">¿Beca?</label>
+									<div class="col-sm-12 col-md-3">
+										<div class = "radio">
+										<?php
+											if ($mbBeca == 1)
+												echo('<input type="radio" id="cboBeca" name="cboBeca" value="1" checked="checked" onchange="cambiarBeca(1)" /> Si &emsp;');
+											else
+												echo('<input type="radio" id="cboBeca" name="cboBeca" value="1" onchange="cambiarBeca(1)" /> Si &emsp;');
+
+											if ($mbBeca == 0)
+												echo('<input type="radio" id="cboBeca2" name="cboBeca" value="0" checked="checked" onchange="cambiarBeca(0)" /> No');
+											else
+												echo('<input type="radio" id="cboBeca2" name="cboBeca" value="0" onchange="cambiarBeca(0)" /> No');
+										?>
+										</div>
+									</div>
+								</div>
 								
-						<div class = "form-group row">
-							<label for="cboBeca" class="col-sm-12 col-md-3 form-label">Beca</label>
-							<div class="col-sm-12 col-md-3">
-								<select class="form-control" id="cboBeca" name="cboBeca">
-									<?php
-										if ($mnBeca == 0)
-											echo("<option value='0' selected >Sin beca</option>");
-										else
-											echo("<option value='0' >Sin beca</option>");
-
-										if ($mnBeca == 1)
-											echo("<option value='1' selected >Beca 50%</option>");
-										else
-											echo("<option value='1' >Beca 50%</option>");
-
-										if ($mnBeca == 2)
-											echo("<option value='2' selected >Beca 25%</option>");
-										else
-											echo("<option value='2' >Beca 25%</option>");
-
-											if ($mnBeca == 3)
-											echo("<option value='3' selected >Beca 16%</option>");
-										else
-											echo("<option value='3' >Beca 16%</option>");
-									?>
-								</select>
-							</div>
-						</div>
-
-						<div class = "form-group row">
+								<div class="form-group row">
+									<label class="col-sm-12 col-md-3 form-label">Motivo de beca</label>
+									<div class="col-sm-12 col-md-6">
+										<input type="text" class="form-control" id="txtMotivo" name="txtMotivo" value="<?php echo $msMotivo; ?>" <?php if ($mbBeca == 0) echo "disabled"; ?>>
+									</div>
+								</div>
+								
+								<div class = "form-group row">
 							<label class="col-sm-12 col-md-3 form-label">Documentos entregados</label>
 							<div class="col-sm-12 col-md-8">
 								<?php
@@ -290,25 +296,31 @@ error_reporting(E_ALL);
 							<div class="col-sm-12 col-md-3">
 								<select class="form-control" id="cboEstado" name="cboEstado">
 									<?php
+
 										if ($mnEstado == 0)
-											echo("<option value='0' selected >Activo</option>");
+											echo("<option value='0' selected >Pre-matriculado</option>");
 										else
-											echo("<option value='0' >Activo</option>");
+											echo("<option value='0' >Pre-matriculado</option>");
 
 										if ($mnEstado == 1)
-											echo("<option value='1' selected >Inactivo</option>");
+											echo("<option value='1' selected >Activo</option>");
 										else
-											echo("<option value='1' >Inactivo</option>");
+											echo("<option value='1' >Activo</option>");
 
 										if ($mnEstado == 2)
-											echo("<option value='2' selected >Pre-matriculado</option>");
+											echo("<option value='2' selected >Retirado</option>");
 										else
-											echo("<option value='2' >Pre-matriculado</option>");
+											echo("<option value='2' >Retirado</option>");
+
+										if ($mnEstado == 3)
+											echo("<option value='3' selected >Certificado</option>");
+										else
+											echo("<option value='3' >Certificado</option>");
 									?>
 								</select>
 							</div>
 						</div>
-
+						
 						<div class = "row">
 							<div class="col-auto offset-sm-none col-md-12 offset-md-3">
 								<input type="submit" id="Guardar" name="Guardar" value="Guardar" class="btn btn-primary" />
@@ -341,6 +353,8 @@ error_reporting(E_ALL);
 		llenaCurso (estudiante);
 	}
 
+
+
 	function llenaCurso (estudiante)
 	{
 		var datos = new FormData();
@@ -354,16 +368,23 @@ error_reporting(E_ALL);
 			processData: false,
 			success: function(response){
 				document.getElementById('cboCurso').value = response;
+				llenaCombos(response);
 			}
 		})
 	}
 
-	window.onload = function() 
-	{
-		var estudiante = $('#cboAlumno').val();
-		var curso = $('#cboCurso').val();
-		
-		llenaPlanEstudio(curso);  
-		llenaModulo(curso);    
-	}
+
+
+function cambiarBeca(valor) {
+const motivo = document.getElementById('txtMotivo');
+
+
+if (valor === 1) {
+motivo.disabled = false;
+motivo.focus();
+} else {
+motivo.value = "";
+motivo.disabled = true;
+}
+}
 </script>

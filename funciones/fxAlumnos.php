@@ -1,8 +1,8 @@
 <?php
 function fxGuardarAlumnos($msFechaIns, $msUniversidad, $msNombres, $msApellidos, $msFechaNac, $msNacionalidad, $msMunicipio, $msCedula,
-$msDeficiencia, $msSexo, $mnEstadoCivil, $mnHijos, $mbDiscapacidad, $mnNivelEstudio, $msColegio, $msCurso, $msTelefono, $msCelular,
+$msDeficiencia, $msSexo,$mnPeso,$msSangre ,$mnAltura, $mnEstadoCivil, $mnHijos, $mbDiscapacidad, $mnNivelEstudio, $msColegio, $msCurso, $msTelefono, $msCelular,
 $msEmail, $mbOtroIdioma, $msIdioma, $msDominioIdioma, $msDireccion, $mnMedio, $mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual,
-$msEntidad, $msNombreRef, $msCedulaRef, $msCelularRef, $msDireccionRef)
+$msEntidad, $msNombrePadre,$mbTrabajaPadre,$msTrabajoPadre,$msNombreMadre ,$mbTrabajaMadre,$msTrabajoMadre ,$msNombreRef, $msCedulaRef, $msCelularRef, $msDireccionRef)
 {
     $m_cnx_MySQL = fxAbrirConexion();
 
@@ -14,39 +14,60 @@ $msEntidad, $msNombreRef, $msCedulaRef, $msCelularRef, $msDireccionRef)
     $msCodigo = "ALU" . str_pad($mnNumero, 7, "0", STR_PAD_LEFT);
 	
 	$msConsulta = "insert into UMO200A (ALUMNO_REL, FECHAINS_200, UNIVERSIDAD_REL, NOMBRES_200, APELLIDOS_200, FECHANAC_200, ";
-	$msConsulta .= "NACIONALIDAD_200, MUNICIPIO_REL, CEDULA_200, DEFICIENCIA_200, SEXO_200, ESTADOCIVIL_200, HIJOS_200, ";
+	$msConsulta .= "NACIONALIDAD_200, MUNICIPIO_REL, CEDULA_200, DEFICIENCIA_200, SEXO_200, PESO_200, SANGRE_200, ALTURA_200, ESTADOCIVIL_200, HIJOS_200, ";
 	$msConsulta .= "DISCAPACIDAD_200, NIVELESTUDIOS_200, COLEGIO_REL, CURSOS_REL, TELEFONO_200, CELULAR_200, EMAIL_200, ";
 	$msConsulta .= "OTROIDIOMA_200, IDIOMA_200,	DOMINIOIDIOMA_200, DIRECCION_200, MEDIO_200, CONDICIONLAB_200, OCUPACION_200, ";
-	$msConsulta .= "SECTOR_200, INGRESOMENSUAL_200,	ENTIDADLAB_200, NOMBREREF_200, CEDULAREFERENTE_200, CELULARREFERENTE_200, ";
+	$msConsulta .= "SECTOR_200, INGRESOMENSUAL_200,	ENTIDADLAB_200,NPADRE_200,PTRABAJA_200,PTRABAJO_200,NMADRE_200,MTRABAJA_200,MTRABAJO_200, NOMBREREF_200, CEDULAREFERENTE_200, CELULARREFERENTE_200, ";
 	$msConsulta .= "DIRECCIONREF_200) ";
-	$msConsulta .= "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	$msConsulta .= "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,? ,?,?,?,?,?,?,?,?)";
 
 	$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 	$mDatos->execute([$msCodigo,$msFechaIns, $msUniversidad,$msNombres, $msApellidos,$msFechaNac,$msNacionalidad,$msMunicipio, $msCedula,
-		$msDeficiencia,$msSexo,$mnEstadoCivil,$mnHijos,$mbDiscapacidad, $mnNivelEstudio, $msColegio, $msCurso, $msTelefono, $msCelular,$msEmail,
-		$mbOtroIdioma, $msIdioma, $msDominioIdioma,$msDireccion,$mnMedio,$mbLaboral,$msOcupacion,$mnSector,$mnIngresoMensual, $msEntidad,
+		$msDeficiencia,$msSexo,$mnPeso,$msSangre ,$mnAltura,$mnEstadoCivil,$mnHijos,$mbDiscapacidad, $mnNivelEstudio, $msColegio, $msCurso, $msTelefono, $msCelular,$msEmail,
+		$mbOtroIdioma, $msIdioma, $msDominioIdioma,$msDireccion,$mnMedio,$mbLaboral,$msOcupacion,$mnSector,$mnIngresoMensual, $msEntidad,$msNombrePadre,$mbTrabajaPadre,$msTrabajoPadre,$msNombreMadre ,$mbTrabajaMadre,$msTrabajoMadre ,
 		$msNombreRef, $msCedulaRef,$msCelularRef,$msDireccionRef]);
 	return $msCodigo;
 }
 
-function fxModificarAlumnos($msCodigo, $msFechaIns, $msUniversidad, $msNombres, $msApellidos, $msFechaNac,  $msNacionalidad, $msMunicipio, $msCedula,$msDeficiencia,$msSexo,
-	$mnEstadoCivil, $mnHijos, $mbDiscapacidad, $mnNivelEstudio, $msColegio, $msCurso, $msTelefono, $msCelular, $msEmail, $mbOtroIdioma ,$msIdioma, $msDominioIdioma, $msDireccion, $mnMedio,
-	$mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual, $msEntidad,	$msNombreRef, $msCedulaRef, $msCelularRef,$msDireccionRef)
+function fxModificarAlumnos($msCodigo, $msFechaIns, $msUniversidad, $msNombres, $msApellidos, $msFechaNac,  $msNacionalidad, $msMunicipio, $msCedula,$msDeficiencia,$msSexo,$mnPeso,$msSangre ,$mnAltura,
+	$mnEstadoCivil, $mnHijos,$mbDiscapacidad, $mnNivelEstudio, $msColegio, $msCurso, $msTelefono, $msCelular, $msEmail, $mbOtroIdioma ,$msIdioma, $msDominioIdioma, $msDireccion, $mnMedio,
+	$mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual, $msEntidad,$msNombrePadre,$mbTrabajaPadre,$msTrabajoPadre,$msNombreMadre ,$mbTrabajaMadre,$msTrabajoMadre ,	$msNombreRef, $msCedulaRef, $msCelularRef,$msDireccionRef)
 	{
 		$m_cnx_MySQL = fxAbrirConexion();
 		$msConsulta = "update UMO200A set FECHAINS_200 = ?,  UNIVERSIDAD_REL = ?,    NOMBRES_200 = ?, APELLIDOS_200 = ?, ";
-		$msConsulta .= "FECHANAC_200 = ?,  NACIONALIDAD_200 = ?,  MUNICIPIO_REL = ?,  CEDULA_200 = ?,  DEFICIENCIA_200 = ?, ";
-		$msConsulta .= "SEXO_200 = ?, ESTADOCIVIL_200 = ?, HIJOS_200 = ?,  DISCAPACIDAD_200 = ?, NIVELESTUDIOS_200 = ?, ";
+		$msConsulta .= "FECHANAC_200 = ?,  NACIONALIDAD_200 = ?,  MUNICIPIO_REL = ?,  CEDULA_200 = ?, ";
+		
+		$msConsulta .= "DEFICIENCIA_200 = ?, SEXO_200 = ?, PESO_200 = ?, SANGRE_200 = ?, ALTURA_200 = ?, ";
+        $msConsulta .= "ESTADOCIVIL_200 = ?, HIJOS_200 = ?, DISCAPACIDAD_200 = ?, NIVELESTUDIOS_200 = ?, ";
+
 		$msConsulta .= "COLEGIO_REL = ?,  CURSOS_REL = ?,  TELEFONO_200 = ?,  CELULAR_200 = ?,  EMAIL_200 = ?, OTROIDIOMA_200 = ?, ";
 		$msConsulta .= "IDIOMA_200 = ?,  DOMINIOIDIOMA_200 = ?,  DIRECCION_200 = ?, MEDIO_200 = ?, CONDICIONLAB_200 = ?, ";
-		$msConsulta .= "OCUPACION_200 = ?, SECTOR_200 = ?,  INGRESOMENSUAL_200 = ?,  ENTIDADLAB_200 = ?,  NOMBREREF_200 = ?, ";
-		$msConsulta .= "CEDULAREFERENTE_200 = ?, CELULARREFERENTE_200 = ?, DIRECCIONREF_200 = ? where ALUMNO_REL = ?";
+		$msConsulta .= "OCUPACION_200 = ?, SECTOR_200 = ?,  INGRESOMENSUAL_200 = ?,  ENTIDADLAB_200 = ?, ";
+		$msConsulta .="NPADRE_200=?,PTRABAJA_200 =? ,PTRABAJO_200 =?,NMADRE_200 =? ,MTRABAJA_200 =? ,MTRABAJO_200=?,";
+		
+		$msConsulta .=" NOMBREREF_200 = ?,CEDULAREFERENTE_200 = ?, CELULARREFERENTE_200 = ?, DIRECCIONREF_200 = ? where ALUMNO_REL = ?";
 	
 		$mDatos = $m_cnx_MySQL->prepare($msConsulta);
-		$mDatos->execute([ $msFechaIns, $msUniversidad, $msNombres, $msApellidos, $msFechaNac,  $msNacionalidad, $msMunicipio, $msCedula,$msDeficiencia,$msSexo,
-				$mnEstadoCivil, $mnHijos, $mbDiscapacidad, $mnNivelEstudio, $msColegio, $msCurso, $msTelefono, $msCelular, $msEmail, $mbOtroIdioma,$msIdioma, $msDominioIdioma, $msDireccion, $mnMedio,
-				$mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual, $msEntidad,	$msNombreRef, $msCedulaRef, $msCelularRef,$msDireccionRef, $msCodigo]);
-	}
+	$mDatos->execute([
+    $msFechaIns, $msUniversidad, $msNombres, $msApellidos, $msFechaNac,
+    $msNacionalidad, $msMunicipio, $msCedula,
+
+    $msDeficiencia, $msSexo, $mnPeso, $msSangre, $mnAltura,
+    $mnEstadoCivil, $mnHijos, $mbDiscapacidad, $mnNivelEstudio,
+
+    $msColegio, $msCurso, $msTelefono, $msCelular, $msEmail, $mbOtroIdioma,
+    $msIdioma, $msDominioIdioma, $msDireccion, $mnMedio,
+    $mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual, $msEntidad,
+
+    $msNombrePadre, $mbTrabajaPadre, $msTrabajoPadre,
+    $msNombreMadre, $mbTrabajaMadre, $msTrabajoMadre,
+
+    $msNombreRef, $msCedulaRef, $msCelularRef, $msDireccionRef,
+
+    $msCodigo
+]);
+	
+		}
 	
 function fxDevuelveAlumnos($mbLlenaGrid, $msCodigo = "")
 {
@@ -62,10 +83,11 @@ function fxDevuelveAlumnos($mbLlenaGrid, $msCodigo = "")
 	else
 	{
 		$msConsulta = "select ALUMNO_REL,FECHAINS_200,  UNIVERSIDAD_REL,    NOMBRES_200, APELLIDOS_200,  FECHANAC_200,  ";
-		$msConsulta .= "NACIONALIDAD_200,  MUNICIPIO_REL,  CEDULA_200,  DEFICIENCIA_200, SEXO_200, NIVELESTUDIOS_200, ";
+		$msConsulta .= "NACIONALIDAD_200,  MUNICIPIO_REL,  CEDULA_200,  DEFICIENCIA_200, SEXO_200, PESO_200, SANGRE_200, ALTURA_200, NIVELESTUDIOS_200, ";
 		$msConsulta .= "ESTADOCIVIL_200, HIJOS_200,  DISCAPACIDAD_200, NIVELESTUDIOS_200, COLEGIO_REL,  CURSOS_REL,  ";
 		$msConsulta .= "TELEFONO_200,  CELULAR_200,  EMAIL_200, OTROIDIOMA_200, IDIOMA_200,  DOMINIOIDIOMA_200, DIRECCION_200, ";
 		$msConsulta .= "MEDIO_200, CONDICIONLAB_200, OCUPACION_200, SECTOR_200,  INGRESOMENSUAL_200,  ENTIDADLAB_200, ";
+		$msConsulta .= "NPADRE_200,PTRABAJA_200,PTRABAJO_200,NMADRE_200,MTRABAJA_200,MTRABAJO_200,";
 		$msConsulta .= "NOMBREREF_200, CEDULAREFERENTE_200, CELULARREFERENTE_200, DIRECCIONREF_200 ";
 		$msConsulta .= "from UMO200A where ALUMNO_REL = ?";
 		$mDatos = $m_cnx_MySQL->prepare($msConsulta);

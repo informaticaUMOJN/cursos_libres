@@ -1,6 +1,6 @@
 <?php
 	//*****CURSOS LIBRES************************************************************//
-	function fxGuardarCursosLibres($msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnFechaInicio, $mnFechaFin, $mDocente, $mnDia, $mnModalidad, $mnEstado)
+	function fxGuardarCursosLibres($mnTipoC,$msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin,$mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mDocente, $mnDia, $mnModalidad, $mnEstado)
 	{
 		$m_cnx_MySQL = fxAbrirConexion();
 		$msConsulta = "SELECT IFNULL(MID(MAX(CURSOS_REL), 4), 0) AS Ultimo FROM UMO190A";
@@ -10,10 +10,10 @@
 		$mnNumero = intval($mFila["Ultimo"]) + 1;
 		$msCodigo = "CLS" . str_pad($mnNumero, 7, "0", STR_PAD_LEFT);
 		$msConsulta = "INSERT INTO UMO190A 
-					(CURSOS_REL, NOMBRE_190, TURNO_190, HRSINICIO_190, HRSFIN_190, FECHAINICIO_190, FECHAFIN_190, DOCENTE_REL, DIACLASES_190, ASISTENCIA_190, ESTADO_190) 
-					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					(CURSOS_REL, TIPOC_190,NOMBRE_190, TURNO_190, HRSINICIO_190, HRSFIN_190, HRSTOTAL_190,FECHAINICIO_190, FECHAFIN_190, DOCENTE_REL, DIACLASES_190, ASISTENCIA_190, ESTADO_190) 
+					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
 		$mDatos = $m_cnx_MySQL->prepare($msConsulta);
-		$mDatos->execute([$msCodigo, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnFechaInicio, $mnFechaFin, $mDocente, $mnDia, $mnModalidad, $mnEstado]);
+		$mDatos->execute([$msCodigo, $mnTipoC,$msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mDocente, $mnDia, $mnModalidad, $mnEstado]);
 
 		$msUpdate = "UPDATE UMO130A SET ACTIVO_130 = ? WHERE CURSOS_REL = ?";
 		$mDatosUpdate = $m_cnx_MySQL->prepare($msUpdate);
@@ -22,14 +22,14 @@
 		return $msCodigo;
 	}
 	
-	function fxModificarCursosLibres($msCodigo, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnFechaInicio, $mnFechaFin, $mDocente, $mnDia, $mnModalidad, $mnEstado)
+	function fxModificarCursosLibres($msCodigo, $mnTipoC,$msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin,$mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mDocente, $mnDia, $mnModalidad, $mnEstado)
 	{
 		$m_cnx_MySQL = fxAbrirConexion();
 		$msConsulta = "UPDATE UMO190A 
-					SET NOMBRE_190 = ?, TURNO_190 = ?, HRSINICIO_190 = ?, HRSFIN_190 = ?, FECHAINICIO_190 = ?, FECHAFIN_190 = ?, DOCENTE_REL = ?, DIACLASES_190 = ?, ASISTENCIA_190 = ?, ESTADO_190 = ? 
+					SET TIPOC_190 = ?, NOMBRE_190 = ?, TURNO_190 = ?, HRSINICIO_190 = ?, HRSFIN_190 = ?,HRSTOTAL_190=?, FECHAINICIO_190 = ?, FECHAFIN_190 = ?, DOCENTE_REL = ?, DIACLASES_190 = ?, ASISTENCIA_190 = ?, ESTADO_190 = ? 
 					WHERE CURSOS_REL = ?";
 		$mDatos = $m_cnx_MySQL->prepare($msConsulta);
-		$mDatos->execute([$msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnFechaInicio, $mnFechaFin, $mDocente, $mnDia, $mnModalidad, $mnEstado, $msCodigo]);
+		$mDatos->execute([$mnTipoC, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin,$mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mDocente, $mnDia, $mnModalidad, $mnEstado, $msCodigo]);
 		$msUpdate = "UPDATE UMO130A SET ACTIVO_130 = ? WHERE CURSOS_REL = ?";
 		$mDatosUpdate = $m_cnx_MySQL->prepare($msUpdate);
 		$mDatosUpdate->execute([$mnEstado, $msCodigo]);
@@ -64,6 +64,14 @@
                     WHEN 6 THEN 'DOMINICAL'
                     ELSE 'SIN DEFINIR'
                 END AS TURNO_190,
+                CASE TIPOC_190
+                    WHEN 0 THEN 'CURSO'
+                    WHEN 1 THEN 'CONFERENCIA'
+                    WHEN 2 THEN 'TALLER'
+                    WHEN 3 THEN 'DIPLOMADO'
+                    WHEN 4 THEN 'SEMINARIO'
+                    ELSE 'SIN DEFINIR'
+                END AS TIPOC_190,
                 CASE c.ESTADO_190 WHEN 0 THEN 'Inactivo' ELSE 'Activo' END AS ESTADO_190,
                 d.NOMBRE_100 AS NOMBRE_DOCENTE
             FROM UMO190A c
@@ -76,7 +84,7 @@
     else
     {
         $msConsulta = "
-            SELECT c.CURSOS_REL, c.NOMBRE_190, c.TURNO_190, c.HRSINICIO_190, c.HRSFIN_190, 
+            SELECT c.CURSOS_REL,c.TIPOC_190, c.NOMBRE_190, c.TURNO_190, c.HRSINICIO_190, c.HRSFIN_190, c.HRSTOTAL_190,
                    c.FECHAINICIO_190, c.FECHAFIN_190, c.DOCENTE_REL, d.NOMBRE_100 AS NOMBRE_DOCENTE,
                    c.DIACLASES_190, c.ASISTENCIA_190, c.ESTADO_190
             FROM UMO190A c
@@ -94,6 +102,11 @@
 	function fxGenerarCobrosCurso($msCodigo, $valorCertificado, $matricula, $mensualidad, $turno, $mnModalidad, $mnFechaInicio, $mnMoneda, $mnEstado)
 {
     $m_cnx_MySQL = fxAbrirConexion();
+    $msConsulta = "SELECT IFNULL(MID(MAX(COBRO_REL), 4), 0) AS Ultimo FROM UMO130A";
+    $mDatos = $m_cnx_MySQL->prepare($msConsulta);
+    $mDatos->execute();
+    $mFila = $mDatos->fetch();
+    $mnUltimoNumero = intval($mFila["Ultimo"]);
 
     $cobros = [
         ["MATRICULA", 0, $matricula],
@@ -102,14 +115,10 @@
     ];
 
     foreach ($cobros as $c) {
-        try {
-            $msConsulta = "SELECT IFNULL(MID(MAX(COBRO_REL), 4), 0) AS Ultimo FROM UMO130A";
-            $mDatos = $m_cnx_MySQL->prepare($msConsulta);
-            $mDatos->execute();
-            $mFila = $mDatos->fetch();
-            $mnNumero = intval($mFila["Ultimo"]) + 1;
-            $msCobroRel = "CBR" . str_pad($mnNumero, 4, "0", STR_PAD_LEFT);
+        $mnUltimoNumero++; 
+        $msCobroRel = "CBR" . str_pad($mnUltimoNumero, 4, "0", STR_PAD_LEFT);
 
+        try {
             $msInsert = "INSERT INTO UMO130A 
                         (COBRO_REL, CURSOS_REL, DESC_130, TIPO_130, VALOR_130, MONEDA_130, ACTIVO_130, TURNO_130, MODALIDAD_130, VENCIMIENTO_130) 
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -117,12 +126,10 @@
             $mDatosInsert = $m_cnx_MySQL->prepare($msInsert);
             $mDatosInsert->execute([$msCobroRel, $msCodigo, $c[0], $c[1], $c[2], $mnMoneda, $mnEstado, $turno, $mnModalidad, $mnFechaInicio]);
         } catch (PDOException $e) {
-            echo "Error al generar cobro: " . $e->getMessage();
+            error_log("Error en cobro: " . $e->getMessage());
         }
     }
 }
-
-
 	
 	function fxDevuelveCobrosCurso($msCodigo)
 	{
@@ -134,7 +141,6 @@
 		$cobros = [
 			"MATRICULA"   => 0,
 			"MENSUALIDAD" => 0,
-		//	"MORA"        => 0,
 			"CERTIFICADO" => 0
 		];
 		while ($fila = $mDatos->fetch()) {
@@ -146,13 +152,12 @@
 		return $cobros;
 	}
 	
-	function fxModificarCobrosCurso($msCodigo, $valorCertificado, /*$valorMora,*/ $matricula, $mensualidad, $turno = 1, $mnModalidad, $mnFechaInicio)
+	function fxModificarCobrosCurso($msCodigo, $valorCertificado, $matricula, $mensualidad, $turno = 1, $mnModalidad, $mnFechaInicio)
 {
     $m_cnx_MySQL = fxAbrirConexion();
     $cobros = [ 
         "MATRICULA"   => $matricula, 
         "MENSUALIDAD" => $mensualidad, 
-       // "MORA"        => $valorMora,
         "CERTIFICADO" => $valorCertificado 
     ];
 

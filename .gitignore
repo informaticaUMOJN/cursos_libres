@@ -5,8 +5,16 @@
 /imagenes fuente/
 /documentos/
 /estudiantes/
+<<<<<<< HEAD
 /alumnos/
 /tcpdf/
+=======
+/tcpdf/
+/BS/
+/MySQL functions/
+/alumnos/
+/Documentos/
+>>>>>>> 7aab325c6be3117da6deb9accf88f7e83489e2d6
 
 # Configuración sensible
 .env
