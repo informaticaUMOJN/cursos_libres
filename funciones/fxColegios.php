@@ -3,7 +3,7 @@
 	function fxGuardarColegio($msMunicipio, $msNombre, $mnTipo)
 	{
 		$m_cnx_MySQL = fxAbrirConexion();
-		$msConsulta = "Select ifnull(mid(max(COLEGIO_REL), 4), 0) as Ultimo from UMO020A";
+		$msConsulta = "Select ifnull(mid(max(COLEGIOCL_REL), 4), 0) as Ultimo from UMO350A";
 		$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 		$mDatos->execute();
 		$mFila = $mDatos->fetch();
@@ -11,7 +11,7 @@
 		$mnNumero += 1;
 		$mnLongitud = strlen($mnNumero);
 		$msCodigo = "COL" . str_repeat("0", 4 - $mnLongitud) . trim($mnNumero);
-		$msConsulta = "insert into UMO020A (COLEGIO_REL, MUNICIPIO_REL, NOMBRE_020, TIPO_020) values(?, ?, ?, ?)";
+		$msConsulta = "insert into UMO350A (COLEGIOCL_REL, MUNICIPIO_REL, NOMBRE_350, TIPO_350) values(?, ?, ?, ?)";
 		$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 		$mDatos->execute([$msCodigo, $msMunicipio, $msNombre, $mnTipo]);
 		return $msCodigo;
@@ -20,7 +20,7 @@
 	function fxModificarColegio($msCodigo, $msMunicipio, $msNombre, $mnTipo)
 	{
 		$m_cnx_MySQL = fxAbrirConexion();
-		$msConsulta = "update UMO020A set MUNICIPIO_REL = ?, NOMBRE_020 = ?, TIPO_020 = ? where COLEGIO_REL = ?";
+		$msConsulta = "update UMO350A set MUNICIPIO_REL = ?, NOMBRE_350 = ?, TIPO_350 = ? where COLEGIOCL_REL = ?";
 		$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 		$mDatos->execute([$msMunicipio, $msNombre, $mnTipo, $msCodigo]);
 	}
@@ -28,7 +28,7 @@
 	function fxBorrarColegio($msCodigo)
 	{
 		$m_cnx_MySQL = fxAbrirConexion();
-		$msConsulta = "delete from UMO020A where COLEGIO_REL = ?";
+		$msConsulta = "delete from UMO350A where COLEGIOCL_REL = ?";
 		$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 		$mDatos->execute([$msCodigo]);
 	}
@@ -39,13 +39,13 @@
 
 		if ($mbLlenaGrid == 1)
 		{
-			$msConsulta = "select COLEGIO_REL, NOMBRE_120, NOMBRE_020, (case TIPO_020 when 0 then 'Privado' when 1 then 'Público' when 2 then 'Subvencionado' else 'Otro' end) as TIPO_020 from UMO020A join UMO120A on UMO020A.MUNICIPIO_REL = UMO120A.MUNICIPIO_REL order by COLEGIO_REL desc";
+			$msConsulta = "select COLEGIOCL_REL, NOMBRE_120, NOMBRE_350, (case TIPO_350 when 0 then 'Privado' when 1 then 'Público' when 2 then 'Subvencionado' else 'Otro' end) as TIPO_350 from UMO350A join UMO120A on UMO350A.MUNICIPIO_REL = UMO120A.MUNICIPIO_REL order by COLEGIOCL_REL desc";
 			$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 			$mDatos->execute();
 		}
 		else
 		{
-			$msConsulta = "select COLEGIO_REL, MUNICIPIO_REL, NOMBRE_020, TIPO_020 from UMO020A where COLEGIO_REL = ?";
+			$msConsulta = "select COLEGIOCL_REL, MUNICIPIO_REL, NOMBRE_350, TIPO_350 from UMO350A where COLEGIOCL_REL = ?";
 			$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 			$mDatos->execute([$msCodigo]);
 		}

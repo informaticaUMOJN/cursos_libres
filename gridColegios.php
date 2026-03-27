@@ -39,7 +39,7 @@
 		if (isset($_POST["UMOJN"]))
             {
                 fxBorrarColegio($_POST["UMOJN"]);
-				fxAgregarBitacora($_SESSION["gsUsuario"], "UMO020A", $_POST["UMOJN"], "", "Borrar", "");
+				fxAgregarBitacora($_SESSION["gsUsuario"], "UMO350A", $_POST["UMOJN"], "", "Borrar", "");
             }
 		?>
     	<div class="container">
@@ -85,10 +85,10 @@
 						<table id="grid" class="table table-condensed table-hover table-striped" data-selection="true" data-multi-select="false" data-row-select="true" data-keep-selection="true">
 							<thead>
 								<tr>
-									<th data-column-id="COLEGIO_REL" data-identifier="true" data-align="left" data-width="10%">Colegio</th>
+									<th data-column-id="COLEGIOCL_REL" data-identifier="true" data-align="left" data-width="10%">Colegio</th>
 									<th data-column-id="NOMBRE_120" data-align="left" data-width="20%">Municipio</th>
-									<th data-column-id="NOMBRE_020" data-align="left" data-width="60%">Nombre</th>
-									<th data-column-id="TIPO_020" data-align="left" data-width="10%">Tipo</th>
+									<th data-column-id="NOMBRE_350" data-align="left" data-width="60%">Nombre</th>
+									<th data-column-id="TIPO_350" data-align="left" data-width="10%">Tipo</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -98,10 +98,10 @@
 								while ($mFila = $mDatos->fetch())
 								{
 									echo ("<tr>");
-									echo ("<td>" . $mFila["COLEGIO_REL"] . "</td>");
+									echo ("<td>" . $mFila["COLEGIOCL_REL"] . "</td>");
 									echo ("<td>" . $mFila["NOMBRE_120"] . "</td>");
-									echo ("<td>" . $mFila["NOMBRE_020"] . "</td>");
-									echo ("<td>" . $mFila["TIPO_020"] . "</td>");
+									echo ("<td>" . $mFila["NOMBRE_350"] . "</td>");
+									echo ("<td>" . $mFila["TIPO_350"] . "</td>");
 									echo ("</tr>");
 								}
 							}

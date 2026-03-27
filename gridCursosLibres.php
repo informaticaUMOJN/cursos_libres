@@ -9,7 +9,7 @@
 	include ("masterApp.php");
 	require_once ("funciones/fxGeneral.php");
 	require_once ("funciones/fxUsuarios.php");
-require_once ("funciones/fxCursoslibres.php");
+	require_once ("funciones/fxCursoslibres.php");
 	$Registro = fxVerificaUsuario();
 	
 	if ($Registro == 0)
@@ -24,7 +24,7 @@ require_once ("funciones/fxCursoslibres.php");
 	else
 	{
 		$mbAdministrador = fxVerificaAdministrador();
-		$mbPermisoUsuario = fxPermisoUsuario("catDepartamento", $mbAgregar, $mbModificar, $mbBorrar, $mbAnular);
+		$mbPermisoUsuario = fxPermisoUsuario("catCursosLibres", $mbAgregar, $mbModificar, $mbBorrar, $mbAnular);
 		
 		if ($mbAdministrador == 0 and $mbPermisoUsuario == 0)
 		{ ?>
@@ -36,11 +36,11 @@ require_once ("funciones/fxCursoslibres.php");
 		<?php }
 		else
 		{
-		/*if (isset($_POST["UMOJN"]))
-            {
-                fxBorrarDepartamento($_POST["UMOJN"]);
-				fxAgregarBitacora($_SESSION["gsUsuario"], "UMO190A", $_POST["UMOJN"], "", "Borrar", "");
-          */  }
+		if (isset($_POST["UMOJN"]))
+		{
+			fxBorrarCursosLibres($_POST["UMOJN"]);
+			fxAgregarBitacora($_SESSION["gsUsuario"], "UMO190A", $_POST["UMOJN"], "", "Borrar", "");
+		}
 		?>
     	<div class="container">
         	<div id="DivContenido">
@@ -55,6 +55,11 @@ require_once ("funciones/fxCursoslibres.php");
 							echo('<label id="modificar" data-toggle="tooltip" data-placement="top" title="Editar"><img src="imagenes/btnLateralEditar.png" height="80%" style="cursor:pointer" /></label>');
 						else
 							echo('<label id="modificarDis" data-toggle="tooltip" data-placement="top" title="Editar"><img src="imagenes/btnLateralEditarDis.png" height="80%" style="cursor:default" /></label>');
+						
+						if ($mbBorrar == 1 or $mbAdministrador == 1)
+							echo('<label id="borrar" data-toggle="tooltip" data-placement="top" title="Borrar"><img src="imagenes/btnLateralBorrar.png" height="80%" style="cursor:pointer" /></label>');
+						else
+							echo('<label id="borrarDis" data-toggle="tooltip" data-placement="top" title="Borrar"><img src="imagenes/btnLateralBorrarDis.png" height="80%" style="cursor:default" /></label>');
 						
 						?>
 				</div>
@@ -71,6 +76,11 @@ require_once ("funciones/fxCursoslibres.php");
 								echo('<button id="edit" type="button" class="btn btn-primary">Editar</button>');
 							else
 								echo('<button id="edit" type="button" class="btn btn-primary" disabled>Editar</button>');
+
+							if ($mbBorrar == 1 or $mbAdministrador == 1)
+								echo('<button id="remove" type="button" class="btn btn-primary">Borrar</button>');
+							else
+								echo('<button id="remove" type="button" class="btn btn-primary" disabled>Borrar</button>');	
 								
 						?>
 						
@@ -109,7 +119,7 @@ require_once ("funciones/fxCursoslibres.php");
 				</div>
             </div>
     	</div>
-<?php //}?>
+<?php }?>
 <script src="bootstrap/lib/jquery-1.11.1.min.js"></script>
 <script src="bootstrap/js/bootstrap.js"></script>
 <script src="bootstrap/dist/jquery.bootgrid.js"></script>
@@ -138,7 +148,7 @@ require_once ("funciones/fxCursoslibres.php");
                 if ($.trim($("#grid").bootgrid("getSelectedRows")) != "")
                 {
                     var codCursosLibres  = $.trim($("#grid").bootgrid("getSelectedRows"));
-                    $.redirect("gridDepartamentos.php", {UMOJN: codCursosLibres }, "POST");
+                    $.redirect("gridCursosLibres.php", {UMOJN: codCursosLibres }, "POST");
                 }
 			});
       			
@@ -158,7 +168,7 @@ require_once ("funciones/fxCursoslibres.php");
                 if ($.trim($("#grid").bootgrid("getSelectedRows")) != "")
                 {
                     var codCursosLibres  = $.trim($("#grid").bootgrid("getSelectedRows"));
-                    $.redirect("gridDepartamentos.php", {UMOJN: codCursosLibres }, "POST");
+                    $.redirect("gridCursosLibres.php", {UMOJN: codCursosLibres }, "POST");
                 }
 			});
       			

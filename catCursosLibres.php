@@ -109,7 +109,7 @@
 					$mnTotalHoras=$mFila["HRSTOTAL_190"];
 					$mnFechaInicio = $mFila["FECHAINICIO_190"];
 					$mnFechaFin = $mFila["FECHAFIN_190"];
-					$msDocente = $mFila["DOCENTE_REL"];
+					$msDocente = $mFila["DOCENTECL_REL"];
 					$mnDia = $mFila["DIACLASES_190"];
 					$mnModalidad = $mFila["ASISTENCIA_190"];
 					$mnEstado = $mFila["ESTADO_190"];
@@ -225,16 +225,16 @@
 									if ($msCodigo == "") {
 										if (trim($_SESSION["gsDocente"]) != "" && $mbAdministrador == 0 && $mbSupervisor == 0) {
 											$msDocente = $_SESSION["gsDocente"];
-											$msConsulta = "SELECT DOCENTE_REL, NOMBRE_100 FROM UMO100A WHERE ACTIVO_100 = 1 AND DOCENTE_REL = ? ORDER BY NOMBRE_100";
+											$msConsulta = "SELECT DOCENTECL_REL, NOMBRE_340 FROM UMO340A WHERE ACTIVO_340 = 1 AND DOCENTECL_REL = ? ORDER BY NOMBRE_340";
 											$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 											$mDatos->execute([$msDocente]);
 										} else {
-											$msConsulta = "SELECT DOCENTE_REL, NOMBRE_100 FROM UMO100A WHERE ACTIVO_100 = 1 ORDER BY NOMBRE_100";
+											$msConsulta = "SELECT DOCENTECL_REL, NOMBRE_340 FROM UMO340A WHERE ACTIVO_340 = 1 ORDER BY NOMBRE_340";
 											$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 											$mDatos->execute();
 										}
 									} else {
-										$msConsulta = "SELECT DOCENTE_REL, NOMBRE_100 FROM UMO100A ORDER BY NOMBRE_100 DESC";
+										$msConsulta = "SELECT DOCENTECL_REL, NOMBRE_340 FROM UMO340A ORDER BY NOMBRE_340 DESC";
 										$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 										$mDatos->execute();
 									}
@@ -243,8 +243,8 @@
 										echo "<option value=''>-- No hay docentes --</option>";
 									} else {
 										while ($mFila = $mDatos->fetch(PDO::FETCH_ASSOC)) {
-											$Docente = trim($mFila["DOCENTE_REL"]);
-											$Texto = trim($mFila["NOMBRE_100"]);
+											$Docente = trim($mFila["DOCENTECL_REL"]);
+											$Texto = trim($mFila["NOMBRE_340"]);
 											$selected = ($msDocente == "" || $msDocente == $Docente) ? "selected" : "";
 											echo "<option value='$Docente' $selected>$Texto</option>";
 										}

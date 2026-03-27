@@ -125,7 +125,7 @@ header('Pragma: no-cache');
                                     </li>
 
                                     <li>
-                                        <a  class="dropdown-item" href="gridAlumnos.php">Estudiantes</a></a>
+                                        <a  class="dropdown-item" href="gridAlumnos.php">Estudiantes</a>
                                     </li>
                                       
                                 </ul>

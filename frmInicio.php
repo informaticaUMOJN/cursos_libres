@@ -27,15 +27,15 @@
 				<div class="col-sm-4 col-md-3">
 					<div class="divBotonInicio">
 						<a href="gridCursosLibres.php">
-							<img src="imagenes/btnCurso.png" style="border-radius:10%" class="img-fluid" />
+							<img src="imagenes/btnCursosLibres.png" style="border-radius:10%" class="img-fluid" />
 						</a>
 					</div>
 				</div>
 
 				<div class="col-sm-4 col-md-3">
 					<div class="divBotonInicio">
-						<a href="gridAsistenciaCL.php">
-							<img src="imagenes/btnAsistencia.png" style="border-radius:10%" class="img-fluid" />
+						<a href="gridAlumnos.php">
+							<img src="imagenes/btnEstudiantes.png" style="border-radius:10%" class="img-fluid" />
 						</a>
 					</div>
 				</div>

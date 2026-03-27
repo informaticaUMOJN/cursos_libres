@@ -73,9 +73,9 @@
                             while ($mFila = $mDatos->fetch())
 							{
 								echo ("<tr>");
-								echo ("<td>" . $mFila["DOCENTE_REL"] . "</td>");
-								echo ("<td>" . $mFila["NOMBRE_100"] . "</td>");
-								echo ("<td>" . $mFila["ACTIVO_100"] . "</td>");
+								echo ("<td>" . $mFila["DOCENTECL_REL"] . "</td>");
+								echo ("<td>" . $mFila["NOMBRE_340"] . "</td>");
+								echo ("<td>" . $mFila["ACTIVO_340"] . "</td>");
 								echo ("</tr>");
 							}
 						}

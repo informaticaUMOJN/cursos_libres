@@ -50,13 +50,13 @@
 					{
 						$msCodigo = fxGuardarColegio ($msMunicipio, $msNombre, $mnTipo);
 						$msBitacora = $msCodigo . "; " . $msMunicipio . "; " . $msNombre . "; " . $mnTipo;
-						fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO020A", $msCodigo, "", "Agregar", $msBitacora);
+						fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO350A", $msCodigo, "", "Agregar", $msBitacora);
 					}
 					else
 					{
 						fxModificarColegio ($msCodigo, $msMunicipio, $msNombre, $mnTipo);
 						$msBitacora = $msCodigo . "; " . $msMunicipio . "; " . $msNombre . "; " . $mnTipo;
-						fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO020A", $msCodigo, "", "Modificar", $msBitacora);
+						fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO350A", $msCodigo, "", "Modificar", $msBitacora);
 					}
 				}
 									
@@ -74,8 +74,8 @@
 					$mDatos = fxDevuelveColegio(0, $msCodigo);
 					$mFila = $mDatos->fetch();
 					$msMunicipio = $mFila["MUNICIPIO_REL"];
-					$msNombre = $mFila["NOMBRE_020"];
-					$mnTipo = $mFila["TIPO_020"];
+					$msNombre = $mFila["NOMBRE_350"];
+					$mnTipo = $mFila["TIPO_350"];
 				}
 				else
 				{

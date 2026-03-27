@@ -54,13 +54,13 @@ error_reporting(E_ALL);
 					{
 						$msCodigo = fxGuardarUniversidad ($msMunicipio, $msNombre, $mnTipo);
 						$msBitacora = $msCodigo . "; " . $msMunicipio . "; " . $msNombre . "; " . $mnTipo;
-						fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO180A", $msCodigo, "", "Agregar", $msBitacora);
+						fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO360A", $msCodigo, "", "Agregar", $msBitacora);
 					}
 					else
 					{
 						fxModificarUniversidad ($msCodigo, $msMunicipio, $msNombre, $mnTipo);
 						$msBitacora = $msCodigo . "; " . $msMunicipio . "; " . $msNombre . "; " . $mnTipo;
-						fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO180A", $msCodigo, "", "Modificar", $msBitacora);
+						fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO360A", $msCodigo, "", "Modificar", $msBitacora);
 					}
 				}
 									
@@ -78,8 +78,8 @@ error_reporting(E_ALL);
 					$mDatos = fxDevuelveUniversidad(0, $msCodigo);
 					$mFila = $mDatos->fetch();
 					$msMunicipio = $mFila["MUNICIPIO_REL"];
-					$msNombre = $mFila["NOMBRE_180"];
-					$mnTipo = $mFila["TIPO_180"];
+					$msNombre = $mFila["NOMBRE_360"];
+					$mnTipo = $mFila["TIPO_360"];
 				}
 				else
 				{
@@ -92,7 +92,7 @@ error_reporting(E_ALL);
     	<div id="DivContenido">
 			<div class = "row">
 				<div class="col-xs-12 col-md-11">
-					<div class="degradado"><strong>Catálogo de Universidad</strong></div>
+					<div class="degradado"><strong>Catálogo de Universidades</strong></div>
 				</div>
 			</div>
 

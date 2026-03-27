@@ -10,7 +10,7 @@
 		$mnNumero = intval($mFila["Ultimo"]) + 1;
 		$msCodigo = "CLS" . str_pad($mnNumero, 7, "0", STR_PAD_LEFT);
 		$msConsulta = "INSERT INTO UMO190A 
-					(CURSOS_REL, TIPOC_190,NOMBRE_190, TURNO_190, HRSINICIO_190, HRSFIN_190, HRSTOTAL_190,FECHAINICIO_190, FECHAFIN_190, DOCENTE_REL, DIACLASES_190, ASISTENCIA_190, ESTADO_190) 
+					(CURSOS_REL, TIPOC_190,NOMBRE_190, TURNO_190, HRSINICIO_190, HRSFIN_190, HRSTOTAL_190,FECHAINICIO_190, FECHAFIN_190, DOCENTECL_REL, DIACLASES_190, ASISTENCIA_190, ESTADO_190) 
 					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
 		$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 		$mDatos->execute([$msCodigo, $mnTipoC,$msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mDocente, $mnDia, $mnModalidad, $mnEstado]);
@@ -26,7 +26,7 @@
 	{
 		$m_cnx_MySQL = fxAbrirConexion();
 		$msConsulta = "UPDATE UMO190A 
-					SET TIPOC_190 = ?, NOMBRE_190 = ?, TURNO_190 = ?, HRSINICIO_190 = ?, HRSFIN_190 = ?,HRSTOTAL_190=?, FECHAINICIO_190 = ?, FECHAFIN_190 = ?, DOCENTE_REL = ?, DIACLASES_190 = ?, ASISTENCIA_190 = ?, ESTADO_190 = ? 
+					SET TIPOC_190 = ?, NOMBRE_190 = ?, TURNO_190 = ?, HRSINICIO_190 = ?, HRSFIN_190 = ?,HRSTOTAL_190=?, FECHAINICIO_190 = ?, FECHAFIN_190 = ?, DOCENTECL_REL = ?, DIACLASES_190 = ?, ASISTENCIA_190 = ?, ESTADO_190 = ? 
 					WHERE CURSOS_REL = ?";
 		$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 		$mDatos->execute([$mnTipoC, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin,$mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mDocente, $mnDia, $mnModalidad, $mnEstado, $msCodigo]);
@@ -39,6 +39,10 @@
 	{
 		$m_cnx_MySQL = fxAbrirConexion();
 		$msConsultaCobros = "DELETE FROM UMO130A WHERE CURSOS_REL = ?";
+		$mDatosCobros = $m_cnx_MySQL->prepare($msConsultaCobros);
+		$mDatosCobros->execute([$msCodigo]);
+
+        $msConsultaCobros = "DELETE FROM UMO210A WHERE CURSOS_REL = ?";
 		$mDatosCobros = $m_cnx_MySQL->prepare($msConsultaCobros);
 		$mDatosCobros->execute([$msCodigo]);
 
@@ -73,9 +77,9 @@
                     ELSE 'SIN DEFINIR'
                 END AS TIPOC_190,
                 CASE c.ESTADO_190 WHEN 0 THEN 'Inactivo' ELSE 'Activo' END AS ESTADO_190,
-                d.NOMBRE_100 AS NOMBRE_DOCENTE
+                d.NOMBRE_340 AS NOMBRE_DOCENTE
             FROM UMO190A c
-            LEFT JOIN UMO100A d ON c.DOCENTE_REL = d.DOCENTE_REL
+            LEFT JOIN UMO340A d ON c.DOCENTECL_REL = d.DOCENTECL_REL
             ORDER BY c.CURSOS_REL DESC
         ";
         $mDatos = $m_cnx_MySQL->prepare($msConsulta);
@@ -85,10 +89,10 @@
     {
         $msConsulta = "
             SELECT c.CURSOS_REL,c.TIPOC_190, c.NOMBRE_190, c.TURNO_190, c.HRSINICIO_190, c.HRSFIN_190, c.HRSTOTAL_190,
-                   c.FECHAINICIO_190, c.FECHAFIN_190, c.DOCENTE_REL, d.NOMBRE_100 AS NOMBRE_DOCENTE,
+                   c.FECHAINICIO_190, c.FECHAFIN_190, c.DOCENTECL_REL, d.NOMBRE_340 AS NOMBRE_DOCENTE,
                    c.DIACLASES_190, c.ASISTENCIA_190, c.ESTADO_190
             FROM UMO190A c
-            LEFT JOIN UMO100A d ON c.DOCENTE_REL = d.DOCENTE_REL
+            LEFT JOIN UMO340A d ON c.DOCENTECL_REL = d.DOCENTECL_REL
             WHERE c.CURSOS_REL = ?
         ";
         $mDatos = $m_cnx_MySQL->prepare($msConsulta);
