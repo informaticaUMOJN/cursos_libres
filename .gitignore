@@ -21,6 +21,8 @@
 *.tmp
 *.bak
 
+*.png
+
 # Bases de datos locales
 *.sqlite
 
