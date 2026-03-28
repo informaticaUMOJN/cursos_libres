@@ -13,6 +13,12 @@ $msTrabajoPadre, $msTrabajoMadre, $msNombreRef, $msCedulaRef, $msCelularRef, $ms
     $mFila = $mDatos->fetch();
     $mnNumero = intval($mFila["Ultimo"]) + 1;
     $msCodigo = "ALU" . str_pad($mnNumero, 7, "0", STR_PAD_LEFT);
+
+	if ($msColegio == "")
+		$msColegio = null;
+
+	if ($msUniversidad == "")
+		$msUniversidad = null;
 	
 	$msConsulta = "insert into UMO200A (ALUMNO_REL, UNIVERSIDADCL_REL, MUNICIPIO_REL, COLEGIOCL_REL, FECHAINS_200, NOMBRES_200, ";
    	$msConsulta .= "APELLIDOS_200, NACIONALIDAD_200, NUMEROUNICO_200, CEDULA_200, FECHANAC_200, TELEFONO_200, CELULAR_200, ";

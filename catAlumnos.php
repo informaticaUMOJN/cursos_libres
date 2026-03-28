@@ -605,6 +605,9 @@ error_reporting(E_ALL);
 										<div class="col-sm-12 col-md-7">
 											<select class="form-control" id="cboColegio" name="cboColegio">
 												<?php
+													if ($msColegio == "")
+														echo('<option value="">Sin colegio</option>');
+
 													$msConsulta = "select COLEGIOCL_REL, NOMBRE_350 from UMO350A order by NOMBRE_350";
 													$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 													$mDatos->execute();
@@ -633,6 +636,9 @@ error_reporting(E_ALL);
 												?>
 											</select>
 										</div>
+										<div class="col-sm-12 col-md-2">
+											<input type="text" class="form-control" id="txtBuscarCol" name="txtBuscarCol" placeholder="Filtrar...">
+										</div>
 									</div>
 
 
@@ -640,8 +646,10 @@ error_reporting(E_ALL);
 										<label for="cboUniversidad" class="col-sm-12 col-md-3 col-form-label">Universidad de procedencia</label>
 										<div class="col-sm-12 col-md-7">
 											<select class="form-control" id="cboUniversidad" name="cboUniversidad">
-												<option value=""></option>
 												<?php
+													if ($msUniversidad == "")
+														echo('<option value="">Sin universidad</option>');
+
 													$msConsulta = "select UNIVERSIDADCL_REL, NOMBRE_360 from UMO360A order by NOMBRE_360";
 													$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 													$mDatos->execute();
@@ -669,6 +677,9 @@ error_reporting(E_ALL);
 													}
 												?>
 											</select>
+										</div>
+										<div class="col-sm-12 col-md-2">
+											<input type="text" class="form-control" id="txtBuscarUni" name="txtBuscarUni" placeholder="Filtrar...">
 										</div>
 									</div>
 
@@ -1177,33 +1188,63 @@ error_reporting(E_ALL);
 </html>
 <script>
 	var mCedula;
+	var mUniversidad;
+	var mColegio;
 	var msResultado;
 	var codEstudiante;
 	var existeCedula;
 	var parametros;
 	var datosJson;
 
+	const searchInputCol = document.getElementById('txtBuscarCol');
+	const comboCol = document.getElementById('cboColegio');
+	const optionsCol = Array.from(comboCol.options); // Guardar todas las opciones originales
+
+	const searchInputUni = document.getElementById('txtBuscarUni');
+	const comboUni = document.getElementById('cboUniversidad');
+	const optionsUni = Array.from(comboUni.options); // Guardar todas las opciones originales
+
+	searchInputCol.addEventListener('input', function () {
+		const filter = this.value.toLowerCase();
+		comboCol.innerHTML = ''; // Limpiar opciones
+
+		// Filtrar y volver a agregar opciones que coincidan
+		optionsCol
+			.filter(opt => opt.text.toLowerCase().includes(filter))
+			.forEach(opt => comboCol.appendChild(opt));
+	});
+
+	searchInputUni.addEventListener('input', function () {
+		const filter = this.value.toLowerCase();
+		comboUni.innerHTML = ''; // Limpiar opciones
+
+		// Filtrar y volver a agregar opciones que coincidan
+		optionsUni
+			.filter(opt => opt.text.toLowerCase().includes(filter))
+			.forEach(opt => comboUni.appendChild(opt));
+	});
+
 	// Función para habilitar/deshabilitar trabajo madre
-function fxOptTrabajaMadre() {
-    const trabaja = document.getElementById('optTrabajaMadre1').checked;
-    document.getElementById('txtTrabajoMadre').readOnly = !trabaja;
-}
+	function fxOptTrabajaMadre() {
+		const trabaja = document.getElementById('optTrabajaMadre1').checked;
+		document.getElementById('txtTrabajoMadre').readOnly = !trabaja;
+	}
 
-// Función para habilitar/deshabilitar trabajo padre
-function fxOptTrabajaPadre() {
-    const trabaja = document.getElementById('optTrabajaPadre1').checked;
-    document.getElementById('txtTrabajoPadre').readOnly = !trabaja;
-}
+	// Función para habilitar/deshabilitar trabajo padre
+	function fxOptTrabajaPadre() {
+		const trabaja = document.getElementById('optTrabajaPadre1').checked;
+		document.getElementById('txtTrabajoPadre').readOnly = !trabaja;
+	}
 
-// Ejecutar al cargar la página para reflejar el estado actual
-window.onload = function() {
-    fxOptTrabajaMadre();
-    fxOptTrabajaPadre();
+	// Ejecutar al cargar la página para reflejar el estado actual
+	window.onload = function() {
+		fxOptTrabajaMadre();
+		fxOptTrabajaPadre();
 
-    // Calcular edad si ya hay fecha de nacimiento
-    if (document.getElementById("dtpFechaNac").value != "")
-        calcularEdad();
-};
+		// Calcular edad si ya hay fecha de nacimiento
+		if (document.getElementById("dtpFechaNac").value != "")
+			calcularEdad();
+	};
 
 	function verificarFormulario()
 	{
@@ -1235,7 +1276,7 @@ window.onload = function() {
 			return false;
 		}
 
-		 mCedula = document.getElementById('txtCedula').value;
+		mCedula = document.getElementById('txtCedula').value;
 
 		if(mCedula.indexOf("-") > -1)
 		{
@@ -1244,8 +1285,19 @@ window.onload = function() {
 			return false;
 		}
 
+		mColegio = document.getElementById('cboColegio').value
+		mUniversidad = document.getElementById('cboUniversidad').value
+
+		if (mColegio == "" && mUniversidad == "")
+		{
+			document.getElementById('cboColegio').focus();
+			$.messager.alert('UMOJN','Sin universidad o colegio.','warning');
+			return false;
+		}
+
 		return true;
 	}
+
 	window.onload=function()
 	{
 		if (document.getElementById("dtpFechaNac").value != "")
@@ -1268,262 +1320,255 @@ window.onload = function() {
 		}
 	}
 	
-function fxOptDiscapacidad()
-{
-	var discapacidad = document.getElementById('optDiscapacidad1').checked;
-	if (discapacidad)
-		document.getElementById('txtDeficiencia').disabled = false;
-	else
-		document.getElementById('txtDeficiencia').disabled = true;
-}
-
-function fxOptLaboral() {
-    var empleado = document.getElementById('optLaboral1').checked; // true si es empleado
-
-    let optSector = document.getElementById('optSector');
-    let optEntidad = document.getElementById('optEntidad');
-
-    if (empleado) {
-        // Restaurar opciones originales
-        restaurarOpciones(optSector, 'sector');
-        restaurarOpciones(optEntidad, 'entidad');
-
-        // Seleccionar la segunda opción por defecto (índice 1)
-        if (optSector.options.length > 1) {
-            optSector.selectedIndex = 1;
-        }
-        if (optEntidad.options.length > 1) {
-            optEntidad.selectedIndex = 1;
-        }
-
-        // Habilitar selects
-        optSector.disabled = false;
-        optEntidad.disabled = false;
-        document.getElementById('txtOcupacion').disabled = false;
-        document.getElementById('txnSalario').disabled = false;
-
-    } else {
-        // Desempleado: solo "No aplica"
-        optSector.innerHTML = "<option value='0' selected>No aplica</option>";
-        optEntidad.innerHTML = "<option value='0' selected>No aplica</option>";
-
-        // Deshabilitar selects y otros campos
-        optSector.disabled = true;
-        optEntidad.disabled = true;
-        document.getElementById('txtOcupacion').disabled = true;
-        document.getElementById('txnSalario').disabled = true;
-    }
-}
-
-function restaurarOpciones(select, tipo) {
-    if (tipo === 'sector') {
-        select.innerHTML = `
-            <option value="0">No aplica</option>
-            <option value="1">Agricultura, ganadería, caza y silvicultura</option>
-            <option value="2">Pesca</option>
-            <option value="3">Minas y canteras</option>
-            <option value="4">Industria manufacturas</option>
-            <option value="5">Electricidad, gas y agua</option>
-            <option value="6">Construcción</option>
-            <option value="7">Comercio</option>
-            <option value="8">Hoteles y restaurantes</option>
-            <option value="9">Transporte, almacenamiento y comunicación</option>
-            <option value="10">Actividades inmobiliarias, empresariales y de alquiler</option>
-            <option value="11">Administración pública y defensa</option>
-            <option value="12">Enseñanza</option>
-            <option value="13">Servicios sociales y de salud</option>
-            <option value="14">Otros servicios comunales</option>
-            <option value="15">Hogares privados con servicio doméstico</option>
-            <option value="16">Organizaciones y órganos extraterritoriales</option>
-        `;
-    } else if (tipo === 'entidad') {
-        select.innerHTML = `
-            <option value="0">No aplica</option>
-            <option value="1">Pública</option>
-            <option value="2">Privada</option>
-            <option value="3">Cuenta propia</option>
-        `;
-    }
-}
-
-function calcularEdad()
-{
-	var today_date = new Date();
-	var today_year = today_date.getFullYear();
-	var today_month = today_date.getMonth();
-	var today_day = today_date.getDate();
-	var birth_date = document.getElementById("dtpFechaNac").value;
-	var birth_year = parseInt(birth_date.substr(0,4));
-	var birth_month = parseInt(birth_date.substr(5,2));
-	var birth_day = parseInt(birth_date.substr(7,2));
-
-	var age = today_year - birth_year;
-
-	if (today_month < (birth_month - 1)) {
-	age--;
+	function fxOptDiscapacidad()
+	{
+		var discapacidad = document.getElementById('optDiscapacidad1').checked;
+		if (discapacidad)
+			document.getElementById('txtDeficiencia').disabled = false;
+		else
+			document.getElementById('txtDeficiencia').disabled = true;
 	}
-	if (((birth_month - 1) == today_month) && (today_day < birth_day)) {
-	age--;
+
+	function fxOptLaboral() {
+		var empleado = document.getElementById('optLaboral1').checked; // true si es empleado
+
+		let optSector = document.getElementById('optSector');
+		let optEntidad = document.getElementById('optEntidad');
+
+		if (empleado) {
+			// Restaurar opciones originales
+			restaurarOpciones(optSector, 'sector');
+			restaurarOpciones(optEntidad, 'entidad');
+
+			// Seleccionar la segunda opción por defecto (índice 1)
+			if (optSector.options.length > 1) {
+				optSector.selectedIndex = 1;
+			}
+			if (optEntidad.options.length > 1) {
+				optEntidad.selectedIndex = 1;
+			}
+
+			// Habilitar selects
+			optSector.disabled = false;
+			optEntidad.disabled = false;
+			document.getElementById('txtOcupacion').disabled = false;
+			document.getElementById('txnSalario').disabled = false;
+
+		} else {
+			// Desempleado: solo "No aplica"
+			optSector.innerHTML = "<option value='0' selected>No aplica</option>";
+			optEntidad.innerHTML = "<option value='0' selected>No aplica</option>";
+
+			// Deshabilitar selects y otros campos
+			optSector.disabled = true;
+			optEntidad.disabled = true;
+			document.getElementById('txtOcupacion').disabled = true;
+			document.getElementById('txnSalario').disabled = true;
+		}
 	}
-	document.getElementById("txtEdad").value = age + " años";
-}
 
-function llenaMunicipios (departamento)
-{
-    var datos = new FormData();
-    datos.append('departamento', departamento);
+	function restaurarOpciones(select, tipo) {
+		if (tipo === 'sector') {
+			select.innerHTML = `
+				<option value="0">No aplica</option>
+				<option value="1">Agricultura, ganadería, caza y silvicultura</option>
+				<option value="2">Pesca</option>
+				<option value="3">Minas y canteras</option>
+				<option value="4">Industria manufacturas</option>
+				<option value="5">Electricidad, gas y agua</option>
+				<option value="6">Construcción</option>
+				<option value="7">Comercio</option>
+				<option value="8">Hoteles y restaurantes</option>
+				<option value="9">Transporte, almacenamiento y comunicación</option>
+				<option value="10">Actividades inmobiliarias, empresariales y de alquiler</option>
+				<option value="11">Administración pública y defensa</option>
+				<option value="12">Enseñanza</option>
+				<option value="13">Servicios sociales y de salud</option>
+				<option value="14">Otros servicios comunales</option>
+				<option value="15">Hogares privados con servicio doméstico</option>
+				<option value="16">Organizaciones y órganos extraterritoriales</option>
+			`;
+		} else if (tipo === 'entidad') {
+			select.innerHTML = `
+				<option value="0">No aplica</option>
+				<option value="1">Pública</option>
+				<option value="2">Privada</option>
+				<option value="3">Cuenta propia</option>
+			`;
+		}
+	}
 
-    $.ajax({
-        url: 'funciones/fxDatosColegios.php',
-        type: 'post',
-        data: datos,
-        contentType: false,
-        processData: false,
-        success: function(response){
-            document.getElementById('cboMunicipio').innerHTML = response;
-        }
-    })
+	function calcularEdad()
+	{
+		var today_date = new Date();
+		var today_year = today_date.getFullYear();
+		var today_month = today_date.getMonth();
+		var today_day = today_date.getDate();
+		var birth_date = document.getElementById("dtpFechaNac").value;
+		var birth_year = parseInt(birth_date.substr(0,4));
+		var birth_month = parseInt(birth_date.substr(5,2));
+		var birth_day = parseInt(birth_date.substr(7,2));
 
+		var age = today_year - birth_year;
 
-}
+		if (today_month < (birth_month - 1)) {
+		age--;
+		}
+		if (((birth_month - 1) == today_month) && (today_day < birth_day)) {
+		age--;
+		}
+		document.getElementById("txtEdad").value = age + " años";
+	}
 
-function llenaArchivo() {
-    $('#txtRutaLocal').val($('#archivo')[0].files[0].name);
-}
+	function llenaMunicipios (departamento)
+	{
+		var datos = new FormData();
+		datos.append('departamento', departamento);
 
-function borrarImagen(objeto) {
+		$.ajax({
+			url: 'funciones/fxDatosColegios.php',
+			type: 'post',
+			data: datos,
+			contentType: false,
+			processData: false,
+			success: function(response){
+				document.getElementById('cboMunicipio').innerHTML = response;
+			}
+		})
+	}
 
-    var datos = new FormData();
-    datos.append('CodEstudiante', $('#txtAlumno').val());
-    datos.append('CodImagen', objeto.id);
+	function llenaArchivo() {
+		$('#txtRutaLocal').val($('#archivo')[0].files[0].name);
+	}
 
-    $.ajax({
-        url: 'funciones/fxAlumnosImagenes.php',
-        type: 'POST',
-        data: datos,
-        contentType: false,
-        processData: false,
-        success: function(resp) {
-            if (resp != 0) {
-                $('#dvDOC').html(resp);
-            } else {
-                $.messager.alert('UMOJN','Error al borrar imagen','warning');
-            }
-        }
-    });
-}
+	function borrarImagen(objeto) {
 
+		var datos = new FormData();
+		datos.append('CodEstudiante', $('#txtAlumno').val());
+		datos.append('CodImagen', objeto.id);
 
-window.onload=function()
-{
-	if (document.getElementById("dtpFechaNac").value != "")
-		calcularEdad();
-}
+		$.ajax({
+			url: 'funciones/fxAlumnosImagenes.php',
+			type: 'POST',
+			data: datos,
+			contentType: false,
+			processData: false,
+			success: function(resp) {
+				if (resp != 0) {
+					$('#dvDOC').html(resp);
+				} else {
+					$.messager.alert('UMOJN','Error al borrar imagen','warning');
+				}
+			}
+		});
+	}
 
-$('#cmdSubir').click(function () {
-    if ($('#txtAlumno').val() == '') {
-        $.messager.alert('UMOJN','Debe guardar el alumno primero','warning');
-        return;
-    }
+	window.onload=function()
+	{
+		if (document.getElementById("dtpFechaNac").value != "")
+			calcularEdad();
+	}
 
-    if ($('#archivo')[0].files.length == 0) {
-        $.messager.alert('UMOJN','Seleccione un archivo','warning');
-        return;
-    }
+	$('#cmdSubir').click(function () {
+		if ($('#txtAlumno').val() == '') {
+			$.messager.alert('UMOJN','Debe guardar el alumno primero','warning');
+			return;
+		}
 
-    var datos = new FormData();
-    datos.append('archivo', $('#archivo')[0].files[0]);
-    datos.append('cboTipoDoc', $('#cboTipoDoc').val());
-    datos.append('txtAlumno', $('#txtAlumno').val());
-    datos.append('txtDescripcion', $('#cboTipoDoc option:selected').text());
+		if ($('#archivo')[0].files.length == 0) {
+			$.messager.alert('UMOJN','Seleccione un archivo','warning');
+			return;
+		}
 
-    $.ajax({
-        url: 'funciones/fxAlumnosImagenes.php',
-        type: 'POST',
-        data: datos,
-        contentType: false,
-        processData: false,
-        success: function(resp) {
-            if (resp != 0) {
-				console.log(resp);
+		var datos = new FormData();
+		datos.append('archivo', $('#archivo')[0].files[0]);
+		datos.append('cboTipoDoc', $('#cboTipoDoc').val());
+		datos.append('txtAlumno', $('#txtAlumno').val());
+		datos.append('txtDescripcion', $('#cboTipoDoc option:selected').text());
 
-                 $('#dvDOC').html(resp);
-                $('#txtRutaLocal').val('');
-                $('#archivo').val('');
-            } else {
-                $.messager.alert('UMOJN','Error al subir imagen','warning');
-            }
-        }
-    });
-});
+		$.ajax({
+			url: 'funciones/fxAlumnosImagenes.php',
+			type: 'POST',
+			data: datos,
+			contentType: false,
+			processData: false,
+			success: function(resp) {
+				if (resp != 0) {
+					console.log(resp);
 
-	
-$('form').submit(function(e){ 
-    e.preventDefault(); 
+					$('#dvDOC').html(resp);
+					$('#txtRutaLocal').val('');
+					$('#archivo').val('');
+				} else {
+					$.messager.alert('UMOJN','Error al subir imagen','warning');
+				}
+			}
+		});
+	});
 
-    if (verificarFormulario() == true) { 
+		
+	$('form').submit(function(e){ 
+		e.preventDefault(); 
 
-        let datos = {
-            txtAlumno: document.getElementById("txtAlumno").value,
-            dtpFechaIns: document.getElementById("dtpFechaIns").value,
-            cboColegio: document.getElementById("cboColegio").value,
-            cboUniversidad: document.getElementById("cboUniversidad").value,
-            txtNombres: document.getElementById("txtNombres").value,
-            txtApellidos: document.getElementById("txtApellidos").value,
-            dtpFechaNac: document.getElementById("dtpFechaNac").value,
-            cboMunicipio: document.getElementById("cboMunicipio").value,
-            txtCedula: document.getElementById("txtCedula").value,
-            txtDeficiencia: document.getElementById("txtDeficiencia").value,
-            optSexo: document.getElementById("optSexo1").checked ? "M" : "F",
-			txnPeso: document.getElementById("txnPeso").value,
-			cboTipoSangre: document.getElementById("cboTipoSangre").value,
-			txnAltura: document.getElementById("txnAltura").value,
+		if (verificarFormulario() == true) { 
 
+			let datos = {
+				txtAlumno: document.getElementById("txtAlumno").value,
+				txtNumeroUnico: document.getElementById("txtNumeroUnico").value,
+				dtpFechaIns: document.getElementById("dtpFechaIns").value,
+				cboColegio: document.getElementById("cboColegio").value,
+				cboUniversidad: document.getElementById("cboUniversidad").value,
+				txtNombres: document.getElementById("txtNombres").value,
+				txtApellidos: document.getElementById("txtApellidos").value,
+				dtpFechaNac: document.getElementById("dtpFechaNac").value,
+				cboMunicipio: document.getElementById("cboMunicipio").value,
+				txtCedula: document.getElementById("txtCedula").value,
+				txtDeficiencia: document.getElementById("txtDeficiencia").value,
+				optSexo: document.getElementById("optSexo1").checked ? "M" : "F",
+				txnPeso: document.getElementById("txnPeso").value,
+				cboTipoSangre: document.getElementById("cboTipoSangre").value,
+				txnAltura: document.getElementById("txnAltura").value,
 
-            cboEstadoCivil: document.getElementById("cboEstadoCivil").value,
-            txnHijos: document.getElementById("txnHijos").value,
-            optDiscapacidad: document.getElementById("optDiscapacidad1").checked ? "1" : "0",
-            cboNivelEstudio: document.getElementById("cboNivelEstudio").value,
-            cboCurso: document.getElementById("cboCurso").value,
-            txtTelefono: document.getElementById("txtTelefono").value,
-            txtCelular: document.getElementById("txtCelular").value,
-            txtEmail: document.getElementById("txtEmail").value,
-            optOtroIdioma: document.getElementById("optOtroIdioma1").checked ? 1 : 0,
-            txtIdioma: document.getElementById("optOtroIdioma1").checked ? document.getElementById("txtIdioma").value : "",
-            txtDominioIdioma: document.getElementById("optOtroIdioma1").checked ? document.getElementById("txtDominioIdioma").value : "",
-            txtDireccion: document.getElementById("txtDireccion").value,
-            cboMedio: document.getElementById("cboMedio").value,
-            optLaboral: document.getElementById("optLaboral1").checked ? "1" : "0",
-            txtOcupacion: document.getElementById("txtOcupacion").value,
-            txnSalario: document.getElementById("txnSalario").value,
-            optSector: document.getElementById("optSector").value,
-            optEntidad: document.getElementById("optEntidad").value,
+				cboEstadoCivil: document.getElementById("cboEstadoCivil").value,
+				txnHijos: document.getElementById("txnHijos").value,
+				optDiscapacidad: document.getElementById("optDiscapacidad1").checked ? "1" : "0",
+				cboNivelEstudio: document.getElementById("cboNivelEstudio").value,
+				txtTelefono: document.getElementById("txtTelefono").value,
+				txtCelular: document.getElementById("txtCelular").value,
+				txtEmail: document.getElementById("txtEmail").value,
+				txtIdioma: document.getElementById("txtIdioma").value,
+				txtDominioIdioma: document.getElementById("txtDominioIdioma").value,
+				txtDireccion: document.getElementById("txtDireccion").value,
+				cboMedio: document.getElementById("cboMedio").value,
+				optLaboral: document.getElementById("optLaboral1").checked ? "1" : "0",
+				txtOcupacion: document.getElementById("txtOcupacion").value,
+				txnSalario: document.getElementById("txnSalario").value,
+				optSector: document.getElementById("optSector").value,
+				optEntidad: document.getElementById("optEntidad").value,
 
-			txtNombrePadre: document.getElementById("txtNombrePadre").value,
-			optTrabajaPadre: document.getElementById("optTrabajaPadre1").checked ? 1 : 0,
-			txtTrabajoPadre: document.getElementById("txtTrabajoPadre").value,
+				txtNombrePadre: document.getElementById("txtNombrePadre").value,
+				optTrabajaPadre: document.getElementById("optTrabajaPadre1").checked ? 1 : 0,
+				txtTrabajoPadre: document.getElementById("txtTrabajoPadre").value,
 
-			txtNombreMadre: document.getElementById("txtNombreMadre").value,
-			optTrabajaMadre: document.getElementById("optTrabajaMadre1").checked ? 1 : 0,
-			txtTrabajoMadre: document.getElementById("txtTrabajoMadre").value,
+				txtNombreMadre: document.getElementById("txtNombreMadre").value,
+				optTrabajaMadre: document.getElementById("optTrabajaMadre1").checked ? 1 : 0,
+				txtTrabajoMadre: document.getElementById("txtTrabajoMadre").value,
 
-            txtNombreRef: document.getElementById("txtNombreRef").value,
-            txtCedulaRef: document.getElementById("txtCedulaRef").value,
-            txtCelularRef: document.getElementById("txtCelularRef").value,
-			txtDireccionRef: document.getElementById("txtDireccionRef").value,
-			txtNacionalidad: document.getElementById("txtNacionalidad").value,
-
-			  
-        };
-$.ajax({
-    url: 'catAlumnos.php',
-    type: 'POST',
-    data: datos,
-  //  dataType: 'json', 
-   beforeSend: function(){console.log(datos)}
-})
-.done(function(){location.href="gridAlumnos.php"})
-			.fail(function(){console.log('Error')});
-    } 
-});
+				txtNombreRef: document.getElementById("txtNombreRef").value,
+				txtCedulaRef: document.getElementById("txtCedulaRef").value,
+				txtCelularRef: document.getElementById("txtCelularRef").value,
+				txtDireccionRef: document.getElementById("txtDireccionRef").value,
+				txtNacionalidad: document.getElementById("txtNacionalidad").value,
+			};
+	$.ajax({
+		url: 'catAlumnos.php',
+		type: 'POST',
+		data: datos,
+	//  dataType: 'json', 
+	beforeSend: function(){console.log(datos)}
+	})
+	.done(function(){location.href="gridAlumnos.php"})
+				.fail(function(){console.log('Error')});
+		} 
+	});
 </script>
