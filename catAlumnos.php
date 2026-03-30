@@ -605,8 +605,7 @@ error_reporting(E_ALL);
 										<div class="col-sm-12 col-md-7">
 											<select class="form-control" id="cboColegio" name="cboColegio">
 												<?php
-													if ($msColegio == "")
-														echo('<option value="">Sin colegio</option>');
+													echo('<option value="">Sin colegio</option>');
 
 													$msConsulta = "select COLEGIOCL_REL, NOMBRE_350 from UMO350A order by NOMBRE_350";
 													$mDatos = $m_cnx_MySQL->prepare($msConsulta);
@@ -647,8 +646,7 @@ error_reporting(E_ALL);
 										<div class="col-sm-12 col-md-7">
 											<select class="form-control" id="cboUniversidad" name="cboUniversidad">
 												<?php
-													if ($msUniversidad == "")
-														echo('<option value="">Sin universidad</option>');
+													echo('<option value="">Sin universidad</option>');
 
 													$msConsulta = "select UNIVERSIDADCL_REL, NOMBRE_360 from UMO360A order by NOMBRE_360";
 													$mDatos = $m_cnx_MySQL->prepare($msConsulta);
@@ -1188,8 +1186,6 @@ error_reporting(E_ALL);
 </html>
 <script>
 	var mCedula;
-	var mUniversidad;
-	var mColegio;
 	var msResultado;
 	var codEstudiante;
 	var existeCedula;
@@ -1282,16 +1278,6 @@ error_reporting(E_ALL);
 		{
 			document.getElementById('txtCedula').focus();
 			$.messager.alert('UMOJN','Escriba la Cédula sin guiones.','warning');
-			return false;
-		}
-
-		mColegio = document.getElementById('cboColegio').value
-		mUniversidad = document.getElementById('cboUniversidad').value
-
-		if (mColegio == "" && mUniversidad == "")
-		{
-			document.getElementById('cboColegio').focus();
-			$.messager.alert('UMOJN','Sin universidad o colegio.','warning');
 			return false;
 		}
 
