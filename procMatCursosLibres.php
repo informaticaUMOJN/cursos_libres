@@ -79,7 +79,6 @@ error_reporting(E_ALL);
 				else
 				{
 					fxModificarMatricula($msCodigo, $msAlumno, $msCursos, $mdFecha, $msRecibo, $mbBeca,$msMotivo, $mbDiploma,  $mbCedula, $mbActaNacimiento, $mnEstado);
-					fxBorrarDetMatricula($msCodigo);
 					$msBitacora = $msCodigo . "; " . $msAlumno . "; " . $msCursos . "; " . $mbBeca . "; ".$msMotivo.";" . $mdFecha . "; " . $msRecibo . "; "  . $mbDiploma . "; " . $mbCedula . "; " . $mbActaNacimiento . "; " . $mnEstado;
 					fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO210A", $msCodigo, "", "Modificar", $msBitacora);
 				}
@@ -375,16 +374,18 @@ error_reporting(E_ALL);
 
 
 
-function cambiarBeca(valor) {
-const motivo = document.getElementById('txtMotivo');
-
-
-if (valor === 1) {
-motivo.disabled = false;
-motivo.focus();
-} else {
-motivo.value = "";
-motivo.disabled = true;
-}
-}
+	function cambiarBeca(valor) 
+	{
+		const motivo = document.getElementById('txtMotivo');
+		
+		if (valor === 1) {
+			motivo.disabled = false;
+			motivo.focus();
+		} 
+		else
+		{
+			motivo.value = "";
+			motivo.disabled = true;
+		}
+	}
 </script>

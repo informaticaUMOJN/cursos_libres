@@ -1088,21 +1088,11 @@ error_reporting(E_ALL);
 												<td style="width:70%">
 													<select class="form-control" id="cboTipoDoc" name="cboTipoDoc">
 														<option value="0">Diploma de bachiller</option>
-														<option value="1">Calificaciones de secundaria</option>
-														<option value="2">Cédula de identidad</option>
-														<option value="3">Acta de nacimiento</option>
-														<option value="4">Fotografía</option>
-														<option value="5">Cédula de residencia</option>
-														<option value="6">Pasaporte</option>
-														<option value="7">Plan de estudio</option>
-														<option value="8">Acta de aprobación monográfica</option>
-														<option value="9">Calificaciones universitarias</option>
-														<option value="10">Certificación del título universitario</option>
-														<option value="11">Datos generales del título</option>
-														<option value="12">Publicación en la gaceta</option>
-														<option value="13">Título universitario</option>
-														<option value="14">Firma digital</option>
-														<option value="15">Hoja de matricula externa</option>
+														<option value="1">Documento de identidad</option>
+														<option value="2">Acta de nacimiento</option>
+														<option value="3">Hoja de matrícula externa</option>
+														<option value="4">Certificado del curso inscrito</option>
+														<option value="5">Otro certificado o título</option>
 													</select>
 												</td>
 												<td></td>
