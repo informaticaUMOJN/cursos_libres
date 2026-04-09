@@ -157,7 +157,7 @@ header('Pragma: no-cache');
                                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Reportes</a>
                                 <ul class="dropdown-menu"> 
                                     <li> 
-                                        <a class="dropdown-item" href="gridAsistenciaCL.php">Formato para Asistencias</a>
+                                        <a class="dropdown-item" href="frmAsistencia.php">Formato para Asistencias</a>
                                     </li>
                                 </ul>
                             </li>
