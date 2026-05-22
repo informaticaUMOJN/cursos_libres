@@ -24,13 +24,17 @@ class PDF extends TCPDF {
     function Header() {
         $this->Image('imagenes/logoRep.jpg',15,8,0,16);
         $this->Image('imagenes/kanji.jpg',31,8,0,16);
+        $mid_x = 278; // width of the "PDF screen", fixed by now.
 
         $this->SetFont('helvetica','B',12);
-        $this->Text(41, 8, 'UNIVERSIDAD DE MEDICINA');
-        $this->Text(41, 13, 'ORIENTAL JAPON-NICARAGUA');
-
+        $Titulo = 'UNIVERSIDAD DE MEDICINA';
+		$this->Text(($mid_x - $this->GetStringWidth($Titulo)) / 2, 8, $Titulo);
+        $Titulo = 'ORIENTAL JAPON-NICARAGUA';
+		$this->Text(($mid_x - $this->GetStringWidth($Titulo)) / 2, 13, $Titulo);
+        
         $this->SetFont('helvetica','I',9);
-        $this->Text(41, 20, 'Excelencia académica con espíritu humanista');
+        $Titulo = 'Excelencia académica con espíritu humanista';
+		$this->Text(($mid_x - $this->GetStringWidth($Titulo)) / 2, 20, $Titulo);
 
         $this->Line(120,10,120,22);
         $this->SetFont('helvetica','',7);
@@ -42,7 +46,8 @@ class PDF extends TCPDF {
         $this->SetTextColor(0,70,140);
         $this->SetFont('helvetica','B',15);
         $this->Ln(20);
-        $this->Text(45, 25, 'HOJA DE MATRÍCULA CURSOS DE EDUCACIÓN CONTINUA');
+        $Titulo = 'HOJA DE MATRÍCULA CURSOS DE EDUCACIÓN CONTINUA';
+		$this->Text(($mid_x - $this->GetStringWidth($Titulo)) / 2, 25, $Titulo);
 
         $this->SetTextColor(0,0,0);
         $this->Ln(50);
@@ -78,13 +83,13 @@ function fxHoraBonita($hora) {
 /* ===================== CONSULTA ===================== */
 $codMatricula = trim($_POST["UMOJN"]);
 
-$sql = " SELECT u210.MATCURSO_REL, u210.FECHA_210, u200.*,  u190.NOMBRE_190, u190.TURNO_190, u190.HRSINICIO_190, u190.HRSFIN_190, u190.HRSTOTAL_190, c.NOMBRE_020 AS NOMBRE_COLEGIO, u.NOMBRE_180 AS NOMBRE_UNIVERSIDAD
-        FROM UMO210A u210
-        INNER JOIN UMO200A u200 ON u210.ALUMNO_REL = u200.ALUMNO_REL
-        INNER JOIN UMO190A u190 ON u210.CURSOS_REL = u190.CURSOS_REL
-        LEFT JOIN UMO020A c ON u200.COLEGIO_REL = c.COLEGIO_REL
-        LEFT JOIN UMO180A u ON u200.UNIVERSIDAD_REL = u.UNIVERSIDAD_REL
-        WHERE u210.MATCURSO_REL = ?";
+$sql = "SELECT u210.MATCURSO_REL, FECHA_210, u200.*,  NOMBRE_190, TURNO_190, HRSINICIO_190, HRSFIN_190, HRSTOTAL_190, NOMBRE_350 AS NOMBRE_COLEGIO, NOMBRE_360 AS NOMBRE_UNIVERSIDAD
+FROM UMO210A u210
+INNER JOIN UMO200A u200 ON u210.ALUMNO_REL = u200.ALUMNO_REL
+INNER JOIN UMO190A u190 ON u210.CURSOS_REL = u190.CURSOS_REL
+LEFT JOIN UMO350A c ON u200.COLEGIOCL_REL = c.COLEGIOCL_REL
+LEFT JOIN UMO360A u ON u200.UNIVERSIDADCL_REL = u.UNIVERSIDADCL_REL
+WHERE u210.MATCURSO_REL = ?";
 
 $stmt = $m_cnx_MySQL->prepare($sql);
 $stmt->execute([$codMatricula]);
@@ -271,7 +276,7 @@ $pdf->writeHTML("
 </tr>
 <tr>
 <td width='25%'><b>Celular:</b></td>
-<td width='25%'>{$mFila['CELULARREFERENTE_200']}</td>
+<td width='25%'>{$mFila['CELULARREF_200']}</td>
 </tr>
 <tr>
 <td width='25%'><b>Dirección:</b></td>

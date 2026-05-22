@@ -25,7 +25,7 @@ if (is_array($_FILES) && count($_FILES) > 0) {
 			$msDocArchivo = $mFila["ARCHIVO_271"];
 			$msRuta = $mFila["RUTA_271"];
 
-			$msResultado .= '{"consecutivo":"' . $mnConsecutivo . '", "archivo":"' . $msDocArchivo . '","ruta":"' . $msRuta . '", "descarga":"<a href="' . $msRuta . '" target="_blank">Descargar</a>"}';
+			$msResultado .= '{"consecutivo":"' . $mnConsecutivo . '", "archivo":"' . $msDocArchivo . '","ruta":"' . $msRuta . '", "descarga":"<a href=\'' . $msRuta . '\' target=\'_blank\'>Descargar</a>"}';
 			
 			if ($i != $mnRegistros)
             	$msResultado .= ',';
@@ -47,7 +47,7 @@ if (isset($_POST["codDocumento"]) and isset($_POST["codConsecutivo"]) and isset(
 	$mnConsecutivo = intval($_POST["codConsecutivo"]);
 	$pRuta = $_POST["msRuta"];
 
-	$msConsulta = "select RUTA_271 from KDSA271A where DOCCURSO_REL = ? and DOCCURSOCONS_REL = ?";
+	$msConsulta = "select RUTA_271 from UMO271A where DOCCURSO_REL = ? and DOCCURSOCONS_REL = ?";
 	$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 	$mDatos->execute([$msDocCurso, $mnConsecutivo]);
 	$mFila = $mDatos->fetch();
@@ -68,7 +68,7 @@ if (isset($_POST["codDocumento"]) and isset($_POST["codConsecutivo"]) and isset(
 			$msDocArchivo = $mFila["ARCHIVO_271"];
 			$msRuta = $mFila["RUTA_271"];
 
-			$msResultado .= '{"consecutivo":"' . $mnConsecutivo . '", "archivo":"' . $msDocArchivo . '","ruta":"' . $msRuta . '"}';
+			$msResultado .= '{"consecutivo":"' . $mnConsecutivo . '", "archivo":"' . $msDocArchivo . '","ruta":"' . $msRuta . '", "descarga":"<a href=\'' . $msRuta . '\' target=\'_blank\'>Descargar</a>"}';
 			
 			if ($i != $mnRegistros)
             	$msResultado .= ',';
