@@ -141,6 +141,9 @@ header('Pragma: no-cache');
                                     <li> 
                                         <a class="dropdown-item"  href="gridMatriculaCursosL.php">Matrícula</a>
                                     </li>
+                                    <li> 
+                                        <a class="dropdown-item"  href="procCertificacion.php">Certificación</a>
+                                    </li>
                                 </ul>
                             </li> 
 
@@ -162,6 +165,9 @@ header('Pragma: no-cache');
                                 <ul class="dropdown-menu"> 
                                     <li> 
                                         <a class="dropdown-item" href="frmAsistencia.php">Formato para Asistencias</a>
+                                    </li>
+                                    <li> 
+                                        <a class="dropdown-item" href="frmLibroActa.php">Libros de actas</a>
                                     </li>
                                 </ul>
                             </li>
