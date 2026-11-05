@@ -199,11 +199,14 @@
 
     $mDatos = $m_cnx_MySQL->prepare($msConsulta);
     $mDatos->execute([$msLibro]);
-    $mnExtra = 0;
+    $mnRegistros = $mDatos->rowCount();
+    $mnContadorPartidas = 0;
     $msHTML = '';
     
     while ($mFila = $mDatos->fetch())
     {
+        $mnContadorPartidas++;
+
         $msPartida = $mFila["PARTIDA_REL"];
         $mnFolio = $mFila["FOLIO_371"];
         $msTomo = $mFila["TOMO_371"];
@@ -291,24 +294,31 @@
 
         $msHTML .= '</td></tr></table>'; //Fin de la tabla principal
 
-        if ($mnExtra == 0)
+        // Si es la primera partida del par, se añade un separador
+        if ($mnContadorPartidas % 2 != 0)
         {
-            $msHTML .= '<table style="padding-bottom: 15px;"><tr>'; //Tabla extra de separación
+            $msHTML .= '<table style="padding-bottom: 10px;"><tr>'; //Tabla extra de separación
             $msHTML .= '<td>&nbsp;</td>';
             $msHTML .= '</tr></table>';
-            $mnExtra = 1;
         }
         else
         {
-            $msHTML .= '<table width="100%" style="padding-bottom: 30px; padding-top:10px; text-align: center;"><tr>'; //Tabla extra de separación
+            // Si es la segunda partida, se agrega el folio, se imprime en el PDF y se crea nueva página
+            $msHTML .= '<table width="100%" style="padding-top:10px; text-align: center;"><tr>'; //Tabla de folio
             $msHTML .= '<td><h3>Folio ' . $mnFolio .'</h3></td>';
             $msHTML .= '</tr></table>';
-            $msHTML .= '<div style="break-after: page;"></div>';
-            $mnExtra = 0;
+            $pdf->setY(12);
+            $pdf->writeHTML($msHTML);
+            $msHTML = "";
+            $pdf->AddPage();
         }
+
+        if (!empty($msHTML))
+        {
+            $pdf->setY(12);
+            $pdf->writeHTML($msHTML);
+        } 
     }
     
-    $pdf->setY(12);
-    $pdf->writeHTML($msHTML);
     $pdf->Output();
 ?>
