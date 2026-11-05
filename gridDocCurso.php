@@ -39,7 +39,16 @@
             if (isset($_POST["UMOJN"]))
             {
                 $msCodigo = ($_POST["UMOJN"]);
-                fxBorrarDocCurso($msCodigo);
+
+				$miCarpeta = 'docCurso/'.$msCodigo;
+				$mArchivos = glob($miCarpeta . '/*');
+				foreach ($mArchivos as $archivo)
+				{
+					unlink($archivo);
+				}
+				rmdir($miCarpeta);
+
+				fxBorrarDocCurso($msCodigo);
                 fxAgregarBitacora($_SESSION["gsUsuario"], "UMO270A", $msCodigo, "", "Borrar", $msCodigo);
             }
 		?>

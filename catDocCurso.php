@@ -41,8 +41,6 @@
 			{
 				$msCodigo = $_POST["txtCodDocumentos"];
 				$msCurso = $_POST["txtCurso"];
-                if (isset($_POST["gridDocumentos"]))
-                    $gridDocumentos = $_POST["gridDocumentos"];
                 
                 if ($msCodigo == "")
                 {
@@ -53,22 +51,12 @@
                 else
                 {
                     fxModificarDocCurso ($msCodigo, $msCurso);
-                    fxBorrarDetDocCurso ($msCodigo);
                     $msBitacora = $msCurso . ", " . $msCurso;
                     fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO270A", $msCodigo, "", "Agregar", $msBitacora);
                 }
 				
-				$itemId = 1;
-				foreach($gridDocumentos as $Registro)
-				{
-					$archivo = $Registro['archivo'];
-                    $ruta = $Registro['ruta'];
-                    fxGuardarDetDocCurso ($msCodigo, $itemId, $archivo, $ruta);
-                    $itemId++;
-				}
-											
 				?>
-<meta http-equiv="Refresh" content="0;url=gridDocCurso.php" /><?php
+            <meta http-equiv="Refresh" content="0;url=gridDocCurso.php" /><?php
 			}
 			else
 			{

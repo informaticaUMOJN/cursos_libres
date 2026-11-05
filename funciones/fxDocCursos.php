@@ -29,6 +29,10 @@
 	function fxBorrarDocCurso($msCodigo)
 	{
 		$m_cnx_MySQL = fxAbrirConexion();
+		$msConsulta = "delete from UMO271A where DOCCURSO_REL = ?";
+		$mDatos = $m_cnx_MySQL->prepare($msConsulta);
+		$mDatos->execute([$msCodigo]);
+
 		$msConsulta = "delete from UMO270A where DOCCURSO_REL = ?";
 		$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 		$mDatos->execute([$msCodigo]);
