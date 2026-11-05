@@ -243,7 +243,7 @@ error_reporting(E_ALL);
 						</div>
 						
 						<div class = "form-group row">
-									<label for="cboBeca" class="col-sm-12 col-md-3 form-label">¿Beca?</label>
+									<label for="cboBeca" class="col-sm-12 col-md-3 form-label">Becado</label>
 									<div class="col-sm-12 col-md-3">
 										<div class = "radio">
 										<?php
@@ -346,33 +346,6 @@ error_reporting(E_ALL);
 		
 		return true;
 	}
-
-	function cambiaEstudiante(estudiante)
-	{
-		llenaCurso (estudiante);
-	}
-
-
-
-	function llenaCurso (estudiante)
-	{
-		var datos = new FormData();
-		datos.append('alumnoCrl', estudiante);
-
-		$.ajax({
-			url: 'funciones/fxDatosMatCurso.php',
-			type: 'post',
-			data: datos,
-			contentType: false,
-			processData: false,
-			success: function(response){
-				document.getElementById('cboCurso').value = response;
-				llenaCombos(response);
-			}
-		})
-	}
-
-
 
 	function cambiarBeca(valor) 
 	{

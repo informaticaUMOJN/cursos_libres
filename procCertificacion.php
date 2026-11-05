@@ -79,7 +79,7 @@ error_reporting(E_ALL);
 									<label for="cboCursoNoCertificado" class="col-sm-12 col-md-2 col-form-label">Curso Libre</label>
 									<div class="col-sm-12 col-md-7">
 										<?php
-											echo('<select class="form-control" id="cboCursoNoCertificado" name="cboCursoNoCertificado">');
+											echo('<select class="form-control" id="cboCursoNoCertificado" name="cboCursoNoCertificado" onchange="llenaGrid(this.value, 0)">');
 
 											$msConsulta = "SELECT CURSOS_REL, NOMBRE_190 FROM UMO190A WHERE ESTADO_190 = 1 ORDER BY NOMBRE_190";
 											$mDatos = $m_cnx_MySQL->prepare($msConsulta);
@@ -157,7 +157,7 @@ error_reporting(E_ALL);
 									<label for="cboCursoCertificado" class="col-sm-12 col-md-2 col-form-label">Curso Libre</label>
 									<div class="col-sm-12 col-md-7">
 										<?php
-											echo('<select class="form-control" id="cboCursoCertificado" name="cboCursoCertificado">');
+											echo('<select class="form-control" id="cboCursoCertificado" name="cboCursoCertificado" onchange="llenaGrid(this.value, 1)">');
 
 											$msConsulta = "SELECT CURSOS_REL, NOMBRE_190 FROM UMO190A WHERE ESTADO_190 = 1 ORDER BY NOMBRE_190";
 											$mDatos = $m_cnx_MySQL->prepare($msConsulta);
@@ -232,14 +232,23 @@ error_reporting(E_ALL);
 		datos.append('certificados', certificados);
 
 		$.ajax({
-			url: 'funciones/fxDatosMatCurso.php',
+			url: 'funciones/fxDatosCertificacion.php',
 			type: 'post',
 			data: datos,
 			contentType: false,
 			processData: false,
 			success: function(response){
-				document.getElementById('cboCurso').value = response;
-				llenaCombos(response);
+				datosGrid = JSON.parse(response);
+				if (certificados == 0)
+				{
+					$('#dgSinCertificar').datagrid({data: datosGrid});
+                	$('#dgSinCertificar').datagrid('reload');
+				}
+				else
+				{
+					$('#dgCertificado').datagrid({data: datosGrid});
+                	$('#dgCertificado').datagrid('reload');
+				}
 			}
 		})
 	}

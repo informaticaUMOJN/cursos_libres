@@ -28,7 +28,7 @@ if (isset($_POST["curso"]) and isset($_POST["certificados"]))
         {
             $msMatricula = trim($mFila["MATCURSO_REL"]);
             $msEstudiante = trim($mFila["ESTUDIANTE"]);
-            $msResultado .= '{"matricula":"' . $msMatricula . '","estudiante":"' . $msEstudiante . '"}';;
+            $msResultado .= '{"matricula":"' . $msMatricula . '","estudiante":"' . $msEstudiante . '"}';
         }
         else
         {
@@ -37,7 +37,7 @@ if (isset($_POST["curso"]) and isset($_POST["certificados"]))
             $msEstudiante = trim($mFila["ESTUDIANTE"]);
             $mnTomo = trim($mFila["TOMO_371"]);
             $mnFolio = trim($mFila["FOLIO_371"]);
-            $msResultado .= '{"matricula":"' . $msMatricula . '","estudiante":"' . $msEstudiante . '","tomo":"' . $mnTomo . '", "folio":"' . $mnFolio . '", "partida":"' . $mnPartida . '"}';;
+            $msResultado .= '{"matricula":"' . $msMatricula . '","estudiante":"' . $msEstudiante . '","tomo":"' . $mnTomo . '", "folio":"' . $mnFolio . '", "partida":"' . $mnPartida . '"}';
         }
 
         if ($i != $mnRegistros)
@@ -46,6 +46,7 @@ if (isset($_POST["curso"]) and isset($_POST["certificados"]))
         $i++;
     }
     
-    $msResultado = "]";
+    $msResultado .= "]";
+    echo($msResultado);
 }    
 ?>

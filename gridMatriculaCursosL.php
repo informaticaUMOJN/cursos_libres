@@ -63,56 +63,58 @@ error_reporting(E_ALL);
 							echo('<button id="print" type="button" class="btn btn-primary">Hoja de Matrícula</button>');
 						?>
 						
-						<table id="grid" class="table table-condensed table-hover table-striped" data-selection="true" data-multi-select="false" data-row-select="true" data-keep-selection="true" style="font-size:small">
-							<thead>
-								<tr>
-									<th data-column-id="MATCURSO_REL" data-order="desc" data-identifier="true" data-align="left" data-header-align="left" data-width="18%">Matrícula</th>
-									<th data-column-id="ESTUDIANTE" data-order="desc" data-align="left" data-header-align="left" data-width="30%">Nombre del Estudiante</th>
-									<th data-column-id="NOMBRE_200" data-align="left" data-header-align="left" data-width="20%">Curso libre</th>
-									<th data-column-id="FECHA_210" data-align="center" data-header-align="center" data-width="15%">Fecha</th>
-									<th data-column-id="ESTADO_210" data-align="center" data-header-align="center" data-width="15%">Estado</th>
-								</tr>
-							</thead>
-							<tbody>
-							<?php
-								$mDatos = fxDevuelveMatriculaCurso(1);
+						<div class="table-responsive">
+							<table id="grid" class="table table-condensed table-hover table-striped" data-selection="true" data-multi-select="false" data-row-select="true" data-keep-selection="true" style="font-size:small">
+								<thead>
+									<tr>
+										<th data-column-id="MATCURSO_REL" data-identifier="true" data-align="left" data-header-align="left" data-width="10%">Matrícula</th>
+										<th data-column-id="ESTUDIANTE" data-align="left" data-header-align="left" data-width="35%">Nombre del Estudiante</th>
+										<th data-column-id="NOMBRE_200" data-align="left" data-header-align="left" data-width="35%">Curso libre</th>
+										<th data-column-id="FECHA_210" data-align="center" data-header-align="center" data-width="10%">Fecha</th>
+										<th data-column-id="ESTADO_210" data-align="center" data-header-align="center" data-width="10%">Estado</th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php
+									$mDatos = fxDevuelveMatriculaCurso(1);
 
-								while ($mFila = $mDatos->fetch())
-								{
-									$msNombre = trim($mFila["NOMBRES_200"]) . ", " . trim($mFila["APELLIDOS_200"]);
-									//echo ("<td>" . $msNombre . " " . "</td>");
-									echo ("<tr>");
-									echo ("<td>" . $mFila["MATCURSO_REL"] . "</td>");
-									echo ("<td>" . $msNombre . "</td>");
-									echo ("<td>" . $mFila["NOMBRE_190"] . "</td>");
-									$fecha = date_create_from_format('Y-m-d', $mFila["FECHA_210"]);
-									echo ("<td>" . date_format($fecha, 'd-m-Y') . "</td>");
-									echo "<td>";
-										switch($mFila["ESTADO_210"]) {
-											case 0:
-												echo "Pre-matriculado";
-												break;
-											case 1:
-												echo "Activo";
-												break;
-											case 2:
-												echo "Retirado";
-												break;
-											case 3:
-												echo "Certificado";
-												break;
-											default:
-												echo "Desconocido";
-												break;
-										}
-										echo "</td>";
+									while ($mFila = $mDatos->fetch())
+									{
+										$msNombre = trim($mFila["NOMBRES_200"]) . " " . trim($mFila["APELLIDOS_200"]);
+										//echo ("<td>" . $msNombre . " " . "</td>");
+										echo ("<tr>");
+										echo ("<td>" . $mFila["MATCURSO_REL"] . "</td>");
+										echo ("<td>" . $msNombre . "</td>");
+										echo ("<td>" . $mFila["NOMBRE_190"] . "</td>");
+										$fecha = date_create_from_format('Y-m-d', $mFila["FECHA_210"]);
+										echo ("<td>" . date_format($fecha, 'd-m-Y') . "</td>");
+										echo "<td>";
+											switch($mFila["ESTADO_210"]) {
+												case 0:
+													echo "Pre-matriculado";
+													break;
+												case 1:
+													echo "Activo";
+													break;
+												case 2:
+													echo "Retirado";
+													break;
+												case 3:
+													echo "Certificado";
+													break;
+												default:
+													echo "Desconocido";
+													break;
+											}
+											echo "</td>";
 
-									echo ("</tr>");
+										echo ("</tr>");
+									}
 								}
-							}
-							?>
-							</tbody>
-						</table>
+								?>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
             </div>
