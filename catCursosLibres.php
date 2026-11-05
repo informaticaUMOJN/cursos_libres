@@ -483,4 +483,6 @@ function fxCohorte() {
     resultado = mesFecha + "-" + annoFecha;
     document.getElementById("txtCohorte").value = resultado;
 }
+
+window.onload = function() {fxCohorte();}
 </script>
