@@ -10,7 +10,7 @@
 		$mnNumero = intval($mFila["Ultimo"]);
 		$mnNumero += 1;
 		$mnLongitud = strlen($mnNumero);
-		$msCodigo = "UNI" . str_repeat("0", 4 - $mnLongitud) . trim($mnNumero);
+		$msCodigo = "UCL" . str_repeat("0", 4 - $mnLongitud) . trim($mnNumero);
 		$msConsulta = "insert into UMO360A (UNIVERSIDADCL_REL, MUNICIPIO_REL, NOMBRE_360, TIPO_360) values(?, ?, ?, ?)";
 		$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 		$mDatos->execute([$msCodigo, $msMunicipio, $msNombre, $mnTipo]);

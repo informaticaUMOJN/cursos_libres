@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 	session_start();
 	if (!isset($_SESSION["gnVerifica"]) or $_SESSION["gnVerifica"] != 1)
 	{
@@ -94,50 +91,47 @@ error_reporting(E_ALL);
 				$msCelularRef    = $_POST["txtCelularRef"];
 				$msDireccionRef  = $_POST["txtDireccionRef"];
 
-				try {
-					if ($msCodigo == "") {
-						$msCodigo = fxGuardarAlumnos($msUniversidad, $msMunicipio, $msColegio, $msFechaIns, $msNombres,	$msApellidos,
-						$msNacionalidad, $msNumeroUnico, $msCedula, $msFechaNac, $msTelefono, $msCelular, $msEmail, $msDireccion,
-						$msSexo, $mnPeso, $mnAltura, $msSangre, $mbDiscapacidad, $msDeficiencia, $mnEstadoCivil, $mnHijos,
-						$mnNivelEstudio, $mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual, $msEntidad, $msIdioma, $msDominioIdioma,
-						$mnMedio, $msNombrePadre, $msNombreMadre, $mbTrabajaPadre, $mbTrabajaMadre, $msTrabajoPadre, $msTrabajoMadre,
-						$msNombreRef, $msCedulaRef, $msCelularRef, $msDireccionRef);
+				if ($msCodigo == "") 
+				{
+					$msCodigo = fxGuardarAlumnos($msUniversidad, $msMunicipio, $msColegio, $msFechaIns, $msNombres,	$msApellidos,
+					$msNacionalidad, $msNumeroUnico, $msCedula, $msFechaNac, $msTelefono, $msCelular, $msEmail, $msDireccion,
+					$msSexo, $mnPeso, $mnAltura, $msSangre, $mbDiscapacidad, $msDeficiencia, $mnEstadoCivil, $mnHijos,
+					$mnNivelEstudio, $mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual, $msEntidad, $msIdioma, $msDominioIdioma,
+					$mnMedio, $msNombrePadre, $msNombreMadre, $mbTrabajaPadre, $mbTrabajaMadre, $msTrabajoPadre, $msTrabajoMadre,
+					$msNombreRef, $msCedulaRef, $msCelularRef, $msDireccionRef);
 
-						$msBitacora = $msCodigo . "; " . $msUniversidad . "; " . $msMunicipio . "; " . $msColegio . "; " . $msFechaIns . "; ";
-						$msBitacora .= $msNombres . "; " . $msApellidos . "; " . $msNacionalidad . "; " . $msNumeroUnico . "; " . $msCedula . "; ";
-						$msBitacora .= $msFechaNac . "; " . $msTelefono . "; " . $msCelular . "; " . $msEmail . "; " . $msDireccion . "; ";
-						$msBitacora .= $msSexo . "; " . $mnPeso . "; " . $mnAltura . "; " . $msSangre . "; " . $mbDiscapacidad . "; ";
-						$msBitacora .= $msDeficiencia . "; " . $mnEstadoCivil . "; " . $mnHijos . "; " . $mnNivelEstudio . "; " . $mbLaboral . "; ";
-						$msBitacora .= $msOcupacion . "; " . $mnSector . "; " . $mnIngresoMensual . "; " . $msEntidad . "; " . $msIdioma . "; ";
-						$msBitacora .= $msDominioIdioma . "; " . $mnMedio . "; " . $msNombrePadre . "; " . $msNombreMadre . "; " . $mbTrabajaPadre . "; ";
-						$msBitacora .= $mbTrabajaMadre . "; " . $msTrabajoPadre . "; " . $msTrabajoMadre . "; " . $msNombreRef . "; " . $msCedulaRef . "; ";
-						$msBitacora .= $msCelularRef . "; " . $msDireccionRef;
+					$msBitacora = $msCodigo . "; " . $msUniversidad . "; " . $msMunicipio . "; " . $msColegio . "; " . $msFechaIns . "; ";
+					$msBitacora .= $msNombres . "; " . $msApellidos . "; " . $msNacionalidad . "; " . $msNumeroUnico . "; " . $msCedula . "; ";
+					$msBitacora .= $msFechaNac . "; " . $msTelefono . "; " . $msCelular . "; " . $msEmail . "; " . $msDireccion . "; ";
+					$msBitacora .= $msSexo . "; " . $mnPeso . "; " . $mnAltura . "; " . $msSangre . "; " . $mbDiscapacidad . "; ";
+					$msBitacora .= $msDeficiencia . "; " . $mnEstadoCivil . "; " . $mnHijos . "; " . $mnNivelEstudio . "; " . $mbLaboral . "; ";
+					$msBitacora .= $msOcupacion . "; " . $mnSector . "; " . $mnIngresoMensual . "; " . $msEntidad . "; " . $msIdioma . "; ";
+					$msBitacora .= $msDominioIdioma . "; " . $mnMedio . "; " . $msNombrePadre . "; " . $msNombreMadre . "; " . $mbTrabajaPadre . "; ";
+					$msBitacora .= $mbTrabajaMadre . "; " . $msTrabajoPadre . "; " . $msTrabajoMadre . "; " . $msNombreRef . "; " . $msCedulaRef . "; ";
+					$msBitacora .= $msCelularRef . "; " . $msDireccionRef;
 
-						fxAgregarBitacora($_SESSION["gsUsuario"], "UMO200A", $msCodigo, "", "Agregar", $msBitacora);
-					} else {
-						fxModificarAlumnos($msCodigo, $msUniversidad, $msMunicipio, $msColegio, $msFechaIns, $msNombres,	$msApellidos,
-						$msNacionalidad, $msNumeroUnico, $msCedula, $msFechaNac, $msTelefono, $msCelular, $msEmail, $msDireccion,
-						$msSexo, $mnPeso, $mnAltura, $msSangre, $mbDiscapacidad, $msDeficiencia, $mnEstadoCivil, $mnHijos,
-						$mnNivelEstudio, $mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual, $msEntidad, $msIdioma, $msDominioIdioma,
-						$mnMedio, $msNombrePadre, $msNombreMadre, $mbTrabajaPadre, $mbTrabajaMadre, $msTrabajoPadre, $msTrabajoMadre,
-						$msNombreRef, $msCedulaRef, $msCelularRef, $msDireccionRef);
+					fxAgregarBitacora($_SESSION["gsUsuario"], "UMO200A", $msCodigo, "", "Agregar", $msBitacora);
+				} else {
+					fxModificarAlumnos($msCodigo, $msUniversidad, $msMunicipio, $msColegio, $msFechaIns, $msNombres, $msApellidos,
+					$msNacionalidad, $msNumeroUnico, $msCedula, $msFechaNac, $msTelefono, $msCelular, $msEmail, $msDireccion,
+					$msSexo, $mnPeso, $mnAltura, $msSangre, $mbDiscapacidad, $msDeficiencia, $mnEstadoCivil, $mnHijos,
+					$mnNivelEstudio, $mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual, $msEntidad, $msIdioma, $msDominioIdioma,
+					$mnMedio, $msNombrePadre, $msNombreMadre, $mbTrabajaPadre, $mbTrabajaMadre, $msTrabajoPadre, $msTrabajoMadre,
+					$msNombreRef, $msCedulaRef, $msCelularRef, $msDireccionRef);
 
-						$msBitacora = $msCodigo . "; " . $msUniversidad . "; " . $msMunicipio . "; " . $msColegio . "; " . $msFechaIns . "; ";
-						$msBitacora .= $msNombres . "; " . $msApellidos . "; " . $msNacionalidad . "; " . $msNumeroUnico . "; " . $msCedula . "; ";
-						$msBitacora .= $msFechaNac . "; " . $msTelefono . "; " . $msCelular . "; " . $msEmail . "; " . $msDireccion . "; ";
-						$msBitacora .= $msSexo . "; " . $mnPeso . "; " . $mnAltura . "; " . $msSangre . "; " . $mbDiscapacidad . "; ";
-						$msBitacora .= $msDeficiencia . "; " . $mnEstadoCivil . "; " . $mnHijos . "; " . $mnNivelEstudio . "; " . $mbLaboral . "; ";
-						$msBitacora .= $msOcupacion . "; " . $mnSector . "; " . $mnIngresoMensual . "; " . $msEntidad . "; " . $msIdioma . "; ";
-						$msBitacora .= $msDominioIdioma . "; " . $mnMedio . "; " . $msNombrePadre . "; " . $msNombreMadre . "; " . $mbTrabajaPadre . "; ";
-						$msBitacora .= $mbTrabajaMadre . "; " . $msTrabajoPadre . "; " . $msTrabajoMadre . "; " . $msNombreRef . "; " . $msCedulaRef . "; ";
-						$msBitacora .= $msCelularRef . "; " . $msDireccionRef;
+					$msBitacora = $msCodigo . "; " . $msUniversidad . "; " . $msMunicipio . "; " . $msColegio . "; " . $msFechaIns . "; ";
+					$msBitacora .= $msNombres . "; " . $msApellidos . "; " . $msNacionalidad . "; " . $msNumeroUnico . "; " . $msCedula . "; ";
+					$msBitacora .= $msFechaNac . "; " . $msTelefono . "; " . $msCelular . "; " . $msEmail . "; " . $msDireccion . "; ";
+					$msBitacora .= $msSexo . "; " . $mnPeso . "; " . $mnAltura . "; " . $msSangre . "; " . $mbDiscapacidad . "; ";
+					$msBitacora .= $msDeficiencia . "; " . $mnEstadoCivil . "; " . $mnHijos . "; " . $mnNivelEstudio . "; " . $mbLaboral . "; ";
+					$msBitacora .= $msOcupacion . "; " . $mnSector . "; " . $mnIngresoMensual . "; " . $msEntidad . "; " . $msIdioma . "; ";
+					$msBitacora .= $msDominioIdioma . "; " . $mnMedio . "; " . $msNombrePadre . "; " . $msNombreMadre . "; " . $mbTrabajaPadre . "; ";
+					$msBitacora .= $mbTrabajaMadre . "; " . $msTrabajoPadre . "; " . $msTrabajoMadre . "; " . $msNombreRef . "; " . $msCedulaRef . "; ";
+					$msBitacora .= $msCelularRef . "; " . $msDireccionRef;
 
-						fxAgregarBitacora($_SESSION["gsUsuario"], "UMO200A", $msCodigo, "", "Modificar", $msBitacora);
-					}
-				} catch (Exception $e) {
-					echo json_encode(["status"=>"error","msg"=>$e->getMessage()]);
+					fxAgregarBitacora($_SESSION["gsUsuario"], "UMO200A", $msCodigo, "", "Modificar", $msBitacora);
 				}
-				exit;
+				?><meta http-equiv="Refresh" content="0;url=gridAlumnos.php"/><?php
 			}
 			else
 			{
@@ -257,7 +251,7 @@ error_reporting(E_ALL);
     	<div id="DivContenido">
 			<div class = "row">
                 <div class="col-xs-12 col-md-12">
-					<form name="catAlumnos" id="catAlumnos" method="post" enctype="multipart/form-data">
+					<form name="catAlumnos" id="catAlumnos" method="post" action="catAlumnos.php" enctype="multipart/form-data">
 						<div class = "row">
 							<div class="col-auto col-md-11">
 								<input type="submit" id="Guardar" name="Guardar" value="Guardar" class="btn btn-primary"/>
@@ -555,7 +549,7 @@ error_reporting(E_ALL);
 										<div class="col-sm-12 col-md-4">
 										<?php
 											if ($mbDiscapacidad == 0)
-												echo('<input type="text" class="form-control" id="txtDeficiencia" name="txtDeficiencia" maxlength="90" value="' . $msDeficiencia . '" disabled />');
+												echo('<input type="text" class="form-control" id="txtDeficiencia" name="txtDeficiencia" maxlength="90" value="' . $msDeficiencia . '" readonly />');
 											else 
 												echo('<input type="text" class="form-control" id="txtDeficiencia" name="txtDeficiencia" maxlength="90" value="' . $msDeficiencia . '" />');
 										?>
@@ -596,6 +590,21 @@ error_reporting(E_ALL);
 														echo("<option value='5' selected>Doctor</option>");
 													else
 														echo("<option value='5'>Doctor</option>");
+
+													if ($mnNivelEstudio == 6)
+														echo("<option value='6' selected>Médico</option>");
+													else
+														echo("<option value='6'>Médico</option>");
+
+													if ($mnNivelEstudio == 7)
+														echo("<option value='7' selected>Especialista</option>");
+													else
+														echo("<option value='7'>Especialista</option>");
+
+													if ($mnNivelEstudio == 8)
+														echo("<option value='8' selected>Master</option>");
+													else
+														echo("<option value='8'>Master</option>");
 												?>
 											</select>
 										</div>
@@ -605,7 +614,7 @@ error_reporting(E_ALL);
 										<div class="col-sm-12 col-md-7">
 											<select class="form-control" id="cboColegio" name="cboColegio">
 												<?php
-													echo('<option value="">Sin colegio</option>');
+													echo('<option value="CCL0000">Sin colegio</option>');
 
 													$msConsulta = "select COLEGIOCL_REL, NOMBRE_350 from UMO350A order by NOMBRE_350";
 													$mDatos = $m_cnx_MySQL->prepare($msConsulta);
@@ -646,7 +655,7 @@ error_reporting(E_ALL);
 										<div class="col-sm-12 col-md-7">
 											<select class="form-control" id="cboUniversidad" name="cboUniversidad">
 												<?php
-													echo('<option value="">Sin universidad</option>');
+													echo('<option value="UCL0000">Sin universidad</option>');
 
 													$msConsulta = "select UNIVERSIDADCL_REL, NOMBRE_360 from UMO360A order by NOMBRE_360";
 													$mDatos = $m_cnx_MySQL->prepare($msConsulta);
@@ -864,7 +873,7 @@ error_reporting(E_ALL);
 										if ($mbLaboral == 1)
 											echo('<input type="text" class="form-control" id="txtOcupacion" name="txtOcupacion" value="' . $msOcupacion . '" />');
 										else
-											echo('<input type="text" class="form-control" id="txtOcupacion" name="txtOcupacion" value="" disabled />');
+											echo('<input type="text" class="form-control" id="txtOcupacion" name="txtOcupacion" value="" readonly />');
 									?>
 									</div>
 								</div>
@@ -954,7 +963,7 @@ error_reporting(E_ALL);
 										if ($mbLaboral == 1)
 											echo('<input type="number" class="form-control" id="txnSalario" name="txnSalario" value="' . $mnIngresoMensual . '" />');
 										else
-											echo('<input type="number" class="form-control" id="txnSalario" name="txnSalario" value="0" disabled />');
+											echo('<input type="number" class="form-control" id="txnSalario" name="txnSalario" value="0" readonly />');
 									?>
 									</div>	
 								</div>
@@ -1090,9 +1099,10 @@ error_reporting(E_ALL);
 														<option value="0">Diploma de bachiller</option>
 														<option value="1">Documento de identidad</option>
 														<option value="2">Acta de nacimiento</option>
-														<option value="3">Hoja de matrícula externa</option>
+														<option value="3">Hoja de matrícula</option>
 														<option value="4">Certificado del curso inscrito</option>
 														<option value="5">Otro certificado o título</option>
+														<option value="6">Otro documento</option>
 													</select>
 												</td>
 												<td></td>
@@ -1280,29 +1290,13 @@ error_reporting(E_ALL);
 			calcularEdad();
 	}
 
-		function fxOptIdioma()
-	{
-		var mbIdioma = document.getElementById('optOtroIdioma1').checked;
-
-		if (mbIdioma)
-		{
-			document.getElementById('txtIdioma').disabled = false;
-			document.getElementById('txtDominioIdioma').disabled = false;
-		}
-		else
-		{
-			document.getElementById('txtIdioma').disabled = true;
-			document.getElementById('txtDominioIdioma').disabled = true;
-		}
-	}
-	
 	function fxOptDiscapacidad()
 	{
 		var discapacidad = document.getElementById('optDiscapacidad1').checked;
 		if (discapacidad)
-			document.getElementById('txtDeficiencia').disabled = false;
+			document.getElementById('txtDeficiencia').removeAttribute('readonly');
 		else
-			document.getElementById('txtDeficiencia').disabled = true;
+			document.getElementById('txtDeficiencia').setAttribute('readonly', 'readonly');
 	}
 
 	function fxOptLaboral() {
@@ -1325,10 +1319,10 @@ error_reporting(E_ALL);
 			}
 
 			// Habilitar selects
-			optSector.disabled = false;
-			optEntidad.disabled = false;
-			document.getElementById('txtOcupacion').disabled = false;
-			document.getElementById('txnSalario').disabled = false;
+			optSector.removeAttribute('readonly');
+			optEntidad.removeAttribute('readonly');
+			document.getElementById('txtOcupacion').removeAttribute('readonly');
+			document.getElementById('txnSalario').removeAttribute('readonly');
 
 		} else {
 			// Desempleado: solo "No aplica"
@@ -1336,10 +1330,10 @@ error_reporting(E_ALL);
 			optEntidad.innerHTML = "<option value='0' selected>No aplica</option>";
 
 			// Deshabilitar selects y otros campos
-			optSector.disabled = true;
-			optEntidad.disabled = true;
-			document.getElementById('txtOcupacion').disabled = true;
-			document.getElementById('txnSalario').disabled = true;
+			optSector.setAttribute('readonly', 'readonly');
+			optEntidad.setAttribute('readonly', 'readonly');
+			document.getElementById('txtOcupacion').setAttribute('readonly', 'readonly');
+			document.getElementById('txnSalario').setAttribute('readonly', 'readonly');
 		}
 	}
 
@@ -1480,71 +1474,5 @@ error_reporting(E_ALL);
 				}
 			}
 		});
-	});
-
-		
-	$('form').submit(function(e){ 
-		e.preventDefault(); 
-
-		if (verificarFormulario() == true) { 
-
-			let datos = {
-				txtAlumno: document.getElementById("txtAlumno").value,
-				txtNumeroUnico: document.getElementById("txtNumeroUnico").value,
-				dtpFechaIns: document.getElementById("dtpFechaIns").value,
-				cboColegio: document.getElementById("cboColegio").value,
-				cboUniversidad: document.getElementById("cboUniversidad").value,
-				txtNombres: document.getElementById("txtNombres").value,
-				txtApellidos: document.getElementById("txtApellidos").value,
-				dtpFechaNac: document.getElementById("dtpFechaNac").value,
-				cboMunicipio: document.getElementById("cboMunicipio").value,
-				txtCedula: document.getElementById("txtCedula").value,
-				txtDeficiencia: document.getElementById("txtDeficiencia").value,
-				optSexo: document.getElementById("optSexo1").checked ? "M" : "F",
-				txnPeso: document.getElementById("txnPeso").value,
-				cboTipoSangre: document.getElementById("cboTipoSangre").value,
-				txnAltura: document.getElementById("txnAltura").value,
-
-				cboEstadoCivil: document.getElementById("cboEstadoCivil").value,
-				txnHijos: document.getElementById("txnHijos").value,
-				optDiscapacidad: document.getElementById("optDiscapacidad1").checked ? "1" : "0",
-				cboNivelEstudio: document.getElementById("cboNivelEstudio").value,
-				txtTelefono: document.getElementById("txtTelefono").value,
-				txtCelular: document.getElementById("txtCelular").value,
-				txtEmail: document.getElementById("txtEmail").value,
-				txtIdioma: document.getElementById("txtIdioma").value,
-				txtDominioIdioma: document.getElementById("txtDominioIdioma").value,
-				txtDireccion: document.getElementById("txtDireccion").value,
-				cboMedio: document.getElementById("cboMedio").value,
-				optLaboral: document.getElementById("optLaboral1").checked ? "1" : "0",
-				txtOcupacion: document.getElementById("txtOcupacion").value,
-				txnSalario: document.getElementById("txnSalario").value,
-				optSector: document.getElementById("optSector").value,
-				optEntidad: document.getElementById("optEntidad").value,
-
-				txtNombrePadre: document.getElementById("txtNombrePadre").value,
-				optTrabajaPadre: document.getElementById("optTrabajaPadre1").checked ? 1 : 0,
-				txtTrabajoPadre: document.getElementById("txtTrabajoPadre").value,
-
-				txtNombreMadre: document.getElementById("txtNombreMadre").value,
-				optTrabajaMadre: document.getElementById("optTrabajaMadre1").checked ? 1 : 0,
-				txtTrabajoMadre: document.getElementById("txtTrabajoMadre").value,
-
-				txtNombreRef: document.getElementById("txtNombreRef").value,
-				txtCedulaRef: document.getElementById("txtCedulaRef").value,
-				txtCelularRef: document.getElementById("txtCelularRef").value,
-				txtDireccionRef: document.getElementById("txtDireccionRef").value,
-				txtNacionalidad: document.getElementById("txtNacionalidad").value,
-			};
-	$.ajax({
-		url: 'catAlumnos.php',
-		type: 'POST',
-		data: datos,
-	//  dataType: 'json', 
-	beforeSend: function(){console.log(datos)}
-	})
-	.done(function(){location.href="gridAlumnos.php"})
-				.fail(function(){console.log('Error')});
-		} 
 	});
 </script>

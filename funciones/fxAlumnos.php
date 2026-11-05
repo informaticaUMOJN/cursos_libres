@@ -40,22 +40,22 @@ function fxModificarAlumnos($msCodigo, $msUniversidad, $msMunicipio, $msColegio,
 $msFechaNac, $msTelefono, $msCelular, $msEmail, $msDireccion, $msSexo, $mnPeso, $mnAltura, $msSangre, $mbDiscapacidad, $msDeficiencia, $mnEstadoCivil, $mnHijos,
 $mnNivelEstudio, $mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual, $msEntidad, $msIdioma, $msDominioIdioma, $mnMedio, 
 $msNombrePadre, $msNombreMadre, $mbTrabajaPadre, $mbTrabajaMadre, $msTrabajoPadre, $msTrabajoMadre ,$msNombreRef, $msCedulaRef, $msCelularRef, $msDireccionRef)
-	{
-		$m_cnx_MySQL = fxAbrirConexion();
-		$msConsulta = "update UMO200A set UNIVERSIDADCL_REL = ?, MUNICIPIO_REL = ?, COLEGIOCL_REL = ?, FECHAINS_200 = ?, NOMBRES_200 = ?, ";
-   		$msConsulta .= "APELLIDOS_200 = ?, NACIONALIDAD_200 = ?, NUMEROUNICO_200 = ?, CEDULA_200 = ?, FECHANAC_200 = ?, TELEFONO_200 = ?, CELULAR_200 = ?, ";
-   		$msConsulta .= "EMAIL_200 = ?, DIRECCION_200 = ?, SEXO_200 = ?, PESO_200 = ?, ALTURA_200 = ?, SANGRE_200 = ?, DISCAPACIDAD_200 = ?, DEFICIENCIA_200 = ?, ";
-   		$msConsulta .= "ESTADOCIVIL_200 = ?, HIJOS_200 = ?, NIVELESTUDIOS_200 = ?, CONDICIONLAB_200 = ?, OCUPACION_200 = ?, SECTOR_200 = ?, INGRESOMENSUAL_200 = ?, ";
-   		$msConsulta .= "ENTIDADLAB_200 = ?, IDIOMA_200 = ?, DOMINIOIDIOMA_200 = ?, MEDIO_200 = ?, NPADRE_200 = ?, NMADRE_200 = ?, PTRABAJA_200 = ?, ";
-   		$msConsulta .= "MTRABAJA_200 = ?, PTRABAJO_200 = ?, MTRABAJO_200 = ?, NOMBREREF_200 = ?, CEDULAREF_200 = ?, CELULARREF_200 = ?, DIRECCIONREF_200 = ? ";
-		$msConsulta .= "where ALUMNO_REL = ?";
-	
-		$mDatos = $m_cnx_MySQL->prepare($msConsulta);
-		$mDatos->execute([$msUniversidad, $msMunicipio, $msColegio, $msFechaIns, $msNombres, $msApellidos, $msNacionalidad, $msNumeroUnico, $msCedula,
-		$msFechaNac, $msTelefono, $msCelular, $msEmail, $msDireccion, $msSexo, $mnPeso, $mnAltura, $msSangre, $mbDiscapacidad, $msDeficiencia, $mnEstadoCivil, $mnHijos,
-		$mnNivelEstudio, $mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual, $msEntidad, $msIdioma, $msDominioIdioma, $mnMedio, 
-		$msNombrePadre, $msNombreMadre, $mbTrabajaPadre, $mbTrabajaMadre, $msTrabajoPadre, $msTrabajoMadre ,$msNombreRef, $msCedulaRef, $msCelularRef, $msDireccionRef, $msCodigo]);
-	}
+{
+	$m_cnx_MySQL = fxAbrirConexion();
+	$msConsulta = "update UMO200A set UNIVERSIDADCL_REL = ?, MUNICIPIO_REL = ?, COLEGIOCL_REL = ?, FECHAINS_200 = ?, NOMBRES_200 = ?, ";
+	$msConsulta .= "APELLIDOS_200 = ?, NACIONALIDAD_200 = ?, NUMEROUNICO_200 = ?, CEDULA_200 = ?, FECHANAC_200 = ?, TELEFONO_200 = ?, CELULAR_200 = ?, ";
+	$msConsulta .= "EMAIL_200 = ?, DIRECCION_200 = ?, SEXO_200 = ?, PESO_200 = ?, ALTURA_200 = ?, SANGRE_200 = ?, DISCAPACIDAD_200 = ?, DEFICIENCIA_200 = ?, ";
+	$msConsulta .= "ESTADOCIVIL_200 = ?, HIJOS_200 = ?, NIVELESTUDIOS_200 = ?, CONDICIONLAB_200 = ?, OCUPACION_200 = ?, SECTOR_200 = ?, INGRESOMENSUAL_200 = ?, ";
+	$msConsulta .= "ENTIDADLAB_200 = ?, IDIOMA_200 = ?, DOMINIOIDIOMA_200 = ?, MEDIO_200 = ?, NPADRE_200 = ?, NMADRE_200 = ?, PTRABAJA_200 = ?, ";
+	$msConsulta .= "MTRABAJA_200 = ?, PTRABAJO_200 = ?, MTRABAJO_200 = ?, NOMBREREF_200 = ?, CEDULAREF_200 = ?, CELULARREF_200 = ?, DIRECCIONREF_200 = ? ";
+	$msConsulta .= "where ALUMNO_REL = ?";
+
+	$mDatos = $m_cnx_MySQL->prepare($msConsulta);
+	$mDatos->execute([$msUniversidad, $msMunicipio, $msColegio, $msFechaIns, $msNombres, $msApellidos, $msNacionalidad, $msNumeroUnico, $msCedula,
+	$msFechaNac, $msTelefono, $msCelular, $msEmail, $msDireccion, $msSexo, $mnPeso, $mnAltura, $msSangre, $mbDiscapacidad, $msDeficiencia, $mnEstadoCivil, $mnHijos,
+	$mnNivelEstudio, $mbLaboral, $msOcupacion, $mnSector, $mnIngresoMensual, $msEntidad, $msIdioma, $msDominioIdioma, $mnMedio, 
+	$msNombrePadre, $msNombreMadre, $mbTrabajaPadre, $mbTrabajaMadre, $msTrabajoPadre, $msTrabajoMadre ,$msNombreRef, $msCedulaRef, $msCelularRef, $msDireccionRef, $msCodigo]);
+}
 	
 function fxDevuelveAlumnos($mbLlenaGrid, $msCodigo = "")
 {

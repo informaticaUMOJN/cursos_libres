@@ -41,52 +41,33 @@
 			if (isset($_POST["Guardar"]))
 			{
 				$msCodigo = $_POST["txtCursos"];
+				$msDocente = $_POST ["cboDocente"];
 				$mnTipoC = $_POST["cboTipoCurso"];
 				$msNombre = $_POST["txtNombre"];
 				$mnTurno = $_POST["optTurno"];
-				$mnHoraInicio = $_POST["txtHrsInicio"];
-				$mnHoraFin = isset($_POST["txtHrsFin"]) ? $_POST["txtHrsFin"] : "";
-				$mnTotalHoras = isset($_POST["txtTHrs"]) ? $_POST["txtTHrs"] : "";
-				$mnFechaInicio = $_POST["dtpFechaInicio"];
+				$mnHoraInicio = $_POST["dtpHoraIni"];
+				$mnHoraFin = $_POST["dtpHoraFin"];
+				$mnTotalHoras = $_POST["txnTotalHoras"];
+				$mnFechaInicio = $_POST["dtpFechaIni"];
 				$mnFechaFin = $_POST ["dtpFechaFin"];
-				$msDocente = $_POST ["cboDocente"];
 				$mnDia = isset($_POST["dias"]) ? implode(",", $_POST["dias"]) : null;
 				$mnModalidad = $_POST["optModalidad"];
+				$mnAcreditable = $_POST["optAcreditable"];
 				$mnEstado = $_POST["optEstado"];
-				 $mnMoneda = 0;
-				 $valorCertificado = 0;
-				 $matricula = 0;
-				 $valorMora = 0;
-				 $mensualidad = 0;
+				$msCohorte = $_POST["txtCohorte"];
+				$msPrograma = $_POST["txtPrograma"];
+				
+				if ($msCodigo == "") 
 				{
-					if ($msCodigo == "") 
-					{
-						$msCodigo = fxGuardarCursosLibres($mnTipoC, $msNombre, $mnTurno, $mnHoraInicio,$mnHoraFin,$mnTotalHoras, $mnFechaInicio, $mnFechaFin, $msDocente, $mnDia, $mnModalidad, $mnEstado );
-						$msBitacora = $msCodigo . "; ".$mnTipoC.";" . $msNombre.  ";". $mnTurno . ";". $mnHoraInicio. ";".$mnHoraFin.";".$mnTotalHoras.";". $mnFechaInicio.";". $mnFechaFin.";". $msDocente. ";" . $mnDia. ";" .$mnModalidad. ";" . $mnEstado;
-						fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO190A", $msCodigo, "", "Agregar", $msBitacora);
-					
-						$valorCertificado = isset($_POST["valorCertificado"]) ? floatval($_POST["valorCertificado"]) : 0;
-						$matricula = isset($_POST["valorCurso"]) ? floatval($_POST["valorCurso"]) : 0;
-						$mensualidad = isset($_POST["mensualidad"]) ? floatval($_POST["mensualidad"]) : 0;
-
-						$mnMoneda = isset($_POST["optMoneda"]) ? intval($_POST["optMoneda"]) : 0;
-						$mnEstado = isset($_POST["optEstado"]) ? intval($_POST["optEstado"]) : 1;
-						fxGenerarCobrosCurso($msCodigo, $valorCertificado, $matricula, $mensualidad, 1, $mnModalidad, $mnFechaInicio, $mnMoneda, $mnEstado);
-
-
-					}
-					else
-					{
-						fxModificarCursosLibres($msCodigo,$mnTipoC, $msNombre, $mnTurno, $mnHoraInicio,$mnHoraFin, $mnTotalHoras,$mnFechaInicio, $mnFechaFin, $msDocente, $mnDia, $mnModalidad, $mnEstado );
-						$msBitacora = $msCodigo . "; " .$mnTipoC.";". $msNombre.  ";". $mnTurno . ";". $mnHoraInicio. ";".$mnHoraFin.";". $mnTotalHoras.";".$mnFechaInicio.";". $mnFechaFin.";". $msDocente. ";" . $mnDia. ";" .$mnModalidad. ";". $mnEstado;
-						
-						$valorCertificado = isset($_POST["valorCertificado"]) ? floatval($_POST["valorCertificado"]) : 0;
-						$matricula        = isset($_POST["valorCurso"]) ? floatval($_POST["valorCurso"]) : 0;
-						$mensualidad      = isset($_POST["mensualidad"]) ? floatval($_POST["mensualidad"]) : 0;
-						
-						fxModificarCobrosCurso($msCodigo, $valorCertificado, /*$valorMora,*/ $matricula, $mensualidad, $turno = 1, $mnModalidad, $mnFechaInicio);
-						fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO190A", $msCodigo, "", "Modificar", $msBitacora);
-					}
+					$msCodigo = fxGuardarCursosLibres($msDocente, $mnTipoC, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mnDia, $mnModalidad, $mnAcreditable, $mnEstado, $msCohorte, $msPrograma );
+					$msBitacora = $msCodigo . "; ".$mnTipoC.";" . $msNombre.  ";". $mnTurno . ";". $mnHoraInicio. ";".$mnHoraFin.";".$mnTotalHoras.";". $mnFechaInicio.";". $mnFechaFin.";". $msDocente. ";" . $mnDia. ";" .$mnModalidad. ";" . $mnAcreditable . ";" . $mnEstado;
+					fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO190A", $msCodigo, "", "Agregar", $msBitacora);
+				}
+				else
+				{
+					fxModificarCursosLibres($msCodigo, $msDocente, $mnTipoC, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mnDia, $mnModalidad, $mnAcreditable, $mnEstado, $msCohorte, $msPrograma );
+					$msBitacora = $msCodigo . "; " .$mnTipoC.";". $msNombre.  ";". $mnTurno . ";". $mnHoraInicio. ";".$mnHoraFin.";". $mnTotalHoras.";".$mnFechaInicio.";". $mnFechaFin.";". $msDocente. ";" . $mnDia. ";" .$mnModalidad. ";". $mnAcreditable . ";" . $mnEstado;
+					fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO190A", $msCodigo, "", "Modificar", $msBitacora);
 				}
 				?><meta http-equiv="Refresh" content="0;url=gridCursosLibres.php"/><?php
 			}
@@ -101,29 +82,25 @@
 				{
 					$mDatos = fxDevuelveCursosLibres(0, $msCodigo);
 					$mFila = $mDatos->fetch();
+					$msDocente = $mFila["DOCENTECL_REL"];
 					$mnTipoC = $mFila["TIPOC_190"];
 					$msNombre = $mFila["NOMBRE_190"];
 					$mnTurno = $mFila["TURNO_190"];
 					$mnHoraInicio = $mFila["HRSINICIO_190"];
 					$mnHoraFin = $mFila["HRSFIN_190"];
-					$mnTotalHoras=$mFila["HRSTOTAL_190"];
 					$mnFechaInicio = $mFila["FECHAINICIO_190"];
 					$mnFechaFin = $mFila["FECHAFIN_190"];
-					$msDocente = $mFila["DOCENTECL_REL"];
 					$mnDia = $mFila["DIACLASES_190"];
-					$mnModalidad = $mFila["ASISTENCIA_190"];
+					$mnModalidad = $mFila["MODALIDAD_190"];
+					$mnTotalHoras=$mFila["HRSTOTAL_190"];
+					$mnAcreditable = $mFila["ACREDITABLE_190"];
 					$mnEstado = $mFila["ESTADO_190"];
-					$mnMoneda = 0;
-
-					$cobros = fxDevuelveCobrosCurso($msCodigo);
-					$matricula     = $cobros["MATRICULA"];
-					$mensualidad   = $cobros["MENSUALIDAD"];
-					$valorCertificado = $cobros["CERTIFICADO"];
-					//$valorMora     = $cobros["MORA"];
+					$msPrograma = $mFila["PROGRAMA_190"];
+					$msCohorte = $mFila["COHORTE_190"];
 				}
 				else
 				{
-					$mnTipoC ="";
+					$mnTipoC =0;
 					$msNombre = "";
 					$mnTurno = 1;
 					$mnHoraInicio = date("H:i");
@@ -133,13 +110,11 @@
 					$mnFechaFin    = date("Y-m-d");
 					$msDocente ="";
 					$mnDia="";
-					$mnModalidad="";
-					$mnEstado="";
-					$mnMoneda = 0;
-					$valorCertificado = 0;
-				 	$matricula = 0;
-				 	//$valorMora = 0;
-				 	$mensualidad = 0;
+					$mnModalidad=1;
+					$mnAcreditable = 0;
+					$mnEstado=0;
+					$msPrograma = "";
+					$msCohorte = "";
 				}
 	?>
     <div class="container text-left">
@@ -164,19 +139,19 @@
 
 							<div class = "form-group row">
 							<label for="cboTipoCurso" class="col-sm-12 col-md-2 form-label">Tipo de curso</label>
-							<div class="col-sm-12 col-md-7">
+							<div class="col-sm-12 col-md-3">
 								<select class="form-control" id="cboTipoCurso" name="cboTipoCurso">
 									<?php
 
 										if ($mnTipoC == 0)
-											echo("<option value='0' selected >Cursos</option>");
+											echo("<option value='0' selected >Curso de extensión</option>");
 										else
-											echo("<option value='0' >Cursos</option>");
+											echo("<option value='0' >Curso de extensión</option>");
 
 										if ($mnTipoC == 1)
-											echo("<option value='1' selected >Conferencias</option>");
+											echo("<option value='1' selected >Conferencia</option>");
 										else
-											echo("<option value='1' >Conferencias</option>");
+											echo("<option value='1' >Conferencia</option>");
 
 										if ($mnTipoC == 2)
 											echo("<option value='2' selected >Taller</option>");
@@ -184,9 +159,9 @@
 											echo("<option value='2' >Taller</option>");
 
 										if ($mnTipoC == 3)
-											echo("<option value='3' selected >Diplomado</option>");
+											echo("<option value='3' selected >Diplomado de extensión</option>");
 										else
-											echo("<option value='3' >Diplomado</option>");
+											echo("<option value='3' >Diplomado de extensión</option>");
 
 										if ($mnTipoC == 4)
 											echo("<option value='4' selected >Seminario</option>");
@@ -202,13 +177,21 @@
 							</div>
 						</div>
 						
-						
 						<div class = "form-group row">
 							<label for="txtNombre" class="col-sm-12 col-md-2 col-form-label">Nombre</label>
 							<div class="col-sm-12 col-md-7">
 							<?php echo('<input type="text" class="form-control" id="txtNombre" name="txtNombre" value="' . $msNombre . '" />'); ?>
 							</div>
 						</div>
+
+						<div class = "form-group row">
+							<label for="txtPrograma" class="col-sm-12 col-md-2 col-form-label">Código Programa</label>
+							<div class="col-sm-12 col-md-3">
+							<?php echo('<input type="text" class="form-control" id="txtPrograma" name="txtPrograma" value="' . $msPrograma . '" />'); ?>
+							</div>
+						</div>
+
+						
 
 						 <div class="form-group row">
 							<label for="cboDocente" class="col-sm-12 col-md-2 col-form-label">Docente</label>
@@ -258,33 +241,11 @@
 								?>
 							</div>
 						</div>
-
 						
 						<div class = "form-group row">
-							<label for="txtHrsInicio" class="col-sm-12 col-md-2 col-form-label">Hora Inicio</label>
+							<label for="dtpFechaIni" class="col-sm-12 col-md-2 col-form-label">Fecha inicio del curso</label>
 							<div class="col-sm-12 col-md-3">
-							<input type="time" class="form-control" id="txtHrsInicio" name="txtHrsInicio" value="<?php echo $mnHoraInicio; ?>" step="60" />
-							</div>
-						</div>
-
-						<div class = "form-group row">
-							<label for="txtHrsFin" class="col-sm-12 col-md-2 col-form-label">Hora Final</label>
-							<div class="col-sm-12 col-md-3">
-								<input type="time" class="form-control" id="txtHrsFin" name="txtHrsFin" value="<?php echo $mnHoraFin; ?>" step="60" />
-							</div>
-						</div>
-
-						<div class = "form-group row">
-							<label for="txtTHrs" class="col-sm-12 col-md-2 col-form-label">Total de horas</label>
-							<div class="col-sm-12 col-md-3">
-								<input type="number" class="form-control" id="txtTHrs" name="txtTHrs" value="<?php echo $mnTotalHoras; ?>" />
-							</div>
-						</div>
-
-						<div class = "form-group row">
-							<label for="dtpFechaInicio" class="col-sm-12 col-md-2 col-form-label">Fecha inicio del curso</label>
-							<div class="col-sm-12 col-md-3">
-							<?php echo('<input type="date" class="form-control" id="dtpFechaInicio" name="dtpFechaInicio" value="' . $mnFechaInicio . '" />'); ?>
+							<?php echo('<input type="date" class="form-control" id="dtpFechaIni" name="dtpFechaIni" value="' . $mnFechaInicio . '" onchange="fxCohorte()" />'); ?>
 							</div>
 						</div>
 
@@ -292,6 +253,34 @@
 							<label for="dtpFechaFin" class="col-sm-12 col-md-2 col-form-label">Fecha final del curso</label>
 							<div class="col-sm-12 col-md-3">
 							<?php echo('<input type="date" class="form-control" id="dtpFechaFin" name="dtpFechaFin" value="' . $mnFechaFin . '" />'); ?>
+							</div>
+						</div>
+
+						<div class = "form-group row">
+							<label for="dtpHoraIni" class="col-sm-12 col-md-2 col-form-label">Hora Inicio</label>
+							<div class="col-sm-12 col-md-3">
+							<input type="time" class="form-control" id="dtpHoraIni" name="dtpHoraIni" value="<?php echo $mnHoraInicio; ?>" step="60" />
+							</div>
+						</div>
+
+						<div class = "form-group row">
+							<label for="dtpHoraFin" class="col-sm-12 col-md-2 col-form-label">Hora Final</label>
+							<div class="col-sm-12 col-md-3">
+								<input type="time" class="form-control" id="dtpHoraFin" name="dtpHoraFin" value="<?php echo $mnHoraFin; ?>" step="60" />
+							</div>
+						</div>
+
+						<div class = "form-group row">
+							<label for="txnTotalHoras" class="col-sm-12 col-md-2 col-form-label">Total de horas</label>
+							<div class="col-sm-12 col-md-3">
+								<input type="number" class="form-control" id="txnTotalHoras" name="txnTotalHoras" value="<?php echo $mnTotalHoras; ?>" />
+							</div>
+						</div>
+
+						<div class = "form-group row">
+							<label for="txtCohorte" class="col-sm-12 col-md-2 col-form-label">Cohorte</label>
+							<div class="col-sm-12 col-md-3">
+							<?php echo('<input type="text" class="form-control" id="txtCohorte" name="txtCohorte" value="' . $msCohorte . '" />'); ?>
 							</div>
 						</div>
 
@@ -379,49 +368,21 @@
 								</div>
 							</div>
 						</div>
+						
 						<div class="form-group row">
-							<label for="optMoneda" class="col-sm-auto col-md-2 form-label">Moneda</label>
-							<div class="col-sm-11 col-md-3">
+							<label for="optAcreditable" class="col-sm-auto col-md-2 form-label">Acreditable</label>
+							<div class="col-sm-12 col-md-3">
 								<div class="radio">
 									<?php
-										if ($mnMoneda == 1) {
-											echo('<input type="radio" id="optMoneda" name="optMoneda" value="0"/>Córdobas &nbsp
-												  <input type="radio" id="optMoneda" name="optMoneda" value="1" checked/>Dólares');
-										} else {
-											echo('<input type="radio" id="optMoneda" name="optMoneda" value="0" checked/>Córdobas &nbsp
-												  <input type="radio" id="optMoneda" name="optMoneda" value="1" />Dólares');
-										}
-									?>	
+										if ($mnAcreditable == 1)
+											echo('<input type="radio" id="optAcreditable1" name="optAcreditable" value="0" /> No &nbsp <input type="radio" id="optAcreditable2" name="optAcreditable" value="1" checked/> Si &nbsp');
+										else
+											echo('<input type="radio" id="optAcreditable1" name="optAcreditable" value="0" checked/> No  &nbsp <input type="radio" id="optAcreditable2" name="optAcreditable" value="1" /> Si &nbsp');
+									?>
 								</div>
 							</div>
 						</div>
 
-						<div class="form-group row">
-							<label class="col-sm-12 col-md-2 col-form-label">Valor de la matricula</label>
-							<div class="col-sm-12 col-md-3">
-								<input type="number" class="form-control" name="valorCurso" value="<?php echo $matricula; ?>" />
-							</div>
-						</div>
-						
-						<div class="form-group row">
-							<label class="col-sm-12 col-md-2 col-form-label">Valor de la mensualidad</label>
-							<div class="col-sm-12 col-md-3">
-								<input type="number" class="form-control" name="mensualidad" value="<?php echo $mensualidad; ?>" />
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-sm-12 col-md-2 col-form-label">Valor del certificado</label>
-							<div class="col-sm-12 col-md-3">
-								<input type="number" class="form-control" name="valorCertificado" value="<?php echo $valorCertificado; ?>" />
-							</div>
-						</div>
-					<!--	<div class="form-group row">
-							<label class="col-sm-12 col-md-2 col-form-label">Valor de la mora</label>
-							<div class="col-sm-12 col-md-3">
-								<input type="number" class="form-control" name="valorMora" value="<?php //echo $valorMora; ?>" />
-							</div>
-						</div>
-						-->
 						<div class="form-group row">
 							<label for="optEstado" class="col-sm-auto col-md-2 form-label">Activo</label>
 							<div class="col-sm-12 col-md-3">
@@ -460,17 +421,17 @@ function verificarFormulario() {
         return false;  
     }
 
-    if(document.getElementById('txtHrsInicio').value=="") {
+    if(document.getElementById('dtpHoraIni').value=="") {
         $.messager.alert('UMOJN','Falta la hora de inicio.','warning');
         return false;
     }
 
-    if(document.getElementById('txtHrsFin').value=="") {
+    if(document.getElementById('dtpHoraFin').value=="") {
         $.messager.alert('UMOJN','Falta la hora de finalización.','warning');
         return false;
     }
 
-    if(document.getElementById('dtpFechaInicio').value == "") {
+    if(document.getElementById('dtpFechaIni').value == "") {
         $.messager.alert('UMOJN','Falta la fecha de inicio.','warning');
         return false;
     }
@@ -479,10 +440,10 @@ function verificarFormulario() {
         $.messager.alert('UMOJN','Falta la fecha final.','warning');
         return false;
     }
-
+/*
     // Validar horas
-    var horaInicio = document.getElementById('txtHrsInicio').value;
-    var horaFin = document.getElementById('txtHrsFin').value;
+    var horaInicio = document.getElementById('dtpHoraIni').value;
+    var horaFin = document.getElementById('dtpHoraFin').value;
     var hInicio = new Date("2000-01-01T" + horaInicio + ":00");
     var hFin = new Date("2000-01-01T" + horaFin + ":00");
 
@@ -497,7 +458,7 @@ function verificarFormulario() {
     }
 
     // Validar fechas
-    var fechaInicio = new Date(document.getElementById('dtpFechaInicio').value);
+    var fechaInicio = new Date(document.getElementById('dtpFechaIni').value);
     var fechaFin = new Date(document.getElementById('dtpFechaFin').value);
 
     if (fechaInicio.getTime() === fechaFin.getTime()) {
@@ -509,7 +470,17 @@ function verificarFormulario() {
         $.messager.alert('UMOJN','La fecha inicial no puede ser mayor que la fecha final.','error');
         return false;
     }
-
+*/
     return true;
+}
+
+function fxCohorte() {
+    var fechaIni = document.getElementById("dtpFechaIni").value;
+    var annoFecha = fechaIni.substr(0, 4);
+    var mesFecha = parseInt(fechaIni.substr(5, 2));
+    var resultado;
+
+    resultado = mesFecha + "-" + annoFecha;
+    document.getElementById("txtCohorte").value = resultado;
 }
 </script>

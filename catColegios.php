@@ -45,19 +45,17 @@
 				$msMunicipio = $_POST["cboMunicipio"];
 				$mnTipo = $_POST["cboTipo"];
 
+				if ($msCodigo == "")
 				{
-					if ($msCodigo == "")
-					{
-						$msCodigo = fxGuardarColegio ($msMunicipio, $msNombre, $mnTipo);
-						$msBitacora = $msCodigo . "; " . $msMunicipio . "; " . $msNombre . "; " . $mnTipo;
-						fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO350A", $msCodigo, "", "Agregar", $msBitacora);
-					}
-					else
-					{
-						fxModificarColegio ($msCodigo, $msMunicipio, $msNombre, $mnTipo);
-						$msBitacora = $msCodigo . "; " . $msMunicipio . "; " . $msNombre . "; " . $mnTipo;
-						fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO350A", $msCodigo, "", "Modificar", $msBitacora);
-					}
+					$msCodigo = fxGuardarColegio ($msMunicipio, $msNombre, $mnTipo);
+					$msBitacora = $msCodigo . "; " . $msMunicipio . "; " . $msNombre . "; " . $mnTipo;
+					fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO350A", $msCodigo, "", "Agregar", $msBitacora);
+				}
+				else
+				{
+					fxModificarColegio ($msCodigo, $msMunicipio, $msNombre, $mnTipo);
+					$msBitacora = $msCodigo . "; " . $msMunicipio . "; " . $msNombre . "; " . $mnTipo;
+					fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO350A", $msCodigo, "", "Modificar", $msBitacora);
 				}
 									
 				?><meta http-equiv="Refresh" content="0;url=gridColegios.php"/><?php

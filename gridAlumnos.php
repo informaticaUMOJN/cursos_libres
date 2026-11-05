@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 	session_start();
 	if (!isset($_SESSION["gnVerifica"]) or $_SESSION["gnVerifica"] != 1)
 	{
@@ -156,6 +153,15 @@ error_reporting(E_ALL);
 				$.redirect("catAlumnos.php", {UMOJN: codEstudiante}, "POST");
 			}
 		});
+
+		$("#matricular").on("click", function() {
+			 var selectedRows = $("#grid").bootgrid("getSelectedRows");
+			 if (selectedRows.length > 0)
+				{
+					var msEstudiante = selectedRows[0];
+					$.redirect("procMatCursosLibres.php", {mAccion: 1, mAlumno: msEstudiante}, "POST");
+				}
+			});
 
 		$("#matricula").on("click", function() {
 			 var selectedRows = $("#grid").bootgrid("getSelectedRows");

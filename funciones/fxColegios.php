@@ -10,7 +10,7 @@
 		$mnNumero = intval($mFila["Ultimo"]);
 		$mnNumero += 1;
 		$mnLongitud = strlen($mnNumero);
-		$msCodigo = "COL" . str_repeat("0", 4 - $mnLongitud) . trim($mnNumero);
+		$msCodigo = "CCL" . str_repeat("0", 4 - $mnLongitud) . trim($mnNumero);
 		$msConsulta = "insert into UMO350A (COLEGIOCL_REL, MUNICIPIO_REL, NOMBRE_350, TIPO_350) values(?, ?, ?, ?)";
 		$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 		$mDatos->execute([$msCodigo, $msMunicipio, $msNombre, $mnTipo]);

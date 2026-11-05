@@ -10,7 +10,7 @@
 		$msClave = $_SESSION["gsPWD"];
 		$msBase = $_SESSION["gsBD"];
 		$conexion = new PDO('mysql:host=localhost;dbname='.$msBase, $msUsuario, $msClave);
-		$conexion->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+		$conexion->setAttribute(Pdo\Mysql::ATTR_USE_BUFFERED_QUERY, true);
 		$conexion->exec("set names utf8");
 		return $conexion;
 	}

@@ -84,37 +84,39 @@
 								
 						?>
 						
-						<table id="grid" class="table table-condensed table-hover table-striped" data-selection="true" data-multi-select="false" data-row-select="true" data-keep-selection="true">
-							<thead>
-								<tr>
-									<th data-column-id="CURSOS_REL" data-identifier="true" data-width="18%" data-align="left">Curso</th>
-									<th data-column-id="TIPOC_190" data-align="left" data-width="20%">Tipo</th>
-									<th data-column-id="NOMBRE_190" data-align="left" data-width="30%">Nombre</th>
-									<th data-column-id="NOMBRE_DOCENTE" data-align="left" data-width="30%">Docente</th>
-									<th data-column-id="TURNO_190" data-align="left" data-width="20%">Turno</th>
-									<th data-column-id="ESTADO_190" data-align="left" data-width="20%">Activo</th>
-								</tr>
-							</thead>
-							<tbody>
-							<?php
-								$mDatos = fxDevuelveCursosLibres(1);
-								
-								while ($mFila = $mDatos->fetch())
-								{
-									echo ("<tr>");
-									echo ("<td>" . $mFila["CURSOS_REL"] . "</td>");
-									echo ("<td>" . $mFila["TIPOC_190"] . "</td>");
-									echo ("<td>" . $mFila["NOMBRE_190"] . "</td>");
-									echo ("<td>" . $mFila["NOMBRE_DOCENTE"] . "</td>");
-									echo ("<td>" . $mFila["TURNO_190"] . "</td>");
+						<div class="table-responsive">
+							<table id="grid" class="table table-condensed table-hover table-striped" data-selection="true" data-multi-select="false" data-row-select="true" data-keep-selection="true">
+								<thead>
+									<tr>
+										<th data-column-id="CURSOS_REL" data-identifier="true" data-width="18%" data-align="left">Curso</th>
+										<th data-column-id="TIPOC_190" data-align="left" data-width="20%">Tipo</th>
+										<th data-column-id="NOMBRE_190" data-align="left" data-width="30%">Nombre</th>
+										<th data-column-id="NOMBRE_DOCENTE" data-align="left" data-width="30%">Docente</th>
+										<th data-column-id="TURNO_190" data-align="left" data-width="20%">Turno</th>
+										<th data-column-id="ESTADO_190" data-align="left" data-width="20%">Activo</th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php
+									$mDatos = fxDevuelveCursosLibres(1);
 									
-									echo ("<td>" . $mFila["ESTADO_190"] . "</td>");
-									echo ("</tr>");
+									while ($mFila = $mDatos->fetch())
+									{
+										echo ("<tr>");
+										echo ("<td>" . $mFila["CURSOS_REL"] . "</td>");
+										echo ("<td>" . $mFila["TIPOC_190"] . "</td>");
+										echo ("<td>" . $mFila["NOMBRE_190"] . "</td>");
+										echo ("<td>" . $mFila["NOMBRE_DOCENTE"] . "</td>");
+										echo ("<td>" . $mFila["TURNO_190"] . "</td>");
+										
+										echo ("<td>" . $mFila["ESTADO_190"] . "</td>");
+										echo ("</tr>");
+									}
 								}
-							}
-							?> 
-							</tbody>
-						</table>
+								?> 
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
             </div>

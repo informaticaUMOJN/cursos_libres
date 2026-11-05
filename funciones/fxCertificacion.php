@@ -57,6 +57,8 @@
         $mDatos->execute([$msLibro]);
         $mFila = $mDatos->fetch();
         $mnFolio = intval($mFila["FOLIO_371"]);
+        if ($mnFolio == 0)
+            $mnFolio = 1;
 
         $msConsulta = "select MATCURSO_REL from UMO210A where CURSOS_REL = ? and ESTADO_210 = 1";
         $mDatos = $m_cnx_MySQL->prepare($msConsulta);
