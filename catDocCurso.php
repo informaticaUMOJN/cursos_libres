@@ -344,14 +344,14 @@ $('form').submit(function(e) {
         registros = $('#dgDOC').datagrid('getRows').length - 1;
 
         if (registros >= 0) {
-            texto += '", gridDocumentos": [';
+            texto += ', "gridDocumentos": [';
             for (i = 0; i <= registros; i++) {
-                texto += '{"archivo":"' + gridDocumentos.rows[i].archivo;
-                texto += '{"ruta":"' + gridDocumentos.rows[i].ruta;
+                texto += '{"archivo":"' + gridDocumentos.rows[i].archivo + '",';
+                texto += '"ruta":"' + gridDocumentos.rows[i].ruta + '"}';
                 if (i == registros)
-                    texto += '"}]';
+                    texto += ']';
                 else
-                    texto += '"},';
+                    texto += ',';
             }
         }
 
