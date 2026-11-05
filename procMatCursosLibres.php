@@ -57,6 +57,7 @@ error_reporting(E_ALL);
 				$mbDiploma = isset($_POST["chkDiploma"]) ? 1 : 0;
 				$mbCedula = isset($_POST["chkCedula"]) ? 1 : 0;
 				$mbActaNacimiento = isset($_POST["chkActaNac"]) ? 1 : 0;
+				$mbOtros = isset($_POST["chkOtros"]) ? 1 : 0;
 
 				if ($msCodigo == "")
 				{
@@ -66,8 +67,8 @@ error_reporting(E_ALL);
 					
 					if ($mDatos->rowCount() == 0)
 					{
-						$msCodigo = fxGuardarMatriculaCursos($msAlumno,$msCursos,$mdFecha,$msRecibo,$mbBeca,$msMotivo,$mbDiploma,$mbCedula,$mbActaNacimiento,$mnEstado);
-						$msBitacora = $msCodigo . "; " . $msAlumno . "; " . $msCursos . "; " . $mbBeca . "; ".$msMotivo.";" . $mdFecha . "; " . $msRecibo . "; "  . $mbDiploma . "; "  . $mbCedula . "; " . $mbActaNacimiento . "; " . $mnEstado;
+						$msCodigo = fxGuardarMatriculaCursos($msAlumno, $msCursos, $mdFecha, $msRecibo, $mbBeca, $msMotivo, $mbDiploma, $mbCedula, $mbActaNacimiento, $mbOtros, $mnEstado);
+						$msBitacora = $msCodigo . "; " . $msAlumno . "; " . $msCursos . "; " . $mbBeca . "; ".$msMotivo.";" . $mdFecha . "; " . $msRecibo . "; "  . $mbDiploma . "; "  . $mbCedula . "; " . $mbActaNacimiento . "; " . $mbOtros . "; " . $mnEstado;
 						fxAgregarBitacora($_SESSION["gsUsuario"], "UMO210A", $msCodigo, "", "Agregar", $msBitacora);
 
 					}
@@ -78,8 +79,8 @@ error_reporting(E_ALL);
 				}
 				else
 				{
-					fxModificarMatricula($msCodigo, $msAlumno, $msCursos, $mdFecha, $msRecibo, $mbBeca,$msMotivo, $mbDiploma,  $mbCedula, $mbActaNacimiento, $mnEstado);
-					$msBitacora = $msCodigo . "; " . $msAlumno . "; " . $msCursos . "; " . $mbBeca . "; ".$msMotivo.";" . $mdFecha . "; " . $msRecibo . "; "  . $mbDiploma . "; " . $mbCedula . "; " . $mbActaNacimiento . "; " . $mnEstado;
+					fxModificarMatricula($msCodigo, $msAlumno, $msCursos, $mdFecha, $msRecibo, $mbBeca,$msMotivo, $mbDiploma,  $mbCedula, $mbActaNacimiento, $mbOtros, $mnEstado);
+					$msBitacora = $msCodigo . "; " . $msAlumno . "; " . $msCursos . "; " . $mbBeca . "; ".$msMotivo.";" . $mdFecha . "; " . $msRecibo . "; "  . $mbDiploma . "; " . $mbCedula . "; " . $mbActaNacimiento . "; " . $mbOtros . "; " . $mnEstado;
 					fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO210A", $msCodigo, "", "Modificar", $msBitacora);
 				}
 
@@ -115,6 +116,7 @@ error_reporting(E_ALL);
 					$mbDiploma = $mFila["DIPLOMA_210"];
 					$mbCedula = $mFila["CEDULA_210"];
 					$mbActaNacimiento = $mFila["ACTANACIMIENTO_210"];
+					$mbOtros = $mFila["OTROS_210"];
 					$mnEstado = $mFila["ESTADO_210"];
 				}
 				else
@@ -132,6 +134,7 @@ error_reporting(E_ALL);
 						$mbDiploma = 0;
 						$mbCedula = 0;
 						$mbActaNacimiento = 0;
+						$mbOtros = 0;
 						$mnEstado = 2; //Pre-matriculado
 				}
 	?>
@@ -264,7 +267,7 @@ error_reporting(E_ALL);
 								<div class="form-group row">
 									<label class="col-sm-12 col-md-3 form-label">Motivo de beca</label>
 									<div class="col-sm-12 col-md-6">
-										<input type="text" class="form-control" id="txtMotivo" name="txtMotivo" value="<?php echo $msMotivo; ?>" <?php if ($mbBeca == 0) echo "disabled"; ?>>
+										<input type="text" class="form-control" id="txtMotivo" name="txtMotivo" value="<?php echo $msMotivo; ?>" <?php if ($mbBeca == 0) echo "readonly"; ?>>
 									</div>
 								</div>
 								
@@ -283,9 +286,14 @@ error_reporting(E_ALL);
 										echo('<input type="checkbox" name="chkCedula" id="chkCedula" > Cédula de identidad<br>');
 
 									if ($mbActaNacimiento == 1)
-										echo('<input type="checkbox" name="chkActaNac" id="chkActaNac" checked > Acta de nacimiento');
+										echo('<input type="checkbox" name="chkActaNac" id="chkActaNac" checked > Acta de nacimiento<br>');
 									else
-										echo('<input type="checkbox" name="chkActaNac" id="chkActaNac" > Acta de nacimiento');
+										echo('<input type="checkbox" name="chkActaNac" id="chkActaNac" > Acta de nacimiento<br>');
+
+									if ($mbOtros == 1)
+										echo('<input type="checkbox" name="chkOtros" id="chkOtros" checked > Otros');
+									else
+										echo('<input type="checkbox" name="chkOtros" id="chkOtros" > Otros');
 								?>
 							</div>
 						</div>

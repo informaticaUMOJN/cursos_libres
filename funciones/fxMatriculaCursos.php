@@ -1,5 +1,6 @@
 <?php
-function fxGuardarMatriculaCursos($msAlumno, $msCursos,  $mdFecha, $msRecibo, $mbBeca,$msMotivo, $mbDiploma, $mbCedula, $mbActaNacimiento, $mnEstado)
+function fxGuardarMatriculaCursos($msAlumno, $msCursos,  $mdFecha, $msRecibo, $mbBeca, $msMotivo, $mbDiploma, $mbCedula, 
+$mbActaNacimiento, $mbOtros, $mnEstado)
 {
     $m_cnx_MySQL = fxAbrirConexion();
     $msConsulta = "SELECT IFNULL(MID(MAX(MATCURSO_REL), 5), 0) AS Ultimo FROM UMO210A";
@@ -8,19 +9,21 @@ function fxGuardarMatriculaCursos($msAlumno, $msCursos,  $mdFecha, $msRecibo, $m
     $mFila = $mDatos->fetch();
     $mnNumero = intval($mFila["Ultimo"]) + 1;
     $msCodigo = "MTCL" . str_pad($mnNumero, 8, "0", STR_PAD_LEFT);
-    $msConsulta = "INSERT INTO UMO210A (MATCURSO_REL, ALUMNO_REL, CURSOS_REL, FECHA_210, RECIBO_210, BECA_210,MOTIVOBECA_210, DIPLOMA_210, CEDULA_210, ACTANACIMIENTO_210,ESTADO_210) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $msConsulta = "INSERT INTO UMO210A (MATCURSO_REL, ALUMNO_REL, CURSOS_REL, FECHA_210, RECIBO_210, BECA_210,MOTIVOBECA_210, DIPLOMA_210, CEDULA_210, ACTANACIMIENTO_210, OTROS_210, ESTADO_210) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $mDatos = $m_cnx_MySQL->prepare($msConsulta);
-    $mDatos->execute([$msCodigo, $msAlumno, $msCursos,  $mdFecha, $msRecibo, $mbBeca,$msMotivo, $mbDiploma, $mbCedula, $mbActaNacimiento, $mnEstado]);
+    $mDatos->execute([$msCodigo, $msAlumno, $msCursos,  $mdFecha, $msRecibo, $mbBeca,$msMotivo, $mbDiploma, $mbCedula, $mbActaNacimiento, $mbOtros, $mnEstado]);
     return $msCodigo;
 }
 
-function fxModificarMatricula($msCodigo, $msAlumno, $msCursos,  $mdFecha, $msRecibo, $mbBeca,$msMotivo, $mbDiploma,  $mbCedula, $mbActaNacimiento, $mnEstado)
+function fxModificarMatricula($msCodigo, $msAlumno, $msCursos,  $mdFecha, $msRecibo, $mbBeca, $msMotivo, $mbDiploma,  $mbCedula,
+$mbActaNacimiento, $mbOtros, $mnEstado)
 {
     $m_cnx_MySQL = fxAbrirConexion();
     $msConsulta = "UPDATE UMO210A SET 
-    ALUMNO_REL = ?, CURSOS_REL = ?,  FECHA_210 = ?, RECIBO_210 = ?, BECA_210 = ?,MOTIVOBECA_210=?, DIPLOMA_210 = ?, CEDULA_210 = ?, ACTANACIMIENTO_210 = ?, ESTADO_210 = ? WHERE MATCURSO_REL = ?";
+    ALUMNO_REL = ?, CURSOS_REL = ?, FECHA_210 = ?, RECIBO_210 = ?, BECA_210 = ?,MOTIVOBECA_210=?, DIPLOMA_210 = ?, CEDULA_210 = ?,
+    ACTANACIMIENTO_210 = ?, ESTADO_210 = ?, OTROS_210 = ? WHERE MATCURSO_REL = ?";
     $mDatos = $m_cnx_MySQL->prepare($msConsulta);
-    $mDatos->execute([$msAlumno, $msCursos, $mdFecha, $msRecibo, $mbBeca,$msMotivo, $mbDiploma, $mbCedula, $mbActaNacimiento, $mnEstado, $msCodigo]);
+    $mDatos->execute([$msAlumno, $msCursos, $mdFecha, $msRecibo, $mbBeca,$msMotivo, $mbDiploma, $mbCedula, $mbActaNacimiento, $mbOtros, $mnEstado, $msCodigo]);
 }
 
 function fxDevuelveMatriculaCurso($mbLlenaGrid, $msCodigo = "")
