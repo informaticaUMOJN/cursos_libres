@@ -56,17 +56,18 @@
 				$mnEstado = $_POST["optEstado"];
 				$msCohorte = $_POST["txtCohorte"];
 				$msPrograma = $_POST["txtPrograma"];
+				$mnGrupo = $_POST["txnGrupo"];
 				
 				if ($msCodigo == "") 
 				{
-					$msCodigo = fxGuardarCursosLibres($msDocente, $mnTipoC, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mnDia, $mnModalidad, $mnAcreditable, $mnEstado, $msCohorte, $msPrograma );
-					$msBitacora = $msCodigo . "; ".$mnTipoC.";" . $msNombre.  ";". $mnTurno . ";". $mnHoraInicio. ";".$mnHoraFin.";".$mnTotalHoras.";". $mnFechaInicio.";". $mnFechaFin.";". $msDocente. ";" . $mnDia. ";" .$mnModalidad. ";" . $mnAcreditable . ";" . $mnEstado;
+					$msCodigo = fxGuardarCursosLibres($msDocente, $mnTipoC, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mnDia, $mnModalidad, $mnAcreditable, $mnEstado, $msCohorte, $msPrograma, $mnGrupo);
+					$msBitacora = $msCodigo . "; ".$mnTipoC.";" . $msNombre.  ";". $mnTurno . ";". $mnHoraInicio. ";".$mnHoraFin.";".$mnTotalHoras.";". $mnFechaInicio.";". $mnFechaFin.";". $msDocente. ";" . $mnDia. ";" .$mnModalidad. ";" . $mnAcreditable . ";" . $mnEstado . "; " . $msCohorte . "; " . $msPrograma . "; " . $mnGrupo;
 					fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO190A", $msCodigo, "", "Agregar", $msBitacora);
 				}
 				else
 				{
-					fxModificarCursosLibres($msCodigo, $msDocente, $mnTipoC, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mnDia, $mnModalidad, $mnAcreditable, $mnEstado, $msCohorte, $msPrograma );
-					$msBitacora = $msCodigo . "; " .$mnTipoC.";". $msNombre.  ";". $mnTurno . ";". $mnHoraInicio. ";".$mnHoraFin.";". $mnTotalHoras.";".$mnFechaInicio.";". $mnFechaFin.";". $msDocente. ";" . $mnDia. ";" .$mnModalidad. ";". $mnAcreditable . ";" . $mnEstado;
+					fxModificarCursosLibres($msCodigo, $msDocente, $mnTipoC, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mnDia, $mnModalidad, $mnAcreditable, $mnEstado, $msCohorte, $msPrograma, $mnGrupo);
+					$msBitacora = $msCodigo . "; " .$mnTipoC.";". $msNombre.  ";". $mnTurno . ";". $mnHoraInicio. ";".$mnHoraFin.";". $mnTotalHoras.";".$mnFechaInicio.";". $mnFechaFin.";". $msDocente. ";" . $mnDia. ";" .$mnModalidad. ";". $mnAcreditable . ";" . $mnEstado . "; " . $msCohorte . "; " . $msPrograma . "; " . $mnGrupo;
 					fxAgregarBitacora ($_SESSION["gsUsuario"], "UMO190A", $msCodigo, "", "Modificar", $msBitacora);
 				}
 				?><meta http-equiv="Refresh" content="0;url=gridCursosLibres.php"/><?php
@@ -97,6 +98,7 @@
 					$mnEstado = $mFila["ESTADO_190"];
 					$msPrograma = $mFila["PROGRAMA_190"];
 					$msCohorte = $mFila["COHORTE_190"];
+					$mnGrupo = $mFila["GRUPO_190"];
 				}
 				else
 				{
@@ -115,6 +117,7 @@
 					$mnEstado=0;
 					$msPrograma = "";
 					$msCohorte = "";
+					$mnGrupo = 1;
 				}
 	?>
     <div class="container text-left">
@@ -281,6 +284,13 @@
 							<label for="txtCohorte" class="col-sm-12 col-md-2 col-form-label">Cohorte</label>
 							<div class="col-sm-12 col-md-3">
 							<?php echo('<input type="text" class="form-control" id="txtCohorte" name="txtCohorte" value="' . $msCohorte . '" />'); ?>
+							</div>
+						</div>
+
+						<div class = "form-group row">
+							<label for="txnGrupo" class="col-sm-12 col-md-2 col-form-label">Grupo</label>
+							<div class="col-sm-12 col-md-3">
+							<?php echo('<input type="number" class="form-control" id="txnGrupo" name="txnGrupo" value="' . $mnGrupo . '" />'); ?>
 							</div>
 						</div>
 

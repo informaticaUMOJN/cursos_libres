@@ -69,7 +69,7 @@ error_reporting(E_ALL);
 									<tr>
 										<th data-column-id="MATCURSO_REL" data-identifier="true" data-align="left" data-header-align="left" data-width="10%">Matrícula</th>
 										<th data-column-id="ESTUDIANTE" data-align="left" data-header-align="left" data-width="35%">Nombre del Estudiante</th>
-										<th data-column-id="NOMBRE_200" data-align="left" data-header-align="left" data-width="35%">Curso libre</th>
+										<th data-column-id="NOMBRE_190" data-align="left" data-header-align="left" data-width="35%">Curso libre</th>
 										<th data-column-id="FECHA_210" data-align="center" data-header-align="center" data-width="10%">Fecha</th>
 										<th data-column-id="ESTADO_210" data-align="center" data-header-align="center" data-width="10%">Estado</th>
 									</tr>
@@ -80,7 +80,7 @@ error_reporting(E_ALL);
 
 									while ($mFila = $mDatos->fetch())
 									{
-										$msNombre = trim($mFila["NOMBRES_200"]) . " " . trim($mFila["APELLIDOS_200"]);
+										$msNombre = trim($mFila["ESTUDIANTE"]);
 										//echo ("<td>" . $msNombre . " " . "</td>");
 										echo ("<tr>");
 										echo ("<td>" . $mFila["MATCURSO_REL"] . "</td>");

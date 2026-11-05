@@ -88,12 +88,12 @@
 							<table id="grid" class="table table-condensed table-hover table-striped" data-selection="true" data-multi-select="false" data-row-select="true" data-keep-selection="true">
 								<thead>
 									<tr>
-										<th data-column-id="CURSOS_REL" data-identifier="true" data-width="18%" data-align="left">Curso</th>
-										<th data-column-id="TIPOC_190" data-align="left" data-width="20%">Tipo</th>
+										<th data-column-id="CURSOS_REL" data-identifier="true" data-width="10%" data-align="left">Curso</th>
+										<th data-column-id="TIPOC_190" data-align="left" data-width="10%">Tipo</th>
 										<th data-column-id="NOMBRE_190" data-align="left" data-width="30%">Nombre</th>
 										<th data-column-id="NOMBRE_DOCENTE" data-align="left" data-width="30%">Docente</th>
-										<th data-column-id="TURNO_190" data-align="left" data-width="20%">Turno</th>
-										<th data-column-id="ESTADO_190" data-align="left" data-width="20%">Activo</th>
+										<th data-column-id="TURNO_190" data-align="left" data-width="10%">Turno</th>
+										<th data-column-id="ESTADO_190" data-align="left" data-width="10%">Activo</th>
 									</tr>
 								</thead>
 								<tbody>

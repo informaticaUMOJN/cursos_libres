@@ -81,13 +81,13 @@ error_reporting(E_ALL);
 										<?php
 											echo('<select class="form-control" id="cboCursoNoCertificado" name="cboCursoNoCertificado" onchange="llenaGrid(this.value, 0)">');
 
-											$msConsulta = "SELECT CURSOS_REL, NOMBRE_190 FROM UMO190A WHERE ESTADO_190 = 1 ORDER BY NOMBRE_190";
+											$msConsulta = "select CURSOS_REL, NOMBRE_190, COHORTE_190, GRUPO_190 from UMO190A where ESTADO_190 = 1 order by NOMBRE_190";
 											$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 											$mDatos->execute();
 											while ($mFila = $mDatos->fetch())
 											{
-												$msValor = rtrim($mFila["CURSOS_REL"]);
-												$msTexto = rtrim($mFila["NOMBRE_190"]);
+												$msValor = trim($mFila["CURSOS_REL"]);
+												$msTexto = trim($mFila["NOMBRE_190"]) . ' (' . trim($mFila["COHORTE_190"]) . '/G' . trim($mFila["GRUPO_190"]) . ')';
 												if ($msCursos == "")
 												{
 													echo("<option value='" . $msValor . "'>" . $msTexto . "</option>");
@@ -159,13 +159,13 @@ error_reporting(E_ALL);
 										<?php
 											echo('<select class="form-control" id="cboCursoCertificado" name="cboCursoCertificado" onchange="llenaGrid(this.value, 1)">');
 
-											$msConsulta = "SELECT CURSOS_REL, NOMBRE_190 FROM UMO190A WHERE ESTADO_190 = 1 ORDER BY NOMBRE_190";
+											$msConsulta = "select CURSOS_REL, NOMBRE_190, COHORTE_190, GRUPO_190 from UMO190A where ESTADO_190 = 1 order by NOMBRE_190";
 											$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 											$mDatos->execute();
 											while ($mFila = $mDatos->fetch())
 											{
-											$msValor = rtrim($mFila["CURSOS_REL"]);
-											$msTexto = rtrim($mFila["NOMBRE_190"]);
+												$msValor = trim($mFila["CURSOS_REL"]);
+												$msTexto = trim($mFila["NOMBRE_190"]) . ' (' . trim($mFila["COHORTE_190"]) . '/G' . trim($mFila["GRUPO_190"]) . ')';
 												if ($msCursos == "")
 												{
 													echo("<option value='" . $msValor . "'>" . $msTexto . "</option>");

@@ -1,7 +1,7 @@
 <?php
 //*****CURSOS LIBRES************************************************************//
 function fxGuardarCursosLibres($msDocente, $mnTipoC, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnTotalHoras, 
-$mnFechaInicio, $mnFechaFin, $mnDia, $mnModalidad, $mnAcreditable, $mnEstado, $msCohorte, $msSetec)
+$mnFechaInicio, $mnFechaFin, $mnDia, $mnModalidad, $mnAcreditable, $mnEstado, $msCohorte, $msPrograma, $mnGrupo)
 {
     $m_cnx_MySQL = fxAbrirConexion();
     $msConsulta = "SELECT IFNULL(MID(MAX(CURSOS_REL), 4), 0) AS Ultimo FROM UMO190A";
@@ -12,25 +12,25 @@ $mnFechaInicio, $mnFechaFin, $mnDia, $mnModalidad, $mnAcreditable, $mnEstado, $m
     $msCodigo = "CLS" . str_pad($mnNumero, 7, "0", STR_PAD_LEFT);
     $msConsulta = "INSERT INTO UMO190A 
                 (CURSOS_REL, DOCENTECL_REL, TIPOC_190, NOMBRE_190, TURNO_190, HRSINICIO_190, HRSFIN_190, HRSTOTAL_190,
-                FECHAINICIO_190, FECHAFIN_190, DIACLASES_190, MODALIDAD_190, ACREDITABLE_190, ESTADO_190, COHORTE_190, PROGRAMA_190) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                FECHAINICIO_190, FECHAFIN_190, DIACLASES_190, MODALIDAD_190, ACREDITABLE_190, ESTADO_190, COHORTE_190, PROGRAMA_190, GRUPO_190) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $mDatos = $m_cnx_MySQL->prepare($msConsulta);
-    $mDatos->execute([$msCodigo, $msDocente, $mnTipoC, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mnDia, $mnModalidad, $mnAcreditable, $mnEstado, $msCohorte, $msSetec]);
+    $mDatos->execute([$msCodigo, $msDocente, $mnTipoC, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mnDia, $mnModalidad, $mnAcreditable, $mnEstado, $msCohorte, $msPrograma, $mnGrupo]);
 
     return $msCodigo;
 }         
 	
 function fxModificarCursosLibres($msCodigo, $msDocente, $mnTipoC, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnTotalHoras, 
-$mnFechaInicio, $mnFechaFin, $mnDia, $mnModalidad, $mnAcreditable, $mnEstado, $msCohorte, $msSetec)
+$mnFechaInicio, $mnFechaFin, $mnDia, $mnModalidad, $mnAcreditable, $mnEstado, $msCohorte, $msPrograma, $mnGrupo)
 {
     $m_cnx_MySQL = fxAbrirConexion();
     $msConsulta = "UPDATE UMO190A 
                 SET DOCENTECL_REL = ?, TIPOC_190 = ?, NOMBRE_190 = ?, TURNO_190 = ?, HRSINICIO_190 = ?, HRSFIN_190 = ?,
                 HRSTOTAL_190=?, FECHAINICIO_190 = ?, FECHAFIN_190 = ?, DIACLASES_190 = ?, MODALIDAD_190 = ?, ACREDITABLE_190 = ?,
-                ESTADO_190 = ?, COHORTE_190 = ?, PROGRAMA_190 = ?
+                ESTADO_190 = ?, COHORTE_190 = ?, PROGRAMA_190 = ?, GRUPO_190 = ?
                 WHERE CURSOS_REL = ?";
     $mDatos = $m_cnx_MySQL->prepare($msConsulta);
-    $mDatos->execute([$msDocente, $mnTipoC, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mnDia, $mnModalidad, $mnAcreditable, $mnEstado, $msCohorte, $msSetec, $msCodigo]);
+    $mDatos->execute([$msDocente, $mnTipoC, $msNombre, $mnTurno, $mnHoraInicio, $mnHoraFin, $mnTotalHoras, $mnFechaInicio, $mnFechaFin, $mnDia, $mnModalidad, $mnAcreditable, $mnEstado, $msCohorte, $msPrograma, $mnGrupo, $msCodigo]);
 }
 
 function fxBorrarCursosLibres($msCodigo)
@@ -52,8 +52,8 @@ function fxDevuelveCursosLibres($mbLlenaGrid, $msCodigo = "")
     if ($mbLlenaGrid == 1)
     {
         $msConsulta = "
-            SELECT c.CURSOS_REL, c.ESTADO_190, c.NOMBRE_190,
-                CASE c.TURNO_190
+            SELECT CURSOS_REL, ESTADO_190, concat(NOMBRE_190, ' (', COHORTE_190, '/G', GRUPO_190, ')') as NOMBRE_190,
+                CASE TURNO_190
                     WHEN 1 THEN 'DIURNO'
                     WHEN 2 THEN 'MATUTINO'
                     WHEN 3 THEN 'VESPERTINO'
@@ -71,11 +71,11 @@ function fxDevuelveCursosLibres($mbLlenaGrid, $msCodigo = "")
                     WHEN 5 THEN 'Curso de posgrado'
                     ELSE 'SIN DEFINIR'
                 END AS TIPOC_190,
-                CASE c.ESTADO_190 WHEN 0 THEN 'Inactivo' ELSE 'Activo' END AS ESTADO_190,
-                d.NOMBRE_340 AS NOMBRE_DOCENTE
-            FROM UMO190A c
-            LEFT JOIN UMO340A d ON c.DOCENTECL_REL = d.DOCENTECL_REL
-            ORDER BY c.CURSOS_REL DESC
+                CASE ESTADO_190 WHEN 0 THEN 'Inactivo' ELSE 'Activo' END AS ESTADO_190,
+                NOMBRE_340 AS NOMBRE_DOCENTE
+            FROM UMO190A
+            LEFT JOIN UMO340A ON UMO190A.DOCENTECL_REL = UMO340A.DOCENTECL_REL
+            ORDER BY CURSOS_REL DESC
         ";
         $mDatos = $m_cnx_MySQL->prepare($msConsulta);
         $mDatos->execute();
@@ -84,7 +84,7 @@ function fxDevuelveCursosLibres($mbLlenaGrid, $msCodigo = "")
     {
         $msConsulta = "
             SELECT CURSOS_REL, DOCENTECL_REL, TIPOC_190, NOMBRE_190, TURNO_190, HRSINICIO_190, HRSFIN_190, HRSTOTAL_190,
-            FECHAINICIO_190, FECHAFIN_190, DIACLASES_190, MODALIDAD_190, ACREDITABLE_190, ESTADO_190, COHORTE_190, PROGRAMA_190
+            FECHAINICIO_190, FECHAFIN_190, DIACLASES_190, MODALIDAD_190, ACREDITABLE_190, ESTADO_190, COHORTE_190, PROGRAMA_190, GRUPO_190
             FROM UMO190A WHERE CURSOS_REL = ?
         ";
         $mDatos = $m_cnx_MySQL->prepare($msConsulta);

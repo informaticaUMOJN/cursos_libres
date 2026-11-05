@@ -30,7 +30,7 @@ function fxDevuelveMatriculaCurso($mbLlenaGrid, $msCodigo = "")
 {
     $m_cnx_MySQL = fxAbrirConexion();
     if ($mbLlenaGrid == 1) {
-        $msConsulta = "SELECT MATCURSO_REL, APELLIDOS_200, NOMBRES_200, NOMBRE_190,FECHA_210, ESTADO_210 FROM UMO210A 
+        $msConsulta = "SELECT MATCURSO_REL, concat(NOMBRES_200, ' ', APELLIDOS_200) as ESTUDIANTE, concat(NOMBRE_190, ' (', COHORTE_190, '/G', GRUPO_190, ')') as NOMBRE_190, FECHA_210, ESTADO_210 FROM UMO210A 
         JOIN UMO200A ON UMO210A.ALUMNO_REL = UMO200A.ALUMNO_REL
         JOIN UMO190A ON UMO210A.CURSOS_REL = UMO190A.CURSOS_REL
         ORDER BY MATCURSO_REL DESC;";
