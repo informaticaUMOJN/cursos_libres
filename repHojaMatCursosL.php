@@ -24,17 +24,17 @@ class PDF extends TCPDF {
     function Header() {
         $this->Image('imagenes/logoRep.jpg',15,8,0,16);
         $this->Image('imagenes/kanji.jpg',31,8,0,16);
-        $mid_x = 278; // width of the "PDF screen", fixed by now.
+        $mid_x = 210; // width of the "PDF screen", fixed by now.
 
         $this->SetFont('helvetica','B',12);
         $Titulo = 'UNIVERSIDAD DE MEDICINA';
-		$this->Text(($mid_x - $this->GetStringWidth($Titulo)) / 2, 8, $Titulo);
+		$this->Text(33, 8, $Titulo);
         $Titulo = 'ORIENTAL JAPON-NICARAGUA';
-		$this->Text(($mid_x - $this->GetStringWidth($Titulo)) / 2, 13, $Titulo);
+		$this->Text(33, 13, $Titulo);
         
         $this->SetFont('helvetica','I',9);
         $Titulo = 'Excelencia académica con espíritu humanista';
-		$this->Text(($mid_x - $this->GetStringWidth($Titulo)) / 2, 20, $Titulo);
+		$this->Text(33, 20, $Titulo);
 
         $this->Line(120,10,120,22);
         $this->SetFont('helvetica','',7);
@@ -153,7 +153,7 @@ $pdf->writeHTML("
 ");
 
 /* ===================== DATOS GENERALES ===================== */ 
-$pdf->Ln(3);
+//$pdf->Ln(2);
 $pdf->SetFont('helvetica','B',10);
 $pdf->Cell(0,6,'DATOS GENERALES',0,1);
 $pdf->Line(15,$pdf->GetY(),195,$pdf->GetY());
@@ -187,10 +187,8 @@ $pdf->writeHTML("
 </table>
 ");
 
-
-
 /* ===================== DATOS ACADÉMICOS ===================== */
-$pdf->Ln(4);
+//$pdf->Ln(4);
 $pdf->SetFont('helvetica','B',10);
 $pdf->Cell(0,6,'DATOS ACADÉMICOS',0,1);
 $pdf->Line(15,$pdf->GetY(),195,$pdf->GetY());
@@ -214,7 +212,7 @@ $pdf->writeHTML("
 ");
 
 /* ===================== DOCUMENTOS ===================== */
-$pdf->Ln(4);
+//$pdf->Ln(4);
 $pdf->SetFont('helvetica','B',10);
 $pdf->Cell(0,6,'DOCUMENTOS RECIBIDOS',0,1);
 $pdf->Line(15,$pdf->GetY(),195,$pdf->GetY());
@@ -238,7 +236,7 @@ if (count($docs) > 0) {
 
 
 /* ===================== FAMILIA ===================== */
-$pdf->Ln(4);
+//$pdf->Ln(4);
 $pdf->SetFont('helvetica','B',11);
 $pdf->Cell(0,6,'DATOS DE LA ESTRUCTURA FAMILIAR',0,1);
 $pdf->Line(15,$pdf->GetY(),195,$pdf->GetY());
@@ -262,7 +260,7 @@ $pdf->writeHTML("
 ");
 
 /* ===================== EMERGENCIA ===================== */
-$pdf->Ln(4);
+//$pdf->Ln(4);
 $pdf->SetFont('helvetica','B',11);
 $pdf->Cell(0,6,'DATOS PARA EMERGENCIAS',0,1);
 $pdf->Line(15,$pdf->GetY(),195,$pdf->GetY());
@@ -286,7 +284,7 @@ $pdf->writeHTML("
 ");
 
 /* ===================== COMO SE ENTERÓ ===================== */
-$pdf->Ln(2);
+//$pdf->Ln(2);
 $pdf->writeHTML("<table cellpadding='4' border='1'>
 <tr>
 <td><b>¿Cómo se enteró del curso?:</b> {$medioTexto}</td>
@@ -295,11 +293,11 @@ $pdf->writeHTML("<table cellpadding='4' border='1'>
 
 /* ===================== NOTA Y FIRMAS ===================== */
 $pdf->SetFont('','B',8); // B = negrita
-$pdf->Ln(4);
+$pdf->Ln(2);
 $pdf->Cell(0, 6, 'NOTA: Es requisito indispensable efectuar el pago de los módulos antes de iniciar clases.', 0, 1, 'C');
 $pdf->Cell(0, 6, 'El incumplimiento dará lugar al cobro de mora correspondiente.', 0, 1, 'C');
 
-$pdf->Ln(8);
+$pdf->Ln(5);
 $xCentro = ($pdf->GetPageWidth() - 46) / 2;
 $yActual = $pdf->GetY();
 $pdf->Image('imagenes/FIRM.jpg', $xCentro, $yActual, 40);
