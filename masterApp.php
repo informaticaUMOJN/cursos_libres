@@ -169,6 +169,9 @@ header('Pragma: no-cache');
                                     <li> 
                                         <a class="dropdown-item" href="frmLibroActa.php">Libros de actas</a>
                                     </li>
+                                    <li> 
+                                        <a class="dropdown-item" href="frmMatriculados.php">Estudiantes matriculados</a>
+                                    </li>
                                 </ul>
                             </li>
 
