@@ -67,7 +67,7 @@
 		$m_cnx_MySQL = fxAbrirConexion();
 		if ($mbLlenaGrid == 1)
 		{
-			$msConsulta = "select DIPLOMA_REL, FECHA_003, ESTUDIO_003, NOMBRE_003 from UMO003B";
+			$msConsulta = "select DIPLOMA_REL, FECHA_003, ESTUDIO_003, NOMBRE_003 from UMO003B order by DIPLOMA_REL desc";
 			$mDatos = $m_cnx_MySQL->prepare($msConsulta);
 			$mDatos->execute();
 		}

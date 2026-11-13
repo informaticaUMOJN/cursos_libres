@@ -7,7 +7,7 @@
 <html lang="ES-NI" class="no-js">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="description" content="Diplomas UMOJN."/>
+<meta name="description" content="Cursos libres UMOJN."/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <link rel="icon" href="imagenes/favicon.png" />
 <link rel="stylesheet" type="text/css" href="css/style.css" />
@@ -20,7 +20,7 @@
 <script src="js/jquery-3.4.1.js"></script>
 <script src="js/jquery.easyui.min.js"></script>
 <script src="bootstrap/js/bootstrap.js"></script>
-<title>Diplomas UMOJN</title>
+<title>Cursos libres UMOJN</title>
 </head>
 
 <body>
@@ -35,7 +35,7 @@
 		$_SESSION["gnVerifica"] = $_GET["UMOJN"];
 		$mnVerificacion = $_GET['UMOJN'];
 		$m_cnx_MySQL = fxAbrirConexion();
-		$msConsulta = "select RUTA_003 from UMO003B where VERIFICACION_003 = ?";
+		$msConsulta = "select ALUMNO_REL from UMO371A, UMO210A where UMO371A.MATCURSO_REL = UMO210A.MATCURSO_REL and VERIFICACION_371 = ?";
 		$mAuxiliar = $m_cnx_MySQL->prepare($msConsulta);
 		$mAuxiliar->execute([$mnVerificacion]);
 		$mnRegistros = $mAuxiliar->rowCount();
@@ -57,7 +57,8 @@
 		else
 		{
 			$mAuxFila = $mAuxiliar->fetch();
-			$msRuta = $mAuxFila["RUTA_003"];
+			$msAlummo = $mAuxFila["ALUMNO_REL"];
+			$msRuta = __DIR__ . "/estudiantes/" . $msAlummo . ".png";
 ?>
     <div class="container">
 		<div id="DivContenido">

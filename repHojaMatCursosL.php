@@ -98,10 +98,11 @@ $mFila = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$mFila) exit('No se encontraron datos de matrícula');
 
 /* ===================== CONSULTA DOCUMENTOS ===================== */
-$sqlDocs = "SELECT DESC_201 FROM UMO201A WHERE ALUMNO_REL = ?";
+//$sqlDocs = "SELECT DESC_201 FROM UMO201A WHERE ALUMNO_REL = ?";
+$sqlDocs = "SELECT DIPLOMA_210, CEDULA_210, ACTANACIMIENTO_210, OTROS_210 FROM UMO210A WHERE MATCURSO_REL = ?";
 $stmtDocs = $m_cnx_MySQL->prepare($sqlDocs);
-$stmtDocs->execute([$mFila['ALUMNO_REL']]);
-$docs = $stmtDocs->fetchAll(PDO::FETCH_ASSOC);
+$stmtDocs->execute([$codMatricula]);
+$docs = $stmtDocs->fetch(PDO::FETCH_ASSOC);
 
 /* ======= TURNO ======= */
 $turnos = [
@@ -222,12 +223,23 @@ $pdf->SetFont('helvetica','',8);
 
 if (count($docs) > 0) {
     $htmlDocs = "<table cellpadding='4' border='1'>";
-    foreach ($docs as $doc) {
-        $htmlDocs .= "
-        <tr>
-            <td width='100%'>{$doc['DESC_201']}</td>
-        </tr>";
+    $htmlDocs .= "<tr>";
+    $htmlDocs .= "<td width='100%'>";
+    if ($docs["DIPLOMA_210"] == 1 or $docs["CEDULA_210"] == 1 or $docs["ACTANACIMIENTO_210"] == 1 or $docs["OTROS_210"] == 1)
+    {
+        $htmlDocs .= "<ul>";
+        if ($docs["DIPLOMA_210"] == 1)
+            $htmlDocs .= "<li>Diploma de bachiller</li>";
+        if ($docs["CEDULA_210"] == 1)
+            $htmlDocs .= "<li>Cédula de identidad</li>";
+        if ($docs["ACTANACIMIENTO_210"] == 1)
+            $htmlDocs .= "<li>Acta de nacimiento</li>";
+        if ($docs["OTROS_210"] == 1)
+            $htmlDocs .= "<li>Otros</li>";
+        $htmlDocs .= "</ul>";
     }
+    $htmlDocs .= "</td>";
+    $htmlDocs .= "</tr>";
     $htmlDocs .= "</table>";
     $pdf->writeHTML($htmlDocs);
 } else {
@@ -300,9 +312,9 @@ $pdf->Cell(0, 6, 'El incumplimiento dará lugar al cobro de mora correspondiente
 $pdf->Ln(5);
 $xCentro = ($pdf->GetPageWidth() - 46) / 2;
 $yActual = $pdf->GetY();
-$pdf->Image('imagenes/FIRM.jpg', $xCentro, $yActual, 40);
+$pdf->Image('imagenes/firmaRegistro.jpg', $xCentro, $yActual, 40);
 $pdf->SetFont('','B',9); // B = Bold (negrita)
-$pdf->Ln(34);
+$pdf->Ln(23);
 //$pdf->Cell(30,6,'',0,0);
 $pdf->Cell(0, 6, 'Registro Académico UMO-JN', 0, 1, 'C');
 $pdf->Ln(25);

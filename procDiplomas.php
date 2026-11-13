@@ -50,7 +50,7 @@
 			$mdFecha = $mFila["FECHA_003"];
 			$msEstudio = $mFila["ESTUDIO_003"];
 			$msNombre = $mFila["NOMBRE_003"];
-			$msRuta = $mFila["RUTA_003"];
+			$msRuta = "https://diplomas.umojn.edu.ni/" . $mFila["RUTA_003"];
 		}
 		else
 		{
@@ -114,22 +114,7 @@
 								<label class="col-sm-12 col-md-2 form-label">Imagen</label>
 								<div class="col-xs-auto col-md-7">
 									<div style="height:auto; padding-top:1%; padding-bottom:2%">
-										<table width="100%">
-											<tr>
-												<td><input type="file" id="fbArchivo" name="fbArchivo"></td>
-											</tr>
-											<tr>
-												<td>
-													<input type="button" id="btnSubir" name="btnSubir" value="Subir" onclick="subirArchivo()">
-													<input type="button" id="btnBorrar" name="btnBorrar" value="Borrar" onclick="borrarArchivo()">
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<?php echo('<img class"img-fluid" src="' . $msRuta . '" alt="SIN DIPLOMA" id="imgDiploma" name="imgDiploma" />'); ?>
-												</td>
-											</tr>
-										</table>
+										<?php echo('<img src="' . $msRuta . '" alt="SIN DIPLOMA" id="imgDiploma" name="imgDiploma" width="80%"/>'); ?>
 									</div>
 								</div>
 							</div>
@@ -158,64 +143,5 @@
 		}
 		
 		return true;
-	}
-
-	function subirArchivo()
-	{
-		var msArchivo = $('#fbArchivo').val();
-		var datos = new FormData();
-        var files = $('#fbArchivo')[0].files[0];
-		var diploma = $('#txtDiploma').val();
-		datos.append('archivo', files);
-		datos.append('Codigo1', diploma);
-
-		if (document.getElementById('txtDiploma').value=="")
-		{
-			$.messager.alert('UMOJN','Guarde el registro del diplomas antes de subir la imagen.','warning');
-			return false;
-		}
-
-		if (msArchivo == ""){
-        	$.messager.alert('UMOJN', 'No ha seleccionado la imagen.', 'warning');
-        	return false;
-    	}
-
-		$.ajax({
-            url: 'funciones/fxDiplomasImagenes.php',
-            type: 'post',
-            data: datos,
-            contentType: false,
-            processData: false,
-            success: function(response) {
-                if (response != "") {
-                    document.getElementById('imgDiploma').src = response;
-                    document.getElementById('fbArchivo').value = "";
-                } else {
-                    $.messager.alert('UMOJN', 'Error en la subida del archivo.', 'warning');
-                }
-            }
-        });
-	}
-
-	function borrarArchivo()
-	{
-		var datos = new FormData();
-		var diploma = $('#txtDiploma').val();
-		datos.append('Codigo2', diploma);
-
-		$.ajax({
-        url: 'funciones/fxDiplomasImagenes.php',
-        type: 'post',
-        data: datos,
-        contentType: false,
-        processData: false,
-        success: function(response) {
-            if (response != "") {
-                document.getElementById('imgDiploma').src = "";
-            } else {
-                $.messager.alert('UMOJN', 'Error en la eliminación del archivo.', 'warning');
-            }
-        }
-    });
 	}
 </script>

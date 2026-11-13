@@ -26,51 +26,46 @@
     }
 
     if (isset($_POST['UMOJN']))
-        $msUMOJN = $_POST['UMOJN'];
+        $msCurso = $_POST['UMOJN'];
 
-    $arrDiplomas = explode(',', $msUMOJN);
-    $mnConteo = count($arrDiplomas);
-
-    $msConsulta = "select DIPLOMA_REL, FECHA_003, ESTUDIO_003, NOMBRE_003, VERIFICACION_003, RUTA_003 ";
-    $msConsulta .= "from UMO003B where DIPLOMA_REL in (";
-    for ($i=0; $i<$mnConteo; $i++)
-    {
-        if ($i == $mnConteo - 1)
-            $msConsulta .= "'" . $arrDiplomas[$i] . "'";
-        else
-            $msConsulta .= "'" . $arrDiplomas[$i] . "',";
-    }
-    $msConsulta .= ")";
+    $msConsulta = "SELECT PARTIDA_REL, UMO210A.MATCURSO_REL, concat_ws(' ', NOMBRES_200, APELLIDOS_200) as ALUMNO, NOMBRE_190, VERIFICACION_371
+    FROM UMO371A, UMO370A, UMO210A, UMO200A, UMO190A
+    where UMO371A.REGISTRO_REL = UMO370A.REGISTRO_REL
+    and UMO371A.MATCURSO_REL = UMO210A.MATCURSO_REL
+    and UMO210A.ALUMNO_REL = UMO200A.ALUMNO_REL
+    and UMO210A.CURSOS_REL = UMO190A.CURSOS_REL
+    and UMO370A.CURSOS_REL = ? order by PARTIDA_REL";
 
     $mDatos = $m_cnx_MySQL->prepare($msConsulta);
-    $mDatos->execute();
+    $mDatos->execute([$msCurso]);
     
     while ($mFila = $mDatos->fetch())
     {
         $pdf->AddPage();
-        $msDiploma = $mFila["DIPLOMA_REL"];
-        $msFecha = $mFila["FECHA_003"];
-        $msEstudio = $mFila["ESTUDIO_003"];
-        $msNombre = $mFila["NOMBRE_003"];
-        $msVerificacion = $mFila["VERIFICACION_003"];
-        $msRuta = $mFila["RUTA_003"];
+        $msPartida = $mFila["PARTIDA_REL"];
+        $msMatricula = $mFila["MATCURSO_REL"];
+        $msAlumno = $mFila["ALUMNO"];
+        $msCurso = $mFila["NOMBRE_190"];
+        $msVerificacion = $mFila["VERIFICACION_371"];
 
         if ($msVerificacion == "")
         {
             $mdAhora = date('YmdHis');
-            $msVerificacion .= rand(10000, 99999) . $mdAhora;
+            $msVerificacion .= rand(10000, 99999) . $msPartida . $mdAhora;
 
-            $msConsulta = "update UMO003B set VERIFICACION_003 = ? where DIPLOMA_REL = ?";
+            $msConsulta = "update UMO371A set VERIFICACION_371 = ? where MATCURSO_REL = ?";
             $mAux = $m_cnx_MySQL->prepare($msConsulta);
-            $mAux->execute([$msVerificacion, $msDiploma]);
+            $mAux->execute([$msVerificacion, $msMatricula]);
         }
 
         //Nombre del estudiante
-        $pdf->SetFont('helvetica','B',22);
+        $pdf->SetFont('helvetica','B',18);
         $pdf->setXY(20,20);
-        $pdf->Cell(200,10,$msEstudio,0,0,'L');
+        $pdf->Cell(200,10,$msCurso,0,0,'L');
         $pdf->setXY(20,30);
-        $pdf->Cell(200,10,$msNombre,0,0,'L');
+        $pdf->Cell(200,10,'Partida ' . $msPartida,0,0,'L');
+        $pdf->setXY(20,40);
+        $pdf->Cell(200,10,$msAlumno,0,0,'L');
         
         //Código QR
 		$style = array(
@@ -80,7 +75,7 @@
 			'fgcolor' => array(0,0,0),
 			'bgcolor' => false, //array(255,255,255)
 		);
-        $msCodigoQR = "https://diplomas.umojn.edu.ni/diploma.php?UMOJN=" . $msVerificacion;
+        $msCodigoQR = "https://cursoslibres.umojn.edu.ni/diploma.php?UMOJN=" . $msVerificacion;
         $pdf->write2DBarcode($msCodigoQR, 'QRCODE,H', 20, 60, 30, 30, $style, 'N');
         $pdf->write2DBarcode($msCodigoQR, 'QRCODE,H', 20, 100, 35, 35, $style, 'N');
         $pdf->write2DBarcode($msCodigoQR, 'QRCODE,H', 20, 145, 40, 40, $style, 'N');

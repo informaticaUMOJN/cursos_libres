@@ -91,38 +91,14 @@
             $mAux->execute([$mnPartida, $msLibro]);
 
             //Ingreso del registro
-            $msConsulta = "insert into UMO371A values (?, ?, ?, ?, ?)";
+            $msConsulta = "insert into UMO371A values (?, ?, ?, ?, ?, ?)";
             $mAux = $m_cnx_MySQL->prepare($msConsulta);
-            $mAux->execute([$msCodigo, $mnPartida, $msMatricula, $msTomo, $mnFolio]);
+            $mAux->execute([$msCodigo, $mnPartida, $msMatricula, $msTomo, $mnFolio, '']);
 
             //Actualización del estado de la matrícula
             $msConsulta = "update UMO210A set ESTADO_210 = 3 where MATCURSO_REL = ?";
             $mAux = $m_cnx_MySQL->prepare($msConsulta);
             $mAux->execute([$msMatricula]);
-
-            //Generar el diploma
-            $msConsulta = "select CONCAT_WS(' ', NOMBRES_200, APELLIDOS_200) as ESTUDIANTE, NOMBRE_190 ";
-            $msConsulta .= "from UMO210A, UMO200A, UMO190A ";
-            $msConsulta .= "where UMO210A.ALUMNO_REL = UMO200A.ALUMNO_REL and UMO210A.CURSOS_REL = UMO190A.CURSOS_REL ";
-            $msConsulta .= "and MATCURSO_REL = ?";
-            $mAux = $m_cnx_MySQL->prepare($msConsulta);
-            $mAux->execute([$msMatricula]);
-            $mFilaAux = $mAux->fetch();
-            $msNombreEstudiante = $mFilaAux["ESTUDIANTE"];
-            $msNombreCurso = $mFilaAux["NOMBRE_190"];
-
-            $msConsulta = "Select ifnull(mid(max(DIPLOMA_REL), 3), 0) as Ultimo from UMO003B";
-            $mAux = $m_cnx_MySQL->prepare($msConsulta);
-            $mAux->execute();
-            $mFilaAux = $mAux->fetch();
-            $mnNumero = intval($mFilaAux["Ultimo"]);
-            $mnNumero += 1;
-            $mnLongitud = strlen($mnNumero);
-            $msDiploma = "DP" . str_repeat("0", 8 - $mnLongitud) . trim($mnNumero);
-            $mdFechaHoy = date('Y-m-d H:i:s');
-            $msConsulta = "insert into UMO003B values (?,?,?,?,?,?)";
-            $mResultado = $m_cnx_MySQL->prepare($msConsulta);
-            $mResultado->execute([$msDiploma, $mdFechaHoy, $msNombreCurso, $msNombreEstudiante, "", ""]);
         }
     }
 ?>

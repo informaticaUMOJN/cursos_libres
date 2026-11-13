@@ -40,7 +40,7 @@
 					<table id="grid" class="table table-condensed table-hover table-striped" data-selection="true" data-multi-select="false" data-row-select="true" data-keep-selection="true">
 						<thead>
 							<tr>
-								<th data-column-id="DIPLOMA_REL" data-order="desc" data-identifier="true" data-align="left" data-width="15%">Diploma</th>
+								<th data-column-id="DIPLOMA_REL" data-identifier="true" data-align="left" data-width="15%">Diploma</th>
 								<th data-column-id="FECHA_003" data-align="left" data-header-align="left" data-width="15%">Fecha</th>
 								<th data-column-id="ESTUDIO_003" data-align="left" data-header-align="left" data-width="35%">Estudio realizado</th>
 								<th data-column-id="NOMBRE_003" data-align="left" data-header-align="left" data-width="35%">Nombre del estudiante</th>

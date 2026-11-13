@@ -93,7 +93,7 @@
 										<th data-column-id="NOMBRE_190" data-align="left" data-width="30%">Nombre</th>
 										<th data-column-id="NOMBRE_DOCENTE" data-align="left" data-width="30%">Docente</th>
 										<th data-column-id="TURNO_190" data-align="left" data-width="10%">Turno</th>
-										<th data-column-id="ESTADO_190" data-align="left" data-width="10%">Activo</th>
+										<th data-column-id="ESTADO_190" data-align="left" data-width="10%">Estado</th>
 									</tr>
 								</thead>
 								<tbody>
