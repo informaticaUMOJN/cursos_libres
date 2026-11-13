@@ -215,9 +215,9 @@ if (isset($_POST["UMOJN"]))
         imagettftext($imagen, 15, 0, 700, $y, $negro, $arialNormal, $texto);
 
         // Define el nombre del archivo donde se guardará la imagen
-        $archivo = $msEstudiante . '.png';
+        $archivo = $msMatricula . '.png';
         $ruta = 'estudiantes/';
-        $ruta_archivo = 'estudiantes/' . $msAlumno . '.png';
+        $ruta_archivo = 'estudiantes/' . $msMatricula . '.png';
 
         if (!file_exists($ruta)) {
             mkdir($ruta, 0777, true);

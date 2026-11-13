@@ -35,7 +35,7 @@
 		$_SESSION["gnVerifica"] = $_GET["UMOJN"];
 		$mnVerificacion = $_GET['UMOJN'];
 		$m_cnx_MySQL = fxAbrirConexion();
-		$msConsulta = "select ALUMNO_REL from UMO371A, UMO210A where UMO371A.MATCURSO_REL = UMO210A.MATCURSO_REL and VERIFICACION_371 = ?";
+		$msConsulta = "select UMO371A.MATCURSO_REL from UMO371A, UMO210A where UMO371A.MATCURSO_REL = UMO210A.MATCURSO_REL and VERIFICACION_371 = ?";
 		$mAuxiliar = $m_cnx_MySQL->prepare($msConsulta);
 		$mAuxiliar->execute([$mnVerificacion]);
 		$mnRegistros = $mAuxiliar->rowCount();
@@ -57,8 +57,8 @@
 		else
 		{
 			$mAuxFila = $mAuxiliar->fetch();
-			$msAlummo = $mAuxFila["ALUMNO_REL"];
-			$msRuta = __DIR__ . "/estudiantes/" . $msAlummo . ".png";
+			$msMatricula = $mAuxFila["MATCURSO_REL"];
+			$msRuta = "https://cursoslibres.umojn.edu.ni/estudiantes/" . $msMatricula . ".png";
 ?>
     <div class="container">
 		<div id="DivContenido">
